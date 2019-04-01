@@ -10,8 +10,15 @@ Modern C++ API for cRegisters. Register are smart memory, data manager, allowing
 
 ## C++ API.
 
-### Description.
+### Philosophy 
 
-### Main API Calls.
+### Features.
+
+### Install
 
 ### Use case.
+
+## Other info
+
+This software is distributed under [MIT license](http://www.opensource.org/licenses/mit-license.php),
+ so feel free to integrate it in your commercial products.
