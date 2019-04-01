@@ -24,6 +24,11 @@ Modern cross platforms C++ API for cRegisters. Register are smart memory, data m
 
 ### Use case
 
-## Other info
+## Contributing
+
+cRegister project is developed on GitHub at [cRegister](https://github.com/j-bruel/cRegister).
+To report an issue or send a pull request, use the [issue tracker](https://github.com/j-bruel/cRegister/issues).
+
+## License
 
 This software is distributed under [MIT license](http://www.opensource.org/licenses/mit-license.php), so feel free to integrate it in your commercial products.
