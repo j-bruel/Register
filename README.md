@@ -1,6 +1,10 @@
 # cRegister
 
-## Introduction
+[![Build Status](https://travis-ci.org/j-bruel/badges.svg?branch=master)](https://travis-ci.org/j-bruel/badges)
+[![codecov.io](https://codecov.io/github/j-bruel/badges/coverage.svg?branch=master)](https://codecov.io/github/j-bruel/badges?branch=master)
+[![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/j-bruel/cRegister/blob/master/LICENSE)
+
+## Overview
 
 Modern cross platforms C++ API for cRegisters. Register are smart memory, data manager, allowing to interact and persist data in an architectural, dynamic and simplified way.
 
