@@ -14,15 +14,24 @@ Modern cross platforms C++ API for cRegisters. Register are smart memory, data m
 
 ### How does it work ?
 
-## C++ API
+## Features
 
-### Features
+## Usage
 
-### Build
+### Platforms
 
-### Install
+cRegister API platforms available :
 
-### Use case
+* `Linux`
+* `Windows`
+
+### Requirements
+
+### Build and install
+
+### Building with ...
+
+### Example
 
 ## Contributing
 
