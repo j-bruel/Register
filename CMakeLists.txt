@@ -45,8 +45,6 @@ if (CMAKE_COMPILER_IS_GNUCXX)
     message(STATUS "GCC detected, adding compile flags.")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -W -Wall -Wextra -fPIC")
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_RELEASE} -g3")
-    target_compile_options(${PROJECT_NAME} PUBLIC "$<$<CONFIG:DEBUG>:${CMAKE_CXX_FLAGS_DEBUG}>")
-    target_compile_options(${PROJECT_NAME} PUBLIC "$<$<CONFIG:RELEASE>:${CMAKE_CXX_FLAGS_RELEASE}>")
 elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
     target_compile_options(${PROJECT_NAME} PRIVATE /EHsc /MTd /W2 /c)
     target_compile_definitions(${PROJECT_NAME} PRIVATE WIN_EXPORT) # Set the DLLEXPORT variable to export symbols
