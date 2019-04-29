@@ -2,7 +2,10 @@
 
 #include <iostream>
 
-void hello()
+extern "C"
+{
+EXPORTED inline void hello()
 {
     std::cout << "Hello, World!" << std::endl;
+}
 }

@@ -1,0 +1,10 @@
+#pragma once
+#ifndef CONFIG_HPP_
+#define CONFIG_HPP_
+
+#define VERSION_MAJOR "@cRegister_VERSION_MAJOR@"
+#define VERSION_MINOR "@cRegister_VERSION_MINOR@"
+#define VERSION_PATCH "@cRegister_VERSION_PATCH@"
+#define VERSION "@cRegister_VERSION@"
+
+#endif // !CONFIG_HPP_

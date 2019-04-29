@@ -1,75 +1,93 @@
-##
-## Cmake minimun version
-##
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.1)
 
-##
-## Projet version
-##
-set(PROJECT_VERSION 1.0)
+project(cRegister)
 
-##
-## Projet Name
-##
-project(cRegister
-        VERSION ${PROJECT_VERSION})
+set(cRegister_VERSION_MAJOR 1)
+set(cRegister_VERSION_MINOR 0)
+set(cRegister_VERSION_PATCH 0)
+set(cRegister_VERSION "${cRegister_VERSION_MAJOR}.${cRegister_VERSION_MINOR}.${cRegister_VERSION_PATCH}")
 
-##
-## C++ Stantard compilation
-##
-set(CMAKE_CXX_STANDARD 11)
+set(PROJ_NAME "\"cRegister\"") # PROJECT_NAME is a predefined variable
+set(PROJECT_DESCRIPTION "\"Register C++ API. Smart memory, allowing to interact and persist data in an architectural, dynamic and simplified way.\"")
 
-##
-## Library location and configuration
-##
-if (UNIX AND NOT APPLE)
-    message(STATUS "Unix system detected.")
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
-endif (UNIX AND NOT APPLE)
-if (WIN32 OR MSVC OR MSYS OR MINGW)
-    message(STATUS "Windows OS detected.")
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
-    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
-    set(CMAKE_DEBUG_POSTFIX "d")
-endif (WIN32 OR MSVC OR MSYS OR MINGW)
+configure_file(include/project-abbr/config.hpp.in
+    ${CMAKE_BINARY_DIR}/include/project-abbr/config.hpp
+)
 
-set(CMAKE_C_EXTENSIONS OFF)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-##
-## Flags
-##
-if (CMAKE_COMPILER_IS_GNUCXX)
-    message(STATUS "GCC detected, adding compile flags.")
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -W -Wall -Wextra -fPIC")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_RELEASE} -g3")
-elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
-    target_compile_options(${PROJECT_NAME} PRIVATE /EHsc /MTd /W2 /c)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE WIN_EXPORT) # Set the DLLEXPORT variable to export symbols
-endif ()
+# Options
+option(BUILD_TESTS "Build test executable" ON)
+option(GEN_DOCS "Generate documentation" ON)
+option(ENABLE_COVERAGE "Enable code coverage" ON)
 
-##
-## Headers and library included
-##
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
-##
-## Sources files
-##
-file(GLOB_RECURSE SOURCE_FILES  ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
+if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+    message(STATUS "Setting build type to 'Release' as no build type was specified")
+    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the build type (Debug/Release)" FORCE)
+endif (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 
-##
-## Package
-##
-add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
+message("DEBUG -> " ${CMAKE_BINARY_DIR})
 
-##
-## Set project name with version.
-##
-set_target_properties(  ${PROJECT_NAME}
-                            PROPERTIES
-                                VERSION ${PROJECT_VERSION}
-                                SOVERSION ${PROJECT_VERSION}
+
+if (ENABLE_COVERAGE AND NOT CMAKE_CONFIGURATION_TYPES)
+    if (NOT BUILD_TESTS)
+        message(FATAL_ERROR "Tests must be enabled for code coverage!")
+    endif (NOT BUILD_TESTS)
+    
+    include(CodeCoverage)
+    
+    append_coverage_compiler_flags()
+    set(COVERAGE_EXCLUDES "/usr/include/\\*;${CMAKE_SOURCE_DIR}/src/main.cpp;${CMAKE_SOURCE_DIR}/test/*;${CMAKE_SOURCE_DIR}/third_party/doctest/*")
+    
+    setup_target_for_coverage(NAME coverage EXECUTABLE ctest DEPENDENCIES coverage)
+else (ENABLE_COVERAGE AND NOT CMAKE_CONFIGURATION_TYPES)
+    if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
+        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
+        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2")
+    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /WX")
+        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2")
+    endif(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+endif (ENABLE_COVERAGE AND NOT CMAKE_CONFIGURATION_TYPES)
+
+set(LIBRARY_SOURCES
+    src/factorial.cpp
+    src/hello_world.cpp
 )
+
+add_library(cRegister-lib ${LIBRARY_SOURCES}) # A library
+set_target_properties(cRegister-lib PROPERTIES PREFIX "") # Remove the lib prefix
+target_include_directories(cRegister-lib PUBLIC ${CMAKE_SOURCE_DIR}/include ${CMAKE_BINARY_DIR}/include)
+
+add_executable(cRegister src/main.cpp) # The main executable
+target_link_libraries(cRegister cRegister-lib) # Link our sources to the executable
+
+if (BUILD_TESTS)
+    include(CTest)
+    enable_testing()
+    add_subdirectory(test)
+endif (BUILD_TESTS)
+
+if (GEN_DOCS)
+    add_subdirectory(doc)
+endif (GEN_DOCS)
+
+# Install the built library and executable into the appropriate directory
+install(TARGETS cRegister DESTINATION bin)
+install(TARGETS cRegister-lib
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
+)
+
+# Install the project header files into the appropriate directory
+install(DIRECTORY include/ DESTINATION include PATTERN "config.hpp.in" EXCLUDE) # Install our main header files
+install(FILES ${CMAKE_BINARY_DIR}/include/project-abbr/config.hpp DESTINATION include/project-abbr) # Install our configuration file
+
+# Install the project's extra files
+install(FILES README.md LICENSE DESTINATION share/project-abbr)
