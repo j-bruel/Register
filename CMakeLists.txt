@@ -30,9 +30,6 @@ if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the build type (Debug/Release)" FORCE)
 endif (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 
-message("DEBUG -> " ${CMAKE_BINARY_DIR})
-
-
 if (ENABLE_COVERAGE AND NOT CMAKE_CONFIGURATION_TYPES)
     if (NOT BUILD_TESTS)
         message(FATAL_ERROR "Tests must be enabled for code coverage!")
