@@ -27,6 +27,11 @@ cRegister API platforms available :
 
 ### Requirements
 
+* Cmake
+* Make
+* gcov
+* Visual compiler
+
 ### Build and install
 
 ### Building with ...
