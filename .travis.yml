@@ -78,6 +78,10 @@ matrix:
     - os: osx
       osx_image: xcode9.2 
       compiler: clang
+      addons:
+        apt:
+          packages:
+            - lcov
       env:
         - MATRIX_EVAL="COMPILER=clang++ && BUILD_TYPE=Debug"
       if: branch != coverity_scan
@@ -85,6 +89,10 @@ matrix:
     - os: osx
       osx_image: xcode9.2 
       compiler: clang
+      addons:
+        apt:
+          packages:
+            - lcov
       env:
         - MATRIX_EVAL="COMPILER=clang++ && BUILD_TYPE=Release"
       if: branch != coverity_scan
