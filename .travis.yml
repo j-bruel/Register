@@ -8,11 +8,11 @@ branches:
     - develop
     - coverity_scan
 
-#env:
-    #  global:
-   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
-   #   via the "travis encrypt" command using the project repo's public key
-#   secure: "veAdPtCJipVm1byxjBdwEAmFrTkvPeQTFh2+F+HGoCpzKJloQA3r7TcUSvkw3VKCSdc7fim6YKei3w57N9lR8wjlOdM+HScWims4i9n9t7zFQCbsaOuxxK7nmoFDuRx/9HPoi4px7famfhqRbYDQKcX4wX4XWeO5Ic364oGfXSc5loKSiu40ruseEeSAAyf96QYRRYvfbg2ifQTPTc1mMrE7KXDtyRQPnIWMHE3vFGdmcekqjRuVotUHbkoTZOElnA5dfXIctfJfDIv6ZMF1fLOcqoGqQrBiGqNtZvGZf0vGjmqwURZZOCkmIeBroyQSlneB6uhkes52vjbYMs+3NF7Y7D1kyPFiMaoK4WfjlQ5Z9k6JoBupkOhMLwyklxkks/scZXuI+H0V285fl2E5tdiowCBXn68J5yn1RjiAOLOS20oExLhPwd5cNsUKOmrWbNBlvEq37MKTVyBfu0h2gCVF3xo+H3b2RLzgn39hKppSK0iReVEfOmzhk6yP5QUBZUjemruJeZFp0CG3On8EdUQgIY9gOsFBoAsYkm6ahwvNSdL3Am8zpQMBBjS/WqJ3nNaPKQWqqL4eWG2y4cItjrRiIlczNh+LsJEP5vescEdiF+fx0hpCBy0B7LrOLUn7bGcPSOPV3XmqPesK5HaDE1bwgZ1ZjebdioTHfk+YHEs="
+env:
+  global:
+    # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+    #   via the "travis encrypt" command using the project repo's public key
+    - secure: "J6VbITOPEdRG4WBD//rIB+sDmxBbme5Z2RvDGZEtMlyl7CT01+oKaI5Z/9Mth6nImgdHtAJvxtTa2/ye0IWH3pPydlOeCsNI8/IXrqB0pA0//0qom8a5uepuFrkjl2/HXwOO1gejj7J6mHE3Xznm/VVYxyQ+F56iGbWDJKTqwcjm6pFU43eHLL31rgmb0ykzIf7Fzz2s293i0K64R+60t2RRNjUG04XuLV+5Y4+5jIrQqiKL+NANnuFlW3MIb5eMx2GjbawdsBprmp4+pbqPTjylLhAPNy+poBJiIG8CA1Jy2gWAQTRtqAn956U5bimxHpz3+yItm+4wZAwE7vTJ+oUEihWCHUA168JyUCUKRX1Y84mAPJBd3ejKqEJri6W9cI/2cyFzrHQQELnRDUXsnbVeawLNKEhUwfN61uZbUAtqSZV6mKFWv5icj91bSax7jopjhtGzWokrNZdrqeJTtZGRn/AXRWIbMAc5NE2OEJ/EXj/QYZgUEMajOTcS/CK4tAX0pJGBx3u2Wida3Q4zD8IQs7T3tVq3B5XAqfzLJA1WZuPdcC8Iq0tP9ErTP5VOSTjvsQ7vlm2Cd3Y07o6FAtBJZUK/0af4U0QKxfoKBrQa0X/wISFMkIzed9jyjIGYV3nThd1FveK32pmxeuNT6PtpMGFf41udKM+qDKqDeTc="
 
 matrix:
   include:
