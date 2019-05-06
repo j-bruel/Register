@@ -1,7 +1,7 @@
 # cRegister
 
-[![Build Status](https://travis-ci.org/j-bruel/badges.svg?branch=master)](https://travis-ci.org/j-bruel/badges)
-[![codecov.io](https://codecov.io/github/j-bruel/badges/coverage.svg?branch=master)](https://codecov.io/github/j-bruel/badges?branch=master)
+[![Build Status](https://travis-ci.org/j-bruel/cRegister.svg?branch=develop)](https://travis-ci.org/j-bruel/badges)
+[![codecov.io](https://codecov.io/github/j-bruel/badges/coverage.svg?branch=develop)](https://codecov.io/github/j-bruel/badges?branch=master)
 [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/j-bruel/cRegister/blob/master/LICENSE)
 
 ## Overview
