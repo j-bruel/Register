@@ -1,5 +1,6 @@
 # cRegister
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/fbc157ec472f45eaaf31e6d37c8640a5)](https://app.codacy.com/app/j-bruel/cRegister?utm_source=github.com&utm_medium=referral&utm_content=j-bruel/cRegister&utm_campaign=Badge_Grade_Dashboard)
 [![Build Status](https://travis-ci.org/j-bruel/badges.svg?branch=master)](https://travis-ci.org/j-bruel/badges)
 [![codecov.io](https://codecov.io/github/j-bruel/badges/coverage.svg?branch=master)](https://codecov.io/github/j-bruel/badges?branch=master)
 [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/j-bruel/cRegister/blob/master/LICENSE)
