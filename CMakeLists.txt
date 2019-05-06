@@ -26,8 +26,8 @@ set(PROJ_NAME "\"${PROJECT_NAME}\"")
 ##
 set(PROJECT_DESCRIPTION "\"Register C++ API. Smart memory, allowing to interact and persist data in an architectural, dynamic and simplified way.\"")
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/include/project-abbr/config.hpp.in
-               ${CMAKE_BINARY_DIR}/include/project-abbr/config.hpp)
+configure_file(include/jbr/reg/config.hpp.in
+               ${CMAKE_BINARY_DIR}/include/jbr/reg/config.hpp)
 
 ##
 ## C++ Stantard compilation
@@ -149,9 +149,9 @@ install(TARGETS ${PROJECT_NAME}-lib
 ## Install the project header files into the appropriate directory.
 ##
 install(DIRECTORY include/ DESTINATION include PATTERN "config.hpp.in" EXCLUDE) # Install our main header files
-install(FILES ${CMAKE_BINARY_DIR}/include/project-abbr/config.hpp DESTINATION include/project-abbr) # Install our configuration file
+install(FILES ${CMAKE_BINARY_DIR}/include/jbr/reg/config.hpp DESTINATION include/jbr) # Install our configuration file
 
 ##
 ## Install the project's extra files
 ##
-install(FILES README.md LICENSE DESTINATION share/project-abbr)
+install(FILES README.md LICENSE DESTINATION share/jbr/reg)

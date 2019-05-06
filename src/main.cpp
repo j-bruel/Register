@@ -1,6 +1,6 @@
-#include <project-abbr/config.hpp>
-#include <project-abbr/factorial.hpp>
-#include <project-abbr/hello_world.hpp>
+#include <jbr/reg/config.hpp>
+#include <jbr/reg/factorial.hpp>
+#include <jbr/reg/hello_world.hpp>
 
 #include <iostream>
 #include <string>

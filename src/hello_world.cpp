@@ -1,4 +1,4 @@
-#include <project-abbr/hello_world.hpp>
+#include <jbr/reg/hello_world.hpp>
 
 HelloWorld::HelloWorld() :
     hello_{ "Hello" },

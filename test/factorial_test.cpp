@@ -1,4 +1,4 @@
-#include <project-abbr/factorial.hpp>
+#include <jbr/reg/factorial.hpp>
 
 #include "doctest.h"
 
