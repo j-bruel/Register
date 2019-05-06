@@ -1,6 +1,6 @@
 #include "doctest.h"
 
-#include <jbr/reg/hello_world.hpp>
+#include <jbr/reg/HelloWorld.hpp>
 
 #include <iostream> // Needed in OSX builds for some weird reason.
                     // See https://github.com/onqtam/doctest/issues/126#issuecomment-381742003
@@ -8,7 +8,7 @@
 
 TEST_CASE("class HelloWorld")
 {
-    HelloWorld helloWorld;
+    jbr::reg::HelloWorld helloWorld;
     
     SUBCASE("function hello()")
     {

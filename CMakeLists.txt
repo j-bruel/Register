@@ -88,8 +88,8 @@ endif (ENABLE_COVERAGE AND NOT CMAKE_CONFIGURATION_TYPES)
 ## Temporary library sources, will be replace by SOURCE_FILES when binary generation will be remove for only library.
 ##
 set(LIBRARY_SOURCES
-    src/factorial.cpp
-    src/hello_world.cpp
+        src/reg/factorial.cpp
+        src/reg/HelloWorld.cpp
 )
 
 ##
@@ -114,7 +114,7 @@ target_include_directories(${PROJECT_NAME}-lib PUBLIC ${CMAKE_SOURCE_DIR}/includ
 ##
 ## Generation application.
 ##
-add_executable(${PROJECT_NAME}          src/main.cpp)
+add_executable(${PROJECT_NAME} src/reg/main.cpp)
 ##
 ## Linkin the library with the application.
 ##

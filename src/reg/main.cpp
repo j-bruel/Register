@@ -1,13 +1,13 @@
 #include <jbr/reg/config.hpp>
 #include <jbr/reg/factorial.hpp>
-#include <jbr/reg/hello_world.hpp>
+#include <jbr/reg/HelloWorld.hpp>
 
 #include <iostream>
 #include <string>
 
 int main(int argc, char* argv[])
 {
-    HelloWorld helloWorld;
+    jbr::reg::HelloWorld helloWorld;
     
     if (argc == 2 && std::string{ argv[1] } == "--version")
     {
