@@ -1,8 +1,6 @@
-# Project Name
+# cRegister
 
-A simple template I plan on using for all of my C++14 projects.
-
-Making cross platform C++ projects is widely known to be a troublesome ambition. This project attempts to demystify many of the common problems related to creating such a structure by providing a simple template that achieves this purpose.
+Modern cross platforms C++ API for cRegisters. Register are smart memory, data manager, allowing to interact and persist data in an architectural, dynamic and simplified way.
 
 This documentation is divided into the following sections:
 - \subpage variables_and_targets
