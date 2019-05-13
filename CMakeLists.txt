@@ -4,11 +4,6 @@
 cmake_minimum_required(VERSION 3.1)
 
 ##
-## Projet Name
-##
-project(cRegister)
-
-##
 ## Project version.
 ##
 set(cRegister_VERSION_MAJOR 1)
@@ -17,14 +12,19 @@ set(cRegister_VERSION_PATCH 0)
 set(cRegister_VERSION "${cRegister_VERSION_MAJOR}.${cRegister_VERSION_MINOR}.${cRegister_VERSION_PATCH}")
 
 ##
-## Project name, use for Doxygen.
-##
-set(PROJ_NAME "\"${PROJECT_NAME}\"")
-
-##
 ## Project description.
 ##
 set(PROJECT_DESCRIPTION "\"Register C++ API. Smart memory, allowing to interact and persist data in an architectural, dynamic and simplified way.\"")
+
+##
+## Projet Name
+##
+project(cRegister VERSION ${cRegister_VERSION} DESCRIPTION ${PROJECT_DESCRIPTION})
+
+##
+## Project name, use for Doxygen.
+##
+set(PROJ_NAME "\"${PROJECT_NAME}\"")
 
 configure_file(include/jbr/reg/config.hpp.in
                ${CMAKE_BINARY_DIR}/include/jbr/reg/config.hpp)
@@ -42,9 +42,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 option(BUILD_TESTS "Build test executable" ON)
 option(GEN_DOCS "Generate documentation" ON)
 option(ENABLE_COVERAGE "Enable code coverage" ON)
-if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    set(ENABLE_COVERAGE OFF)
-endif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 
 ##
 ## Set cmake modules path.
