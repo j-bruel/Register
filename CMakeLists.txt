@@ -65,7 +65,6 @@ if (ENABLE_COVERAGE AND NOT CMAKE_CONFIGURATION_TYPES)
         endif (NOT BUILD_TESTS)
         include(CodeCoverage)
         append_coverage_compiler_flags()
-        set(COVERAGE_EXCLUDES "/usr/include/\\*;${CMAKE_SOURCE_DIR}/src/main.cpp;${CMAKE_SOURCE_DIR}/test/*;${CMAKE_SOURCE_DIR}/third_party/doctest/*")
         setup_target_for_coverage(NAME coverage EXECUTABLE ctest DEPENDENCIES coverage)
 else (ENABLE_COVERAGE AND NOT CMAKE_CONFIGURATION_TYPES)
     ##
@@ -101,24 +100,15 @@ file(GLOB_RECURSE INCLUDE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp)
 ##
 ## Generation static library.
 ##
-add_library(${PROJECT_NAME}-lib ${LIBRARY_SOURCES})
+add_library(${PROJECT_NAME} ${LIBRARY_SOURCES})
 ##
 ## Remove library prefix.
 ##
-set_target_properties(${PROJECT_NAME}-lib PROPERTIES PREFIX "")
+set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
 ##
 ## Library linkage.
 ##
-target_include_directories(${PROJECT_NAME}-lib PUBLIC ${CMAKE_SOURCE_DIR}/include ${CMAKE_BINARY_DIR}/include)
-
-##
-## Generation application.
-##
-add_executable(${PROJECT_NAME} src/reg/main.cpp)
-##
-## Linkin the library with the application.
-##
-target_link_libraries(${PROJECT_NAME}   ${PROJECT_NAME}-lib)
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include ${CMAKE_BINARY_DIR}/include)
 
 ##
 ## Build test settings.
@@ -137,10 +127,9 @@ if (GEN_DOCS)
 endif (GEN_DOCS)
 
 ##
-## Install the built library and executable into the appropriate directory
+## Install the built library into the appropriate directory.
 ##
-install(TARGETS ${PROJECT_NAME} DESTINATION bin)
-install(TARGETS ${PROJECT_NAME}-lib
+install(TARGETS ${PROJECT_NAME}
                 ARCHIVE DESTINATION lib
                 LIBRARY DESTINATION lib
                 RUNTIME DESTINATION bin)

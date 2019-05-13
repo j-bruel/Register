@@ -9,6 +9,6 @@ target_include_directories(doctest INTERFACE
 )
 
 add_executable(test_runner test_runner.cpp ${TEST_SOURCES})
-target_link_libraries(test_runner cRegister-lib doctest)
+target_link_libraries(test_runner ${PROJECT_NAME} doctest)
 
 add_test(all_tests test_runner)
