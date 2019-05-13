@@ -42,6 +42,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 option(BUILD_TESTS "Build test executable" ON)
 option(GEN_DOCS "Generate documentation" ON)
 option(ENABLE_COVERAGE "Enable code coverage" ON)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    set(ENABLE_COVERAGE OFF)
+endif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 
 ##
 ## Set cmake modules path.
