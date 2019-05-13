@@ -6,8 +6,8 @@ cmake_minimum_required(VERSION 3.1)
 ##
 ## Project version.
 ##
-set(cRegister_VERSION_MAJOR 1)
-set(cRegister_VERSION_MINOR 0)
+set(cRegister_VERSION_MAJOR 0)
+set(cRegister_VERSION_MINOR 1)
 set(cRegister_VERSION_PATCH 0)
 set(cRegister_VERSION "${cRegister_VERSION_MAJOR}.${cRegister_VERSION_MINOR}.${cRegister_VERSION_PATCH}")
 
@@ -100,11 +100,14 @@ file(GLOB_RECURSE INCLUDE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp)
 ##
 ## Generation static library.
 ##
-add_library(${PROJECT_NAME} ${LIBRARY_SOURCES})
+add_library(${PROJECT_NAME} SHARED ${LIBRARY_SOURCES})
+
 ##
 ## Remove library prefix.
 ##
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
+set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${cRegister_VERSION})
+
 ##
 ## Library linkage.
 ##
