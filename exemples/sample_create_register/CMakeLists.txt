@@ -11,21 +11,31 @@ project(sample_create_register)
 ##
 ## C++ Stantard compilation
 ##
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 
 ##
 ## Binary location
 ##
-#set(EXECUTABLE_OUTPUT_PATH      ${CMAKE_CURRENT_SOURCE_DIR}/bin)
+set(EXECUTABLE_OUTPUT_PATH      ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 
 ##
 ## Flags
 ##
-if (CMAKE_COMPILER_IS_GNUCXX)
-    message(STATUS              "GCC detected, adding compile flags.")
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -W -Wall -Wextra")
-    set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_RELEASE} -g3")
-endif (CMAKE_COMPILER_IS_GNUCXX)
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    ##
+    ## Set Linux compilation flag.
+    ##
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall -Wextra")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${CMAKE_CXX_FLAGS} -g3")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${CMAKE_CXX_FLAGS}")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    ##
+    ## Set Windows compilation flag.
+    ##
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /WX")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2")
+endif(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+
 
 ##
 ## Check os type for library extension.
