@@ -33,14 +33,6 @@ configure_file(include/jbr/config.hpp.in
                ${CMAKE_BINARY_DIR}/include/jbr/config.hpp)
 
 ##
-## Export no symbols by default (if the compiler supports it).
-## This makes e.g. GCC's "visibility behavior" consistent with MSVC's.
-## On Windows/MSVC this is a noop.
-##
-set(CMAKE_C_VISIBILITY_PRESET hidden)
-set(CMAKE_CXX_VISIBILITY_PRESET hidden)
-
-##
 ## C++ Stantard compilation
 ##
 set(CMAKE_CXX_STANDARD 14)
@@ -99,15 +91,22 @@ else (ENABLE_COVERAGE AND NOT CMAKE_CONFIGURATION_TYPES)
         ##
         ## Set Linux compilation flag.
         ##
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall -Wextra")
         set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
         set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2")
     elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         ##
         ## Set Windows compilation flag.
         ##
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /WX /EHsc /MTd /W2 /c")
-        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2 /EHsc /MTd /W2 /c")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /WX")
+        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2")
+        ##
+        ## Export no symbols by default (if the compiler supports it).
+        ## This makes e.g. GCC's "visibility behavior" consistent with MSVC's.
+        ## On Windows/MSVC this is a noop.
+        ##
+        set(CMAKE_C_VISIBILITY_PRESET hidden)
+        set(CMAKE_CXX_VISIBILITY_PRESET hidden)
     endif(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 endif (ENABLE_COVERAGE AND NOT CMAKE_CONFIGURATION_TYPES)
 
