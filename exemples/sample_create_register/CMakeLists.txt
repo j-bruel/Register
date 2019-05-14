@@ -16,7 +16,7 @@ set(CMAKE_CXX_STANDARD 11)
 ##
 ## Binary location
 ##
-set(EXECUTABLE_OUTPUT_PATH      ${CMAKE_CURRENT_SOURCE_DIR}/bin)
+#set(EXECUTABLE_OUTPUT_PATH      ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 
 ##
 ## Flags
@@ -40,27 +40,23 @@ if (WIN32 OR MSVC OR MSYS OR MINGW)
 endif (WIN32 OR MSVC OR MSYS OR MINGW)
 
 ##
-## Cmake variables
+## Cmake variables (options).
 ##
-set(REGISTER_LIBS_DIR       "$ENV{REGISTER_LIBS_DIR}")
-set(REGISTER_HEADERS_DIR    "$ENV{REGISTER_HEADERS_DIR}")
+option(REGISTER_LIBS_DIR    "Register library directory." $ENV{REGISTER_LIBS_DIR})
+option(REGISTER_HEADERS_DIR "Register headers directory." $ENV{REGISTER_HEADERS_DIR})
 
 ##
 ## Give message from variables setting
 ##
 if (REGISTER_LIBS_DIR)
-    message(STATUS              "The Register library directory (REGISTER_LIBS_DIR) is " ${REGISTER_LIBS_DIR})
+    message(STATUS      "The Register library directory (REGISTER_LIBS_DIR) is " ${REGISTER_LIBS_DIR})
 else()
-    message(STATUS              "The Register library directory (REGISTER_LIBS_DIR) is undefine in the environment.")
-    set(REGISTER_LIBS_DIR       "${CMAKE_CURRENT_SOURCE_DIR}/../../lib/")
-    message(STATUS              "Default Register library directory path is use : " ${REGISTER_LIBS_DIR})
+    message(FATAL_ERROR "The register library directory (REGISTER_LIBS_DIR) is undefine. This variable must be define in cmake argument or in the environment.")
 endif()
 if (REGISTER_HEADERS_DIR)
-    message(STATUS              "The Register headers directory (REGISTER_HEADERS_DIR) is " ${REGISTER_HEADERS_DIR})
+    message(STATUS      "The Register headers directory (REGISTER_HEADERS_DIR) is " ${REGISTER_HEADERS_DIR})
 else()
-    message(STATUS              "The Register headers directory (REGISTER_HEADERS_DIR) is undefine in the environment.")
-    set(REGISTER_HEADERS_DIR    "${CMAKE_CURRENT_SOURCE_DIR}/../../include/")
-    message(STATUS              "Default Register headers directory path is use : " ${REGISTER_HEADERS_DIR})
+    message(FATAL_ERROR "The register headers directory (REGISTER_HEADERS_DIR) is undefine. This variable must be define in cmake argument or in the environment.")
 endif()
 
 ##
