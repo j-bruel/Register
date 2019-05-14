@@ -1,7 +1,5 @@
 set(TEST_SOURCES
-    factorial_test.cpp
-    hello_world_test.cpp
-)
+    hello_world_test.cpp)
 
 add_library(doctest INTERFACE)
 target_include_directories(doctest INTERFACE 

@@ -1,4 +1,4 @@
-#include "jbr/library.h"
+#include "jbr/library.hpp"
 
 #include <iostream>
 
@@ -8,4 +8,10 @@ EXPORTED inline void hello()
 {
     std::cout << "Hello, World!" << std::endl;
 }
+
+}
+
+void hello4()
+{
+    std::cout << "Hello, World5!" << std::endl;
 }

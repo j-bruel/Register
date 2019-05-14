@@ -7,6 +7,9 @@
 #ifndef JBR_CREGISTER_LIBRARY_H
 # define JBR_CREGISTER_LIBRARY_H
 
+#include <iostream>
+
+
 //!
 //! @note EXPORTED for any platform
 //!
@@ -23,6 +26,10 @@
 extern "C"
 {
     EXPORTED void hello();
+    void hello3() { std::cout << "Hello, World3!" << std::endl; }
 }
+
+void hello4();
+void hello5() { std::cout << "Hello, World5!" << std::endl; }
 
 #endif //JBR_CREGISTER_LIBRARY_H
