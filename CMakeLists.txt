@@ -80,8 +80,8 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 ## Cmake build configuration options.
 ##
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
-    message(STATUS "Setting build type to 'Release' as no build type was specified.")
-    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the build type (Debug/Release)" FORCE)
+    message(STATUS "Setting build type to 'Debug' as no build type was specified.")
+    set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the build type (Debug/Release)" FORCE)
 endif (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 
 ##
