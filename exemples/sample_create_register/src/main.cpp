@@ -1,8 +1,12 @@
 #include <iostream>
 #include "jbr/library.h"
+#include "jbr/reg/HelloWorld.hpp"
 
 int main()
 {
-    hello();
+    jbr::reg::HelloWorld    hw;
+
+    std::cout << hw.hello() << std::endl;
+    while (true);
     return 0;
 }
