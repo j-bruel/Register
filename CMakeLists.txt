@@ -164,7 +164,7 @@ endif (GEN_DOCS)
 install(TARGETS ${PROJECT_NAME}
                 ARCHIVE DESTINATION lib
                 LIBRARY DESTINATION lib
-                RUNTIME DESTINATION bin)
+                RUNTIME DESTINATION lib)
 
 ##
 ## Install the project header files into the appropriate directory.

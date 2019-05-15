@@ -22,3 +22,4 @@ This project provides some CMake variables for use during configuration and othe
 | `test`           | If tests were built, then run all tests.                       |
 | `doc`            | If `GEN_DOCS=ON`, then generate documentation using `Doxygen`. |
 | `coverage`       | If `ENABLE_COVERAGE=ON`, then generate code coverage.          |
+| `clean`          | Clean all built targets.                                       |
