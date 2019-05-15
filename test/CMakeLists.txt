@@ -12,3 +12,7 @@ add_executable(test_runner test_runner.cpp ${TEST_SOURCES})
 target_link_libraries(test_runner ${PROJECT_NAME} doctest)
 
 add_test(all_tests test_runner)
+
+add_custom_command( TARGET test_runner
+                    POST_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:test_runner> ${CMAKE_BINARY_DIR}/test/test_runner)
