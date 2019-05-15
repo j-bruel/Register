@@ -40,4 +40,4 @@ This may all look very complex, but here is an explanation of all of the directo
 | `include`     | Contains all the project public include files, namespaced in a directory which is an abbreviation of the project name.         |
 | `src`         | Contains the implementations of all files in `include`. Private level includes and implementations are also in this directory. |
 | `test`        | Contains test files to unit test the library portion of the application.                                                       |
-| `third_party` | Contains CMake configuration files for third party dependencies or single header files for projects with single includes.|
+| `third_party` | Contains CMake configuration files for third party dependencies or single header files for projects with single includes.      |

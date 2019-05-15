@@ -25,15 +25,15 @@ Modern cross platforms C++ API for cRegisters. Register are smart memory, data m
 
 cRegister API platforms available :
 
- * `Linux`
- * `Windows`
+* `Linux`
+* `Windows`
 
 ### Requirements
 
- * Cmake
- * Make
- * gcov
- * Visual compiler
+* Cmake
+* Make
+* gcov
+* Visual compiler
 
 ### Build and install
 
