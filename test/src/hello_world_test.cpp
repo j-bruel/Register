@@ -27,4 +27,8 @@ TEST_CASE("class HelloWorld")
         CHECK(helloWorld.headerFunction(6) == 3);
         // Intentionally incomplete code coverage
     }
+    SUBCASE("function headerFunction()")
+    {
+        CHECK(helloWorld.headerFunction(1) == 3);
+    }
 }
