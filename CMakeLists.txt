@@ -133,6 +133,16 @@ set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${cRegister_VERSION})
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include ${CMAKE_BINARY_DIR}/include)
 
 ##
+## Check os type to copy libraries on windows case.
+##
+if (WIN32 OR MSVC OR MSYS OR MINGW)
+    message(STATUS              "Windows OS detected, copying libraries files.")
+    add_custom_command( TARGET ${PROJECT_NAME}
+            POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> ${CMAKE_BINARY_DIR}/test/${PROJECT_NAME}.dll)
+endif (WIN32 OR MSVC OR MSYS OR MINGW)
+
+##
 ## Build test settings.
 ##
 if (BUILD_TESTS)

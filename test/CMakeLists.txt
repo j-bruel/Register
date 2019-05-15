@@ -1,5 +1,17 @@
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../bin)
 
+##
+## Check os type for binary extension.
+##
+if (UNIX AND NOT APPLE)
+    message(STATUS              "Unix system detected.")
+    set(OS_DYNAMIQUE_BIN_EXT    "")
+endif (UNIX AND NOT APPLE)
+if (WIN32 OR MSVC OR MSYS OR MINGW)
+    message(STATUS              "Windows OS detected.")
+    set(OS_DYNAMIQUE_BIN_EXT    ".exe")
+endif (WIN32 OR MSVC OR MSYS OR MINGW)
+
 set(TEST_SOURCES
     hello_world_test.cpp)
 
@@ -15,4 +27,4 @@ add_test(all_tests test_runner)
 
 add_custom_command( TARGET test_runner
                     POST_BUILD
-                    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:test_runner> ${CMAKE_BINARY_DIR}/test/test_runner)
+                    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:test_runner> ${CMAKE_BINARY_DIR}/test/test_runner${OS_DYNAMIQUE_BIN_EXT})
