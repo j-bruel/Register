@@ -126,7 +126,7 @@ This will generate a shared library `libcRegister.[so][dll]` and a testing appli
 
 ### Building with
 
-Now, let take a look on how to build a custom application with the cRegister library.
+Now, let take a look on how to build a custom application with the cRegister library on linux or MacOS environment.
 
 You must link the library in your CMakeLists.txt.
 
@@ -140,7 +140,7 @@ Finaly, you simply need to include all cRegister headers needed like this :
 #include <jbr/cRegister/HelloWorld.hpp>
 ```
 
-If any difficulties persist, samples with full CMakeLists.txt are here to help too.
+If any difficulties persist, samples with full CMakeLists.txt cross-platform are here to help too.
 
 ### Example
 
