@@ -31,13 +31,23 @@ cRegister API platforms available :
 
 ### Requirements
 
-The following tools must be preinstalled before using this project.
+cRegister library is designed to have fairly minimal requirements to build and use with your projects, but there are some.
+In addition, the library is build in `c++14`.
+These are the base requirements to build and use cRegister library from a source package (as described below):
 
-#### Buidling
+#### Buidling library
 
-- `CMake` At least v3.1
-- `g++` At least c++ 14
-- `Visual compiler`
+##### Windows
+
+* `CMake` At least v3.1
+* Windows `command prompt`
+* Microsoft `Visual C++ 2015`
+
+##### Linux & MacOS
+
+* GNU-compatible `CMake` and `Make` (at least v3.1).
+* POSIX-standard `shell`.
+* A `C++14`-standard-compliant compiler
 
 #### Documentation
 
@@ -72,11 +82,45 @@ The following tools must be preinstalled before using this project.
 
 #### Windows
 
+* `mkdir build`
+* `cd build`
+* `cmake .. -DBUILD_TESTS=<ON|OFF> -DGEN_DOCS=<ON|OFF> -DENABLE_COVERAGE=<ON|OFF>`
+* `cmake --build .`
+
+Launching test or coverage (after build) : 
+
+* `cmake --build . --target RUN_TESTS`
+* `cmake --build . --target coverage`
+
+Installing the library :
+
+* `cmake --build . --target install`
+
+Launch documentation building :
+
+* `cmake --build . --target doc`
+
 #### Linux & MacOS
 
+To build the library on linux or MacOS :
+
+* `mkdir build`
+* `cd build`
 * `cmake .. -DBUILD_TESTS=<ON|OFF> -DGEN_DOCS=<ON|OFF> -DENABLE_COVERAGE=<ON|OFF>`
 * `make`
+
+Launching test or coverage (after build) : 
+
+* `make test`
+* `make coverage`
+
+Installing the library :
+
 * `make install`
+
+Launch documentation building :
+
+* `make doc`
 
 ### Building with
 
