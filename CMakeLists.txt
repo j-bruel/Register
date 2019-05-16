@@ -124,7 +124,6 @@ add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES} ${INCLUDE_FILES})
 ##
 ## Remove library prefix and add version to library.
 ##
-set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${cRegister_VERSION})
 
 ##
