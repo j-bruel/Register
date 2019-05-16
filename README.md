@@ -82,7 +82,7 @@ These are the base requirements to build and use cRegister library from a source
 
 #### Windows
 
-* `mkdir build`
+* `mkdir build` **_## In the root project directory_**
 * `cd build`
 * `cmake .. -DBUILD_TESTS=<ON|OFF> -DGEN_DOCS=<ON|OFF> -DENABLE_COVERAGE=<ON|OFF>`
 * `cmake --build .`
@@ -104,7 +104,7 @@ Launch documentation building :
 
 To build the library on linux or MacOS :
 
-* `mkdir build`
+* `mkdir build` **_## In the root project directory_**
 * `cd build`
 * `cmake .. -DBUILD_TESTS=<ON|OFF> -DGEN_DOCS=<ON|OFF> -DENABLE_COVERAGE=<ON|OFF>`
 * `make`
@@ -122,9 +122,48 @@ Launch documentation building :
 
 * `make doc`
 
+This will generate a shared library `libcRegister.[so][dll]` and a testing application `cRegister[.exe]`.
+
 ### Building with
 
+Now, let take a look on how to build a custom application with the cRegister library.
+
+You must link the library in your CMakeLists.txt.
+
+```cmake
+target_link_libraries(${PROJECT_NAME}   cRegister)
+```
+
+Finaly, you simply need to include all cRegister headers needed like this :
+
+```c++
+#include <jbr/cRegister/HelloWorld.hpp>
+```
+
+If any difficulties persist, samples with full CMakeLists.txt are here to help too.
+
 ### Example
+
+This next example is here to guide, understand and / or test the cRegister library.
+
+```c++
+#include <jbr/reg/HelloWorld.hpp>
+#include <iostream>
+#include <thread>
+#include <chrono>
+
+int main()
+{
+    jbr::reg::HelloWorld    hw;
+
+    std::cout << hw.hello() << std::endl;
+    std::cout << hw.world() << std::endl;
+    std::cout << hw.generateRandomNumber() << std::endl;
+    std::cout << hw.headerFunction(3) << std::endl;
+    std::this_thread::sleep_for(std::chrono::milliseconds(4000));
+    return (0);
+}
+```
 
 ## Contributing
 
