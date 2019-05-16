@@ -84,7 +84,9 @@ endif()
 ## Headers and library included
 ##
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
-include_directories(${REGISTER_HEADERS_DIR})
+if (REGISTER_HEADERS_DIR)
+    include_directories(${REGISTER_HEADERS_DIR})
+endif(REGISTER_HEADERS_DIR)
 
 ##
 ## Sources files
