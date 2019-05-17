@@ -1,0 +1,15 @@
+//!
+//! @file jbr/reg/config.hpp.in
+//! @author jbruel
+//! @date 29/04/19
+//!
+
+#ifndef CREGISTER_JBR_REG_CONFIG_HPP
+# define CREGISTER_JBR_REG_CONFIG_HPP
+
+# define VERSION_MAJOR "@cRegister_VERSION_MAJOR@"
+# define VERSION_MINOR "@cRegister_VERSION_MINOR@"
+# define VERSION_PATCH "@cRegister_VERSION_PATCH@"
+# define VERSION "@cRegister_VERSION@"
+
+#endif // !CREGISTER_JBR_REG_CONFIG_HPP

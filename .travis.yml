@@ -1,0 +1,114 @@
+language: cpp
+
+sudo: required
+
+branches:
+  only:
+    - master
+    - develop
+    - coverity_scan
+
+env:
+  global:
+    # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+    #   via the "travis encrypt" command using the project repo's public key
+    - secure: "J6VbITOPEdRG4WBD//rIB+sDmxBbme5Z2RvDGZEtMlyl7CT01+oKaI5Z/9Mth6nImgdHtAJvxtTa2/ye0IWH3pPydlOeCsNI8/IXrqB0pA0//0qom8a5uepuFrkjl2/HXwOO1gejj7J6mHE3Xznm/VVYxyQ+F56iGbWDJKTqwcjm6pFU43eHLL31rgmb0ykzIf7Fzz2s293i0K64R+60t2RRNjUG04XuLV+5Y4+5jIrQqiKL+NANnuFlW3MIb5eMx2GjbawdsBprmp4+pbqPTjylLhAPNy+poBJiIG8CA1Jy2gWAQTRtqAn956U5bimxHpz3+yItm+4wZAwE7vTJ+oUEihWCHUA168JyUCUKRX1Y84mAPJBd3ejKqEJri6W9cI/2cyFzrHQQELnRDUXsnbVeawLNKEhUwfN61uZbUAtqSZV6mKFWv5icj91bSax7jopjhtGzWokrNZdrqeJTtZGRn/AXRWIbMAc5NE2OEJ/EXj/QYZgUEMajOTcS/CK4tAX0pJGBx3u2Wida3Q4zD8IQs7T3tVq3B5XAqfzLJA1WZuPdcC8Iq0tP9ErTP5VOSTjvsQ7vlm2Cd3Y07o6FAtBJZUK/0af4U0QKxfoKBrQa0X/wISFMkIzed9jyjIGYV3nThd1FveK32pmxeuNT6PtpMGFf41udKM+qDKqDeTc="
+
+matrix:
+  include:
+    # Coverity Scan (Linux Debug)
+    - os: linux
+      compiler: gcc
+      before_install:
+        - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-5
+            - cmake
+            - lcov
+        coverity_scan:
+          project:
+            name: "j-bruel/cRegister"
+            description: "Register C++ API. Smart memory, allowing to interact and persist data in an architectural, dynamic and simplified way."
+          notification_email: jonathan.bruel@outlook.fr
+          build_command_prepend: "cov-configure --comptype gcc --compiler g++-5 --template && cmake -DCMAKE_CXX_COMPILER=g++-5 -DGEN_DOCS=OFF ."
+          build_command: "cmake --build ."
+          branch_pattern: coverity_scan
+      if: branch = coverity_scan
+      before_script: echo "Coverity Scan"
+      script: echo "Coverity Scan"
+    # Code coverage (Linux Debug)
+    - os: linux
+      compiler: gcc
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-5
+            - cmake
+            - lcov
+      before_script:
+        - mkdir -p build && cd build
+        - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++-5 -DBUILD_TESTS=ON -DENABLE_COVERAGE=ON -DGEN_DOCS=OFF ..
+      script:
+        - cmake --build . -- -j2
+        - cmake --build . --target coverage
+      after_success:
+        - bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
+      if: branch != coverity_scan
+    # Linux Release
+    - os: linux
+      compiler: gcc
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-5
+            - cmake
+            - lcov
+      env:
+        - MATRIX_EVAL="COMPILER=g++-5 && BUILD_TYPE=Release"
+      if: branch != coverity_scan
+    # OSX Debug
+    - os: osx
+      osx_image: xcode9.2 
+      compiler: clang
+      addons:
+        homebrew:
+          packages:
+            - beanstalk
+            - lcov
+          update: true
+      env:
+        - MATRIX_EVAL="COMPILER=clang++ && BUILD_TYPE=Debug"
+      if: branch != coverity_scan
+    # OSX Release
+    - os: osx
+      osx_image: xcode9.2 
+      compiler: clang
+      addons:
+        homebrew:
+          packages:
+            - beanstalk
+            - lcov
+          update: true
+      env:
+        - MATRIX_EVAL="COMPILER=clang++ && BUILD_TYPE=Release"
+      if: branch != coverity_scan
+
+before_install:
+  - eval "${MATRIX_EVAL}"
+
+before_script:
+  - mkdir -p build && cd build
+  - cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_COMPILER=$COMPILER -DBUILD_TESTS=ON -DGEN_DOCS=OFF ..
+
+script:
+  - cmake --build . -- -j2 # Build the code
+  - ctest --output-on-failure
+  - sudo cmake --build . --target install # Install the necessary files
