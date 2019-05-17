@@ -15,7 +15,17 @@ Modern cross platforms C++ API for cRegisters. Register are smart memory, data m
 
 ### Philosophy
 
+Register is the siplest way to store and manage data in a rich and configurable environment.
+
+***Endless possibilities and user friendly.***
+
 ### How does it work
+
+Based on xml, cRegister are not only a data mapper. cRegister is to itself an environment in its own right. He is able to store a simple key / value data but this is the goal of the register.
+
+The cRegister goal is to connect several register together, link data, use legacy and storage / runtime evaluation.
+
+More usecase and information's comming on futur release.
 
 ## Features
 
@@ -80,6 +90,9 @@ These are the base requirements to build and use cRegister library from a source
 - `Doxygen`
 
 #### Testing
+
+To be more efficience, cRegister library is delivered with a set of tests.
+You should build and run thoses run after install for testing installation purpose.
 
 - `gcov`
 - `lcov`
