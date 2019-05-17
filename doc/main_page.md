@@ -5,3 +5,4 @@ Modern cross platforms C++ API for cRegisters. Register are smart memory, data m
 This documentation is divided into the following sections:
   - \subpage variables_and_targets
   - \subpage directory_structure
+  - \subpage requirement_build_install
