@@ -1,5 +1,5 @@
 //!
-//! @file jbr/reg/hello_world.hpp
+//! @file jbr/reg/HelloWorld.hpp
 //! @author jbruel
 //! @date 29/04/19
 //!
