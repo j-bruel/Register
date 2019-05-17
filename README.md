@@ -121,7 +121,7 @@ You should build and run thoses run after install for testing installation purpo
 
 #### Windows
 
-* `mkdir build` _## In the root project directory_
+* `mkdir build` _In the root project directory_
 * `cd build`
 * `cmake .. -DBUILD_TESTS=<ON|OFF> -DGEN_DOCS=<ON|OFF> -DENABLE_COVERAGE=<ON|OFF>`
 * `cmake --build .`
@@ -143,7 +143,7 @@ Launch documentation building :
 
 To build the library on linux or MacOS :
 
-* `mkdir build` _## In the root project directory_
+* `mkdir build` _In the root project directory_
 * `cd build`
 * `cmake .. -DBUILD_TESTS=<ON|OFF> -DGEN_DOCS=<ON|OFF> -DENABLE_COVERAGE=<ON|OFF>`
 * `make`
