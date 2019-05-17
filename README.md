@@ -19,6 +19,32 @@ Modern cross platforms C++ API for cRegisters. Register are smart memory, data m
 
 ## Features
 
+For the first cRegister version, here the list of the planned features :
+
+Basics register manipulation :
+
+* `create`
+* `open`
+* `close`
+* `destroy`
+* `rename`
+* `copy`
+* check `availability`
+
+Basic register variables manipulation :
+
+* `set` / `update`
+* `remove`
+* `get` the key or the value of a variable.
+* check `availability`
+* `rename`
+* `copy`
+* `extract all` variables available.
+* `remove all` variables available.
+* `count` variable number
+
+More complex and interesting features will be availables on future release. 
+
 ## Usage
 
 ### Platforms
@@ -122,7 +148,7 @@ Launch documentation building :
 
 * `make doc`
 
-This will generate a shared library `libcRegister.[so][dll]` and a testing application `cRegister[.exe]`.
+This will generate a shared library `[lib]cRegister.[so][dll]` and a testing application `cRegister[.exe]`.
 
 ### Building with
 
