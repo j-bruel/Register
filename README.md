@@ -73,13 +73,13 @@ These are the base requirements to build and use cRegister library from a source
 
 #### Buidling library
 
-##### Windows
+##### Windows Requirements
 
 * `CMake` At least v3.1
 * Windows `command prompt`
 * Microsoft `Visual C++ 2015`
 
-##### Linux & MacOS
+##### Linux & MacOS Requirements
 
 * GNU-compatible `CMake` and `Make` (at least v3.1).
 * POSIX-standard `shell`.
@@ -87,15 +87,15 @@ These are the base requirements to build and use cRegister library from a source
 
 #### Documentation
 
-- `Doxygen`
+* `Doxygen`
 
 #### Testing
 
 To be more efficience, cRegister library is delivered with a set of tests.
 You should build and run thoses run after install for testing installation purpose.
 
-- `gcov`
-- `lcov`
+* `gcov`
+* `lcov`
 
 ### Build and install
 
@@ -104,9 +104,9 @@ You should build and run thoses run after install for testing installation purpo
 | Variable           | Description                                                                                    | Possible Values                                 | Default Value |
 |--------------------|------------------------------------------------------------------------------------------------|-------------------------------------------------|---------------|
 | `CMAKE_BUILD_TYPE` | On a single configuration generator, this string determines the build type of the application. | `Debug`/`Release`/`RelWithDebInfo`/`MinSizeRel` | `Release`     |
-| `GEN_DOCS`         | An option used to determine if documentation will or will not be generated.                    | `ON`/`OFF`                                      | `OFF`          |
-| `BUILD_TESTS`      | An option used to determine if the test executable should or should not be built.              | `ON`/`OFF`                                      | `OFF`          |
-| `ENABLE_COVERAGE`  | An option used to determine whether coverage should be enabled or not                          | `ON`/`OFF`                                      | `OFF`          |
+| `GEN_DOCS`         | An option used to determine if documentation will or will not be generated.                    | `ON`/`OFF`                                      | `OFF`         |
+| `BUILD_TESTS`      | An option used to determine if the test executable should or should not be built.              | `ON`/`OFF`                                      | `OFF`         |
+| `ENABLE_COVERAGE`  | An option used to determine whether coverage should be enabled or not                          | `ON`/`OFF`                                      | `OFF`         |
 
 #### Targets
 
@@ -121,7 +121,7 @@ You should build and run thoses run after install for testing installation purpo
 
 #### Windows
 
-* `mkdir build` **_## In the root project directory_**
+* `mkdir build` _## In the root project directory_
 * `cd build`
 * `cmake .. -DBUILD_TESTS=<ON|OFF> -DGEN_DOCS=<ON|OFF> -DENABLE_COVERAGE=<ON|OFF>`
 * `cmake --build .`
@@ -143,7 +143,7 @@ Launch documentation building :
 
 To build the library on linux or MacOS :
 
-* `mkdir build` **_## In the root project directory_**
+* `mkdir build` _## In the root project directory_
 * `cd build`
 * `cmake .. -DBUILD_TESTS=<ON|OFF> -DGEN_DOCS=<ON|OFF> -DENABLE_COVERAGE=<ON|OFF>`
 * `make`
