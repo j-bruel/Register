@@ -14,12 +14,7 @@
 //!
 //! @namespace jbr
 //!
-namespace jbr
-{
-//!
-//! @namespace reg
-//!
-namespace reg
+namespace jbr::reg
 {
 
     //!
@@ -32,10 +27,9 @@ namespace reg
     {
         if (relativePath.empty())
             throw jbr::reg::exception("Relative input string must not be empty.");
-        return (std::filesystem::absolute(relativePath));
+        return (std::filesystem::absolute(relativePath).string());
     }
 
-}
 }
 
 #endif //JBR_CREGISTER_GETABSOLUTEPATH_HPP
