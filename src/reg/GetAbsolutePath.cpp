@@ -7,6 +7,7 @@
 #include "jbr/reg/GetAbsolutePath.hpp"
 #include "jbr/reg/exception.hpp"
 #include <filesystem>
+#include <iostream>
 
 namespace jbr::reg
 {
@@ -14,7 +15,7 @@ namespace jbr::reg
     {
         if (relativePath.empty())
             throw jbr::reg::exception("Relative input string must not be empty.");
-        return (std::filesystem::absolute(relativePath).string());
+        return (std::filesystem::absolute(std::filesystem::path(relativePath)));
     }
 
 }
