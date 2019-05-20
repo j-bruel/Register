@@ -5,7 +5,7 @@
 //!
 
 #include "jbr/Register.hpp"
-#include "jbr/reg/exception.hpp"
+#include "jbr/reg/GetAbsolutePath.hpp"
 #include <iostream>
 
 namespace jbr
@@ -14,6 +14,9 @@ namespace jbr
     {
         if (path.empty())
             throw jbr::reg::exception("To create a register the path must not be empty.");
-        std::cout << path << std::endl;
+
+        const std::string   fullPath = jbr::reg::getAbsolutePath("./toto.txt");
+
+        std::cout << fullPath << std::endl;
     }
 }
