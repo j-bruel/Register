@@ -7,7 +7,8 @@
 #ifndef JBR_CREGISTER_REGISTER_HPP
 # define JBR_CREGISTER_REGISTER_HPP
 
-#include <string>
+# include <jbr/reg/GetAbsolutePath.hpp>
+# include <filesystem>
 
 //!
 //! @namespace jbr
@@ -46,7 +47,28 @@ namespace jbr
         //! @param path Register path to create.
         //! @warning The register must exist. Exception are raised in error cases.
         //!
-        void    create(const std::string &path);
+        void    create(const std::string &path) const;
+        //!
+        //! @brief Open a existing register according a input path.
+        //! @param path Register path to open.
+        //!
+        void    open(const std::string &path) const;
+
+    public:
+        //!
+        //! @brief Check if a register exist. Only check if the register file exist on system.
+        //! @param path Register path.
+        //! @return True if exist, false if not.
+        //! @warning This function does not check if the register is corrupt or valid. This function only check if the file exist.
+        //!
+        inline bool    exist(const std::string &path) const { return (!path.empty() && std::filesystem::exists(jbr::reg::getAbsolutePath(path))); }
+
+    public:
+        //!
+        //! @brief Destroy a existing register. The target register will be removed definitively on the system.
+        //! @param path Register path to destroy.
+        //!
+        void    destroy(const std::string &path) const;
     };
 }
 
