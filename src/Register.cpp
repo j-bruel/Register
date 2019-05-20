@@ -6,6 +6,7 @@
 
 #include "jbr/Register.hpp"
 #include "jbr/reg/GetAbsolutePath.hpp"
+#include "jbr/reg/exception.hpp"
 #include <iostream>
 
 namespace jbr
