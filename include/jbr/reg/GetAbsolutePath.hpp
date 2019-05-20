@@ -12,7 +12,7 @@
 # include <filesystem>
 
 //!
-//! @namespace jbr
+//! @namespace jbr::reg
 //!
 namespace jbr::reg
 {

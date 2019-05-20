@@ -12,14 +12,9 @@
 # include <utility>
 
 //!
-//! @namespace jbr
+//! @namespace jbr::reg
 //!
-namespace jbr
-{
-//!
-//! @namespace reg
-//!
-namespace reg
+namespace jbr::reg
 {
 
     //!
@@ -50,7 +45,6 @@ namespace reg
         const char  *what() const noexcept override { return (mMsg.c_str()); }
     };
 
-}
 }
 
 #endif //JBR_CREGISTER_EXCEPTION_HPP
