@@ -40,7 +40,7 @@ add_executable(${TESTING_PROJECT_NAME} ${TEST_SOURCES_FILES} ${TEST_INCLUDE_FILE
 ##
 ## Link testing library.
 ##
-target_link_libraries(${TESTING_PROJECT_NAME} ${PROJECT_NAME} doctest)
+target_link_libraries(${TESTING_PROJECT_NAME} ${PROJECT_NAME} doctest stdc++fs)
 
 ##
 ## Add test.
