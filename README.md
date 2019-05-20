@@ -83,7 +83,7 @@ These are the base requirements to build and use cRegister library from a source
 
 * GNU-compatible `CMake` and `Make` (at least v3.1).
 * POSIX-standard `shell`.
-* A `C++14`-standard-compliant compiler
+* A `C++17`-standard-compliant compiler
 
 #### Documentation
 
