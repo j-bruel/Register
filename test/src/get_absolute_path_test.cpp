@@ -17,8 +17,9 @@ TEST_CASE("GetAbsolutePath")
     //!
     SUBCASE("Get next directory")
     {
-        CHECK(std::filesystem::current_path().string() + "/./nextDirectory/" == jbr::reg::getAbsolutePath("./nextDirectory/"));
-        CHECK(std::filesystem::current_path().string() + "/nextDirectory/" == jbr::reg::getAbsolutePath("nextDirectory/"));
+        std::filesystem::create_directory("./nextDirectory");
+        CHECK(std::filesystem::current_path().string() + std::filesystem::path("/nextDirectory").make_preferred().string() == jbr::reg::getAbsolutePath("./nextDirectory/"));
+        CHECK(std::filesystem::current_path().string() + std::filesystem::path("/nextDirectory").make_preferred().string() == jbr::reg::getAbsolutePath("nextDirectory/"));
     }
 
     //!
@@ -26,9 +27,9 @@ TEST_CASE("GetAbsolutePath")
     //!
     SUBCASE("Get current directory")
     {
-        CHECK((std::filesystem::current_path().string() + "/./") == jbr::reg::getAbsolutePath("./"));
-        CHECK((std::filesystem::current_path().string() + "/.") == jbr::reg::getAbsolutePath("."));
-        CHECK((std::filesystem::current_path().string() + "/.//") == jbr::reg::getAbsolutePath(".//"));
+        CHECK(std::filesystem::current_path().string() == jbr::reg::getAbsolutePath("./"));
+        CHECK(std::filesystem::current_path().string() == jbr::reg::getAbsolutePath("."));
+        CHECK(std::filesystem::current_path().string() == jbr::reg::getAbsolutePath(".//"));
     }
 
     //!
@@ -36,7 +37,7 @@ TEST_CASE("GetAbsolutePath")
     //!
     SUBCASE("Get back directory")
     {
-        CHECK(std::filesystem::current_path().string() + "/.." == jbr::reg::getAbsolutePath(".."));
+        CHECK(std::filesystem::canonical(std::filesystem::path("..")) == jbr::reg::getAbsolutePath(".."));
     }
 
     //!
@@ -60,9 +61,9 @@ TEST_CASE("GetAbsolutePath")
     //!
     SUBCASE("Random characters")
     {
-        CHECK((std::filesystem::current_path().string() + "/sdofuhoodfijdofhdiofjspdvbyz7687908754 7S897D 67D7 87987SQQ5 8°ù£% ° 3°EP 20 9682568 3PM udgfho ajré_yc ") == jbr::reg::getAbsolutePath("sdofuhoodfijdofhdiofjspdvbyz7687908754 7S897D 67D7 87987SQQ5 8°ù£% ° 3°EP 20 9682568 3PM udgfho ajré_yc "));
-        CHECK((std::filesystem::current_path().string() + "/IHD/egdèrR5662ç///éùếp')//°-'_èçjHGFDRgh/") == jbr::reg::getAbsolutePath("IHD/egdèrR5662ç///éùếp')//°-'_èçjHGFDRgh/"));
-        CHECK(("/IHD/egdèrR5662ç///éùếp')//°-'_èçjHGFDRgh/") == jbr::reg::getAbsolutePath("/IHD/egdèrR5662ç///éùếp')//°-'_èçjHGFDRgh/"));
+        CHECK_THROWS(jbr::reg::getAbsolutePath("sdofuhoodfijdofhdiofjspdvbyz7687908754 7S897D 67D7 87987SQQ5 8°ù£% ° 3°EP 20 9682568 3PM udgfho ajré_yc "));
+        CHECK_THROWS(jbr::reg::getAbsolutePath("IHD/egdèrR5662ç///éùếp')//°-'_èçjHGFDRgh/"));
+        CHECK_THROWS(jbr::reg::getAbsolutePath("/IHD/egdèrR5662ç///éùếp')//°-'_èçjHGFDRgh/"));
     }
 
 }

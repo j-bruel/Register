@@ -15,12 +15,8 @@ TEST_CASE("Register::create")
 
     SUBCASE("empty input path")
     {
-        CHECK_THROWS(mRegister.create(""));
-    }
-
-    SUBCASE("Tmp print")
-    {
-        mRegister.create("testing path ...");
+        CHECK_THROWS(mRegister.create("toto.txt"));
+        // need to destroy or remove the created file ...
     }
 
 }
