@@ -40,7 +40,11 @@ add_executable(${TESTING_PROJECT_NAME} ${TEST_SOURCES_FILES} ${TEST_INCLUDE_FILE
 ##
 ## Link testing library.
 ##
-target_link_libraries(${TESTING_PROJECT_NAME} ${PROJECT_NAME} doctest)
+if (WIN32 OR MSVC OR MSYS OR MINGW)
+    target_link_libraries(${TESTING_PROJECT_NAME} ${PROJECT_NAME} doctest)
+else()
+    target_link_libraries(${TESTING_PROJECT_NAME} ${PROJECT_NAME} doctest stdc++fs)
+endif (WIN32 OR MSVC OR MSYS OR MINGW)
 
 ##
 ## Add test.
