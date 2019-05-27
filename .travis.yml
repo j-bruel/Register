@@ -32,8 +32,6 @@ matrix:
           packages:
             - g++-8
             - cmake
-            - lcov
-            - gzip
         coverity_scan:
           project:
             name: "j-bruel/cRegister"
@@ -55,8 +53,6 @@ matrix:
           packages:
             - g++-8
             - cmake
-            - lcov
-            - gzip
       before_script:
         - git clone https://github.com/linux-test-project/lcov.git
         - cd lcov
@@ -82,8 +78,6 @@ matrix:
           packages:
             - g++-8
             - cmake
-            - lcov
-            - gzip
       env:
         - MATRIX_EVAL="COMPILER=g++-8 && BUILD_TYPE=Release"
       if: branch != coverity_scan
