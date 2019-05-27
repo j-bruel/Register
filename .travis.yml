@@ -103,6 +103,7 @@ matrix:
           packages:
             - beanstalk
             - lcov
+            - llvm
           update: true
       env:
         - MATRIX_EVAL="COMPILER=clang++ && BUILD_TYPE=Release"
