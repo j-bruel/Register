@@ -25,7 +25,7 @@ matrix:
         - cd lcov
         - sudo make install
         - cd ..
-        - (echo y;echo o conf prerequisites_policy follow;echo o conf commit) | cpan PerlIO::gzip
+        - sudo perl -MCPAN -e 'install PerlIO::gzip'
       addons:
         apt:
           sources:
@@ -89,7 +89,7 @@ matrix:
       if: branch != coverity_scan
     # OSX Debug
     - os: osx
-      osx_image: xcode9.3
+      osx_image: xcode10.2
       compiler: clang
       addons:
         homebrew:
