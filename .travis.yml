@@ -31,7 +31,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-8
-            - gcov
+            - ggcov
             - cmake
         coverity_scan:
           project:
@@ -53,7 +53,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-8
-            - gcov
+            - ggcov
             - cmake
       before_script:
         - git clone https://github.com/linux-test-project/lcov.git
@@ -79,7 +79,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-8
-            - gcov
+            - ggcov
             - cmake
       env:
         - MATRIX_EVAL="COMPILER=g++-8 && BUILD_TYPE=Release"
