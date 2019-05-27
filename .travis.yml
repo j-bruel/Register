@@ -28,7 +28,7 @@ matrix:
           packages:
             - g++-8
             - cmake
-            - lcov
+            - lcov-1.14
         coverity_scan:
           project:
             name: "j-bruel/cRegister"
@@ -50,7 +50,7 @@ matrix:
           packages:
             - g++-8
             - cmake
-            - lcov
+            - lcov-1.14
       before_script:
         - mkdir -p build && cd build
         - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++-8 -DBUILD_TESTS=ON -DENABLE_COVERAGE=ON -DGEN_DOCS=OFF ..
@@ -70,7 +70,7 @@ matrix:
           packages:
             - g++-8
             - cmake
-            - lcov
+            - lcov-1.14
       env:
         - MATRIX_EVAL="COMPILER=g++-8 && BUILD_TYPE=Release"
       if: branch != coverity_scan
@@ -82,7 +82,7 @@ matrix:
         homebrew:
           packages:
             - beanstalk
-            - lcov
+            - lcov-1.14
           update: true
       env:
         - MATRIX_EVAL="COMPILER=clang++ && BUILD_TYPE=Debug"
@@ -95,7 +95,7 @@ matrix:
         homebrew:
           packages:
             - beanstalk
-            - lcov
+            - lcov-1.14
           update: true
       env:
         - MATRIX_EVAL="COMPILER=clang++ && BUILD_TYPE=Release"
