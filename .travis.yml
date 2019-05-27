@@ -89,7 +89,7 @@ matrix:
       if: branch != coverity_scan
     # OSX Debug
     - os: osx
-      osx_image: xcode9.2 
+      osx_image: xcode9.3
       compiler: clang
       addons:
         homebrew:
@@ -102,14 +102,13 @@ matrix:
       if: branch != coverity_scan
     # OSX Release
     - os: osx
-      osx_image: xcode9.2 
+      osx_image: xcode9.3
       compiler: clang
       addons:
         homebrew:
           packages:
             - beanstalk
             - lcov
-            - gzip
           update: true
       env:
         - MATRIX_EVAL="COMPILER=clang++ && BUILD_TYPE=Release"
