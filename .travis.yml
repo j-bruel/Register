@@ -26,7 +26,7 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
-            - g++-5
+            - g++-8
             - cmake
             - lcov
         coverity_scan:
@@ -34,7 +34,7 @@ matrix:
             name: "j-bruel/cRegister"
             description: "Register C++ API. Smart memory, allowing to interact and persist data in an architectural, dynamic and simplified way."
           notification_email: jonathan.bruel@outlook.fr
-          build_command_prepend: "cov-configure --comptype gcc --compiler g++-5 --template && cmake -DCMAKE_CXX_COMPILER=g++-5 -DGEN_DOCS=OFF ."
+          build_command_prepend: "cov-configure --comptype gcc --compiler g++-8 --template && cmake -DCMAKE_CXX_COMPILER=g++-8 -DGEN_DOCS=OFF ."
           build_command: "cmake --build ."
           branch_pattern: coverity_scan
       if: branch = coverity_scan
@@ -48,12 +48,12 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
-            - g++-5
+            - g++-8
             - cmake
             - lcov
       before_script:
         - mkdir -p build && cd build
-        - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++-5 -DBUILD_TESTS=ON -DENABLE_COVERAGE=ON -DGEN_DOCS=OFF ..
+        - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++-8 -DBUILD_TESTS=ON -DENABLE_COVERAGE=ON -DGEN_DOCS=OFF ..
       script:
         - cmake --build . -- -j2
         - cmake --build . --target coverage
@@ -68,11 +68,11 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
-            - g++-5
+            - g++-8
             - cmake
             - lcov
       env:
-        - MATRIX_EVAL="COMPILER=g++-5 && BUILD_TYPE=Release"
+        - MATRIX_EVAL="COMPILER=g++-8 && BUILD_TYPE=Release"
       if: branch != coverity_scan
     # OSX Debug
     - os: osx
