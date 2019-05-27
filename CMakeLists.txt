@@ -69,6 +69,11 @@ set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 ##
+## Include headers directory.
+##
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+##
 ## Cmake build configuration options.
 ##
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
