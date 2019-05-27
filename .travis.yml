@@ -21,6 +21,9 @@ matrix:
       compiler: gcc
       before_install:
         - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+        - git clone https://github.com/linux-test-project/lcov.git
+        - cd lcov
+        - make install
       addons:
         apt:
           sources:
@@ -52,6 +55,10 @@ matrix:
             - cmake
             - lcov
       before_script:
+        - git clone https://github.com/linux-test-project/lcov.git
+        - cd lcov
+        - make install
+        - cd ..
         - mkdir -p build && cd build
         - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++-8 -DBUILD_TESTS=ON -DENABLE_COVERAGE=ON -DGEN_DOCS=OFF ..
       script:
