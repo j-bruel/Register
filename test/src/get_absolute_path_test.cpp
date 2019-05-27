@@ -18,8 +18,8 @@ TEST_CASE("GetAbsolutePath")
     SUBCASE("Get next directory")
     {
         std::filesystem::create_directory("./nextDirectory");
-        CHECK(std::filesystem::path(std::filesystem::current_path().string() + std::filesystem::path("/nextDirectory").string()).compare(std::filesystem::path(jbr::reg::getAbsolutePath("./nextDirectory/")).generic_string()));
-        CHECK(std::filesystem::path(std::filesystem::current_path().string() + std::filesystem::path("/nextDirectory").string()).compare(std::filesystem::path(jbr::reg::getAbsolutePath("nextDirectory/")).generic_string()));
+        CHECK(std::filesystem::current_path().string() + std::filesystem::path("/nextDirectory").make_preferred().string() == jbr::reg::getAbsolutePath("./nextDirectory/"));
+        CHECK(std::filesystem::current_path().string() + std::filesystem::path("/nextDirectory").make_preferred().string() == jbr::reg::getAbsolutePath("nextDirectory/"));
     }
 
     //!
@@ -27,9 +27,9 @@ TEST_CASE("GetAbsolutePath")
     //!
     SUBCASE("Get current directory")
     {
-        CHECK(std::filesystem::current_path().compare(jbr::reg::getAbsolutePath("./")));
-        CHECK(std::filesystem::current_path().compare(jbr::reg::getAbsolutePath(".")));
-        CHECK(std::filesystem::current_path().compare(jbr::reg::getAbsolutePath(".//")));
+        CHECK(std::filesystem::current_path().string() == jbr::reg::getAbsolutePath("./"));
+        CHECK(std::filesystem::current_path().string() == jbr::reg::getAbsolutePath("."));
+        CHECK(std::filesystem::current_path().string() == jbr::reg::getAbsolutePath(".//"));
     }
 
     //!
@@ -37,7 +37,7 @@ TEST_CASE("GetAbsolutePath")
     //!
     SUBCASE("Get back directory")
     {
-        CHECK(std::filesystem::canonical(std::filesystem::path("..")).compare(jbr::reg::getAbsolutePath("..")));
+        CHECK(std::filesystem::canonical(std::filesystem::path("..")) == jbr::reg::getAbsolutePath(".."));
     }
 
     //!
@@ -61,18 +61,9 @@ TEST_CASE("GetAbsolutePath")
     //!
     SUBCASE("Random characters")
     {
-        # if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
-                CHECK_THROWS(jbr::reg::getAbsolutePath("sdofuhoodfijdofhdiofjspdvbyz7687908754 7S897D 67D7 87987SQQ5 8°ù£% ° 3°EP 20 9682568 3PM udgfho ajré_yc "));
-                CHECK_THROWS(jbr::reg::getAbsolutePath("IHD/egdèrR5662ç///éùếp')//°-'_èçjHGFDRgh/"));
-                CHECK_THROWS(jbr::reg::getAbsolutePath("/IHD/egdèrR5662ç///éùếp')//°-'_èçjHGFDRgh/"));
-        # else
-        #  pragma GCC diagnostic push
-        #  pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-                CHECK_NOTHROW(jbr::reg::getAbsolutePath("sdofuhoodfijdofhdiofjspdvbyz7687908754 7S897D 67D7 87987SQQ5 8°ù£% ° 3°EP 20 9682568 3PM udgfho ajré_yc "));
-                CHECK_NOTHROW(jbr::reg::getAbsolutePath("IHD/egdèrR5662ç///éùếp')//°-'_èçjHGFDRgh/"));
-                CHECK_NOTHROW(jbr::reg::getAbsolutePath("/IHD/egdèrR5662ç///éùếp')//°-'_èçjHGFDRgh/"));
-        #  pragma GCC diagnostic pop
-        # endif
+        CHECK_THROWS(jbr::reg::getAbsolutePath("sdofuhoodfijdofhdiofjspdvbyz7687908754 7S897D 67D7 87987SQQ5 8°ù£% ° 3°EP 20 9682568 3PM udgfho ajré_yc "));
+        CHECK_THROWS(jbr::reg::getAbsolutePath("IHD/egdèrR5662ç///éùếp')//°-'_èçjHGFDRgh/"));
+        CHECK_THROWS(jbr::reg::getAbsolutePath("/IHD/egdèrR5662ç///éùếp')//°-'_èçjHGFDRgh/"));
     }
 
 }

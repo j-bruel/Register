@@ -35,7 +35,7 @@ target_include_directories(doctest INTERFACE "${CMAKE_SOURCE_DIR}/third_party/do
 ##
 ## Generate executable file.
 ##
-add_executable(${TESTING_PROJECT_NAME} ${TEST_SOURCES_FILES} ${TEST_INCLUDE_FILES})
+add_executable(${TESTING_PROJECT_NAME} ${SOURCE_FILES} ${INCLUDE_FILES} ${TEST_SOURCES_FILES} ${TEST_INCLUDE_FILES})
 
 ##
 ## Link testing library.
@@ -43,7 +43,7 @@ add_executable(${TESTING_PROJECT_NAME} ${TEST_SOURCES_FILES} ${TEST_INCLUDE_FILE
 if (WIN32 OR MSVC OR MSYS OR MINGW)
     target_link_libraries(${TESTING_PROJECT_NAME} ${PROJECT_NAME} doctest)
 else()
-    target_link_libraries(${TESTING_PROJECT_NAME} ${PROJECT_NAME} doctest stdc++fs)
+    target_link_libraries(${TESTING_PROJECT_NAME} doctest stdc++fs)
 endif (WIN32 OR MSVC OR MSYS OR MINGW)
 
 ##
