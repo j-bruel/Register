@@ -62,7 +62,7 @@ matrix:
         - cd lcov
         - sudo make install
         - cd ..
-        - sudo perl -MCPAN -e 'install PerlIO::gzip'
+        - (echo y;echo o conf prerequisites_policy follow;echo o conf commit) | sudo perl -MCPAN -e 'install PerlIO::gzip'
         - mkdir -p build && cd build
         - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++-8 -DBUILD_TESTS=ON -DENABLE_COVERAGE=ON -DGEN_DOCS=OFF ..
       script:
