@@ -53,9 +53,11 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-8
-            - ggcov
             - cmake
       before_script:
+        - sudo apt-get install ggcov
+        - g++ --version
+        - gcov --version
         - git clone https://github.com/linux-test-project/lcov.git
         - cd lcov
         - sudo make install
