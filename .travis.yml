@@ -83,17 +83,18 @@ matrix:
         - MATRIX_EVAL="COMPILER=g++-8 && BUILD_TYPE=Release"
       if: branch != coverity_scan
     - os: osx # OSX Debug build.
-      osx_image: xcode10
+      osx_image: xcode10.2
       compiler: clang
       addons:
         homebrew:
           packages:
+            - clang-7.0
             - beanstalk
             - lcov
             - llvm
           update: true
       env:
-        - MATRIX_EVAL="COMPILER=clang++ && BUILD_TYPE=Debug"
+        - MATRIX_EVAL="COMPILER=clang++-7.0 && BUILD_TYPE=Debug"
       if: branch != coverity_scan
     - os: osx # OSX Release build.
       osx_image: xcode9.4
@@ -106,7 +107,7 @@ matrix:
             - llvm
           update: true
       env:
-        - MATRIX_EVAL="COMPILER=clang++ && BUILD_TYPE=Release"
+        - MATRIX_EVAL="COMPILER=clang++-7.0 && BUILD_TYPE=Release"
       if: branch != coverity_scan
 
 before_install:
