@@ -39,6 +39,49 @@ matrix:
       if: branch = coverity_scan
       before_script: echo "Coverity Scan"
       script: echo "Coverity Scan"
+    - os: linux # Linux Debug : Debug build with test & coverage.
+      compiler: gcc
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-8
+            - cmake
+      before_script:
+        - sudo apt-get install gcc-8 g++-8 # Install gcc & g++ 8 (for c++17 build).
+        - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 800 --slave /usr/bin/g++ g++ /usr/bin/g++-8 # Link g++-8 to current used g++ binary.
+        - g++ --version # Check g++ version
+        - sudo apt-get install ggcov # Install gcov testing framework.
+        - sudo ln -sf /usr/bin/gcov-8 /usr/bin/gcov # Link last gcov version to current used gcov.
+        - gcov --version # Check gcov version.
+        - git clone https://github.com/linux-test-project/lcov.git # Clone & install lcov last version from github sources.
+        - cd lcov
+        - sudo make install
+        - cd ..
+        - (echo y;echo o conf prerequisites_policy follow;echo o conf commit) | sudo perl -MCPAN -e 'install PerlIO::gzip' # Pre-condig perl and install perl IO::gzip packet.
+        - sudo cpan JSON # Install perl JSON packet.
+        - mkdir -p build && cd build # Create a build directory and go into it
+        - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++-8 -DBUILD_TESTS=ON -DENABLE_COVERAGE=ON -DGEN_DOCS=OFF .. # Generate build with correct config.
+      script:
+        - cmake --build . -- -j2 # Build lib.
+        - cmake --build . --target coverage # Build & run test / coverage.
+      after_success:
+        - bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
+      if: branch != coverity_scan
+    - os: linux # Linux Release : Release build without test & coverage.
+      compiler: gcc
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-8
+            - ggcov
+            - cmake
+      env:
+        - MATRIX_EVAL="COMPILER=g++-8 && BUILD_TYPE=Release"
+      if: branch != coverity_scan
     - os: osx # OSX Debug build.
       osx_image: xcode10
       compiler: clang
@@ -49,16 +92,21 @@ matrix:
             - lcov
             - llvm
           update: true
-      before_script:
-        - brew --version
-        - clang --version
-        - mkdir -p build && cd build # Create a build directory and go into it
-        - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++-8 -DBUILD_TESTS=ON -DENABLE_COVERAGE=ON -DGEN_DOCS=OFF .. # Generate build with correct config.
-      script:
-        - cmake --build . -- -j2 # Build lib.
-        - cmake --build . --target coverage # Build & run test / coverage.
       env:
         - MATRIX_EVAL="COMPILER=clang++ && BUILD_TYPE=Debug"
+      if: branch != coverity_scan
+    - os: osx # OSX Release build.
+      osx_image: xcode9.4
+      compiler: clang
+      addons:
+        homebrew:
+          packages:
+            - beanstalk
+            - lcov
+            - llvm
+          update: true
+      env:
+        - MATRIX_EVAL="COMPILER=clang++ && BUILD_TYPE=Release"
       if: branch != coverity_scan
 
 before_install:
