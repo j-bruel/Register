@@ -21,10 +21,6 @@ matrix:
       compiler: gcc
       before_install:
         - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
-        - git clone https://github.com/linux-test-project/lcov.git
-        - cd lcov
-        - sudo make install
-        - cd ..
       addons:
         apt:
           sources:
@@ -55,21 +51,20 @@ matrix:
             - g++-8
             - cmake
       before_script:
-        - sudo apt-get install gcc-8 g++-8
-        - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 800 --slave /usr/bin/g++ g++ /usr/bin/g++-8
-        - g++ --version
-        - sudo apt-get install ggcov
-        - sudo ln -sf /usr/bin/gcov-8 /usr/bin/gcov
-        - g++ --version
-        - gcov --version
-        - git clone https://github.com/linux-test-project/lcov.git
+        - sudo apt-get install gcc-8 g++-8 # Install gcc & g++ 8 (for c++17 build).
+        - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 800 --slave /usr/bin/g++ g++ /usr/bin/g++-8 # Link g++-8 to current used g++ binary.
+        - g++ --version # Check g++ version
+        - sudo apt-get install ggcov # Install gcov testing framework.
+        - sudo ln -sf /usr/bin/gcov-8 /usr/bin/gcov # Link last gcov version to current used gcov.
+        - gcov --version # Check gcov version.
+        - git clone https://github.com/linux-test-project/lcov.git # Clone & install lcov last version from github sources.
         - cd lcov
         - sudo make install
         - cd ..
-        - (echo y;echo o conf prerequisites_policy follow;echo o conf commit) | sudo perl -MCPAN -e 'install PerlIO::gzip'
-        - sudo cpan JSON
-        - mkdir -p build && cd build
-        - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++-8 -DBUILD_TESTS=ON -DENABLE_COVERAGE=ON -DGEN_DOCS=OFF ..
+        - (echo y;echo o conf prerequisites_policy follow;echo o conf commit) | sudo perl -MCPAN -e 'install PerlIO::gzip' # Pre-condig perl and install perl IO::gzip packet.
+        - sudo cpan JSON # Install perl JSON packet.
+        - mkdir -p build && cd build # Create a build directory and go into it
+        - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++-8 -DBUILD_TESTS=ON -DENABLE_COVERAGE=ON -DGEN_DOCS=OFF .. # Generate build with correct config.
       script:
         - cmake --build . -- -j2
         - cmake --build . --target coverage
@@ -105,7 +100,7 @@ matrix:
         - brew --version
         - brew install llvm
         - brew update
-        - brew upgrade llvm
+#        - brew upgrade llvm # Not usefull : Error: llvm 8.0.0_1 already installed The command "brew upgrade llvm" failed and exited with 1 during .
         - brew install --with-toolchain llvm # llvm but with all the headers
         - xcode-select --install # installs additional headers that you might be mimssing.
         - echo 'export PATH="/usr/local/opt/llvm/bin:$PATH"' >> ~/.bash_profile # exports the custom llvm path into the shell
