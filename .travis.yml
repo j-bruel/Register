@@ -99,9 +99,11 @@ matrix:
           packages:
             - beanstalk
             - lcov
+            - llvm
           update: true
       before_script:
         - brew --version
+        - brew install llvm
         - brew update
         - brew upgrade llvm
         - brew install --with-toolchain llvm # llvm but with all the headers
