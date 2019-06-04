@@ -79,9 +79,6 @@ matrix:
             - g++-8
             - ggcov
             - cmake
-      before_script:
-        - ls -l /usr/bin/
-        - ls -l /usr/bin/clang*
       env:
         - MATRIX_EVAL="COMPILER=g++-8 && BUILD_TYPE=Release"
       if: branch != coverity_scan
@@ -109,6 +106,10 @@ matrix:
             - lcov
             - llvm
           update: true
+      before_script:
+          - ls -l /usr/bin/
+          - ls -l /usr/bin/*
+          - sudo ls -l /usr/bin/*
       env:
         - MATRIX_EVAL="COMPILER=clang++-7.0 && BUILD_TYPE=Release"
       if: branch != coverity_scan
