@@ -1,0 +1,132 @@
+language: cpp
+
+sudo: required
+
+branches:
+  only:
+    - master
+    - develop
+    - coverity_scan
+
+env:
+  global:
+    # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+    #   via the "travis encrypt" command using the project repo's public key
+    - secure: "J6VbITOPEdRG4WBD//rIB+sDmxBbme5Z2RvDGZEtMlyl7CT01+oKaI5Z/9Mth6nImgdHtAJvxtTa2/ye0IWH3pPydlOeCsNI8/IXrqB0pA0//0qom8a5uepuFrkjl2/HXwOO1gejj7J6mHE3Xznm/VVYxyQ+F56iGbWDJKTqwcjm6pFU43eHLL31rgmb0ykzIf7Fzz2s293i0K64R+60t2RRNjUG04XuLV+5Y4+5jIrQqiKL+NANnuFlW3MIb5eMx2GjbawdsBprmp4+pbqPTjylLhAPNy+poBJiIG8CA1Jy2gWAQTRtqAn956U5bimxHpz3+yItm+4wZAwE7vTJ+oUEihWCHUA168JyUCUKRX1Y84mAPJBd3ejKqEJri6W9cI/2cyFzrHQQELnRDUXsnbVeawLNKEhUwfN61uZbUAtqSZV6mKFWv5icj91bSax7jopjhtGzWokrNZdrqeJTtZGRn/AXRWIbMAc5NE2OEJ/EXj/QYZgUEMajOTcS/CK4tAX0pJGBx3u2Wida3Q4zD8IQs7T3tVq3B5XAqfzLJA1WZuPdcC8Iq0tP9ErTP5VOSTjvsQ7vlm2Cd3Y07o6FAtBJZUK/0af4U0QKxfoKBrQa0X/wISFMkIzed9jyjIGYV3nThd1FveK32pmxeuNT6PtpMGFf41udKM+qDKqDeTc="
+
+matrix:
+  include:
+    - os: linux # Coverity Scan (Linux Debug)
+      compiler: gcc
+      before_install:
+        - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-8
+            - ggcov
+            - cmake
+        coverity_scan:
+          project:
+            name: "j-bruel/cRegister"
+            description: "Register C++ API. Smart memory, allowing to interact and persist data in an architectural, dynamic and simplified way."
+          notification_email: jonathan.bruel@outlook.fr
+          build_command_prepend: "cov-configure --comptype gcc --compiler g++-8 --template && cmake -DCMAKE_CXX_COMPILER=g++-8 -DGEN_DOCS=OFF ."
+          build_command: "cmake --build ."
+          branch_pattern: coverity_scan
+      if: branch = coverity_scan
+      before_script: echo "Coverity Scan"
+      script: echo "Coverity Scan"
+    - os: linux # Linux Debug : Debug build with test & coverage.
+      compiler: gcc
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-8
+            - cmake
+      before_script:
+        - sudo apt-get install gcc-8 g++-8 # Install gcc & g++ 8 (for c++17 build).
+        - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 800 --slave /usr/bin/g++ g++ /usr/bin/g++-8 # Link g++-8 to current used g++ binary.
+        - g++ --version # Check g++ version
+        - sudo apt-get install ggcov # Install gcov testing framework.
+        - sudo ln -sf /usr/bin/gcov-8 /usr/bin/gcov # Link last gcov version to current used gcov.
+        - gcov --version # Check gcov version.
+        - git clone https://github.com/linux-test-project/lcov.git # Clone & install lcov last version from github sources.
+        - cd lcov
+        - sudo make install
+        - cd ..
+        - (echo y;echo o conf prerequisites_policy follow;echo o conf commit) | sudo perl -MCPAN -e 'install PerlIO::gzip' # Pre-condig perl and install perl IO::gzip packet.
+        - sudo cpan JSON # Install perl JSON packet.
+        - mkdir -p build && cd build # Create a build directory and go into it
+        - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++-8 -DBUILD_TESTS=ON -DENABLE_COVERAGE=ON -DGEN_DOCS=OFF .. # Generate build with correct config.
+      script:
+        - cmake --build . -- -j2 # Build lib.
+        - cmake --build . --target coverage # Build & run test / coverage.
+      after_success:
+        - bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
+      if: branch != coverity_scan
+    - os: linux # Linux Release : Release build without test & coverage.
+      compiler: gcc
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-8
+            - ggcov
+            - cmake
+      env:
+        - MATRIX_EVAL="COMPILER=g++-8 && BUILD_TYPE=Release"
+      if: branch != coverity_scan
+    - os: osx # OSX Debug build.
+      osx_image: xcode10
+      compiler: clang
+      addons:
+        homebrew:
+          packages:
+            - beanstalk
+            - lcov
+            - llvm
+          update: true
+      before_script:
+        - brew --version
+        - brew install llvm
+        - brew update
+#        - brew upgrade llvm # Not usefull : Error: llvm 8.0.0_1 already installed The command "brew upgrade llvm" failed and exited with 1 during .
+#        - brew install --with-toolchain llvm # llvm but with all the headers
+#        - xcode-select --install # installs additional headers that you might be mimssing.
+        - echo 'export PATH="/usr/local/opt/llvm/bin:$PATH"' >> ~/.bash_profile # exports the custom llvm path into the shell
+        - sudo ln -s /usr/local/opt/llvm/bin/clang++ /usr/local/bin/clang++-brew # optional but I like to have a symlink set.
+        - clang --version
+      env:
+        - MATRIX_EVAL="COMPILER=clang++ && BUILD_TYPE=Debug"
+      if: branch != coverity_scan
+    - os: osx # OSX Release build.
+      osx_image: xcode9.4
+      compiler: clang
+      addons:
+        homebrew:
+          packages:
+            - beanstalk
+            - lcov
+            - llvm
+          update: true
+      env:
+        - MATRIX_EVAL="COMPILER=clang++ && BUILD_TYPE=Release"
+      if: branch != coverity_scan
+
+before_install:
+  - eval "${MATRIX_EVAL}"
+
+before_script:
+  - mkdir -p build && cd build
+  - cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_COMPILER=$COMPILER -DBUILD_TESTS=ON -DGEN_DOCS=OFF ..
+
+script:
+  - cmake --build . -- -j2 # Build the code
+  - ctest --output-on-failure
+  - sudo cmake --build . --target install # Install the necessary files
