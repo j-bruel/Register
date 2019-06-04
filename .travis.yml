@@ -101,7 +101,9 @@ matrix:
             - lcov
           update: true
       before_script:
+        - brew --version
         - brew update
+        - brew upgrade llvm
         - brew install --with-toolchain llvm # llvm but with all the headers
         - xcode-select --install # installs additional headers that you might be mimssing.
         - echo 'export PATH="/usr/local/opt/llvm/bin:$PATH"' >> ~/.bash_profile # exports the custom llvm path into the shell
@@ -121,6 +123,15 @@ matrix:
             - lcov
             - llvm
           update: true
+      before_script:
+        - brew --version
+        - brew update
+#        - brew upgrade llvm
+#        - brew install --with-toolchain llvm # llvm but with all the headers
+        - xcode-select --install # installs additional headers that you might be mimssing.
+        - echo 'export PATH="/usr/local/opt/llvm/bin:$PATH"' >> ~/.bash_profile # exports the custom llvm path into the shell
+        - sudo ln -s /usr/local/opt/llvm/bin/clang++ /usr/local/bin/clang++-brew # optional but I like to have a symlink set.
+        - clang --version
       env:
         - MATRIX_EVAL="COMPILER=clang++ && BUILD_TYPE=Release"
       if: branch != coverity_scan
