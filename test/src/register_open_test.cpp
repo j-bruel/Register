@@ -52,7 +52,7 @@ TEST_CASE("Register::open")
         std::filesystem::remove("../ut_open_2");
         std::filesystem::remove("ut_open_3");
         std::filesystem::remove_all("./nextDirectory");
-        std::filesystem::remove("../ut_open_5");
+        std::filesystem::remove("./ut_open_5");
     }
 
     SUBCASE("not existing")
