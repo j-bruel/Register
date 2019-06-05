@@ -4,12 +4,12 @@
 //! @date 20/05/19
 //!
 
+#include <doctest.h>
 #include <jbr/Register.hpp>
 #include <jbr/reg/exception.hpp>
-#include <doctest.h>
 #include <iostream>
-#include <fstream>
 #include <string>
+#include <fstream>
 
 TEST_CASE("Register::open")
 {
