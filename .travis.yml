@@ -95,6 +95,9 @@ matrix:
           update: true
       before_script:
         - sudo ls -l /usr/bin/clang*
+        - clang --version
+        - mkdir -p build && cd build # Create a build directory and go into it
+        - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++-8 -DBUILD_TESTS=ON -DENABLE_COVERAGE=ON -DGEN_DOCS=OFF .. # Generate build with correct config.
       env:
         - MATRIX_EVAL="COMPILER=clang++-7.0 && BUILD_TYPE=Debug"
       if: branch != coverity_scan
