@@ -146,7 +146,9 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include ${
 ##
 ## Library linkage with fystem & stdc++ lib on macos only.
 ##
-target_link_libraries(${PROJECT_NAME} PUBLIC stdc++fs)
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_link_libraries(${PROJECT_NAME} PUBLIC stdc++fs)
+endif(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 
 ##
 ## Check os type to copy libraries on windows case.
