@@ -19,7 +19,7 @@ namespace jbr
         const std::string   absolutePath = jbr::reg::getAbsolutePath(path);
 
         if (exist(absolutePath))
-            throw jbr::reg::exception("The register " + path + " already exist. You must remove it before create it or open it.");
+            throw jbr::reg::exception("The register " + absolutePath + " already exist. You must remove it before create it or open it.");
         std::ofstream(absolutePath.c_str());
     }
 
@@ -31,7 +31,7 @@ namespace jbr
         const std::string   absolutePath = jbr::reg::getAbsolutePath(path);
 
         if (!exist(absolutePath))
-            throw jbr::reg::exception("The register " + path + " does not exist. You must create it before.");
+            throw jbr::reg::exception("The register " + absolutePath + " does not exist. You must create it before.");
     }
 
     void    Register::destroy(const std::string &path) const
@@ -42,12 +42,12 @@ namespace jbr
         const std::string   absolutePath = jbr::reg::getAbsolutePath(path);
 
         if (!exist(absolutePath))
-            throw jbr::reg::exception("Impossible to destroy a not existing register : " + path + ".");
+            throw jbr::reg::exception("Impossible to destroy a not existing register : " + absolutePath + ".");
 
         std::error_code     ec;
 
-        if (!std::filesystem::remove(path, ec))
-            throw jbr::reg::exception("Impossible to destroy this next register : " + path + ". Error code : " + std::to_string(ec.value()) + ", why : " + ec.message());
+        if (!std::filesystem::remove(absolutePath, ec))
+            throw jbr::reg::exception("Impossible to destroy this next register : " + absolutePath + ". Error code : " + std::to_string(ec.value()) + ", why : " + ec.message());
     }
 
 }
