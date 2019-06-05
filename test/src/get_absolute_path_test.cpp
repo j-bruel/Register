@@ -20,6 +20,7 @@ TEST_CASE("GetAbsolutePath")
         std::filesystem::create_directory("./nextDirectory");
         CHECK(std::filesystem::current_path().string() + std::filesystem::path("/nextDirectory").make_preferred().string() == jbr::reg::getAbsolutePath("./nextDirectory/"));
         CHECK(std::filesystem::current_path().string() + std::filesystem::path("/nextDirectory").make_preferred().string() == jbr::reg::getAbsolutePath("nextDirectory/"));
+        std::filesystem::remove_all("./nextDirectory");
     }
 
     //!
