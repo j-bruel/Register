@@ -8,6 +8,7 @@
 # define JBR_CREGISTER_REGISTER_HPP
 
 # include <filesystem>
+# include <string>
 
 //!
 //! @namespace jbr
