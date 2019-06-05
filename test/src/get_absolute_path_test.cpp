@@ -6,7 +6,6 @@
 
 #include <jbr/reg/GetAbsolutePath.hpp>
 #include <doctest.h>
-#include <iostream>
 #include <string>
 #include <filesystem>
 
