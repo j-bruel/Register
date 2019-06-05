@@ -100,9 +100,9 @@ else (ENABLE_COVERAGE AND NOT CMAKE_CONFIGURATION_TYPES)
         ##
         ## Set Linux compilation flag.
         ##
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall -Wextra -std=c++17 -stdlib=libstdc++ -c")
-        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -std=c++17 -stdlib=libstdc++ -c")
-        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -std=c++17 -stdlib=libstdc++ -c")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall -Wextra -std=c++17 -stdlib=libstdc++ -lstdc++fs -c")
+        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -std=c++17 -stdlib=libstdc++ -lstdc++fs -c")
+        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -std=c++17 -stdlib=libstdc++ -lstdc++fs -c")
     elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         ##
         ## Set Windows compilation flag.
@@ -140,7 +140,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${cRegister_VERSION})
 ##
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include ${CMAKE_BINARY_DIR}/include)
 
-target_link_libraries(${PROJECT_NAME} PUBLIC /usr/lib/libstdc++.dylib)
+target_link_libraries(${PROJECT_NAME} PUBLIC /usr/lib/libstdc++.dylib stdc++fs)
 
 ##
 ## Check os type to copy libraries on windows case.
