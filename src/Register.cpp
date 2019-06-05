@@ -16,11 +16,9 @@ namespace jbr
         if (path.empty())
             throw jbr::reg::exception("To create a register the path must not be empty.");
 
-        const std::string   absolutePath = jbr::reg::getAbsolutePath(path);
-
-        if (exist(absolutePath))
-            throw jbr::reg::exception("The register " + absolutePath + " already exist. You must remove it before create it or open it.");
-        std::ofstream(absolutePath.c_str());
+        if (std::filesystem::exists(path))
+            throw jbr::reg::exception("The register " + path + " already exist. You must remove it before create it or open it.");
+        std::ofstream(path.c_str());
     }
 
     void    Register::open(const std::string &path) const
