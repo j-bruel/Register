@@ -28,6 +28,16 @@ namespace jbr
             throw jbr::reg::exception("The register " + path + " does not exist. You must create it before.");
     }
 
+    bool    Register::exist(const std::string &path) const noexcept
+    {
+        if (path.empty())
+            return (false);
+
+        std::error_code     ec;
+
+        return (std::filesystem::exists(path, ec));
+    }
+
     void    Register::destroy(const std::string &path) const
     {
         if (path.empty())
