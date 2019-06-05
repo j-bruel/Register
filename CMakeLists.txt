@@ -147,7 +147,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include ${
 ## Library linkage with fystem & stdc++ lib on macos only.
 ##
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    target_link_libraries(${PROJECT_NAME} PUBLIC stdc++ stdc++fs)
+    target_link_libraries(${PROJECT_NAME} PUBLIC /usr/lib/libstdc++.dylib stdc++fs)
 endif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 
 ##
