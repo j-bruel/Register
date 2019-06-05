@@ -94,26 +94,25 @@ matrix:
             - llvm
           update: true
       before_script:
-        - sudo ls -l /usr/bin/clang*
-        - sudo ls -l /usr/lib/libstdc++*
-        - sudo ls -l /usr/lib/libstd*
-        - sudo ls -l /usr/lib/*
-        - clang --version
         - mkdir -p build && cd build # Create a build directory and go into it
         - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++-8 -DBUILD_TESTS=ON -DENABLE_COVERAGE=ON -DGEN_DOCS=OFF .. # Generate build with correct config.
       env:
         - MATRIX_EVAL="COMPILER=clang++-7.0 && BUILD_TYPE=Debug"
       if: branch != coverity_scan
     - os: osx # OSX Release build.
-      osx_image: xcode9.4
+      osx_image: xcode10.2
       compiler: clang
       addons:
         homebrew:
           packages:
+            - clang-7.0
             - beanstalk
             - lcov
             - llvm
           update: true
+      before_script:
+        - mkdir -p build && cd build # Create a build directory and go into it
+        - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++-8 -DBUILD_TESTS=ON -DENABLE_COVERAGE=ON -DGEN_DOCS=OFF .. # Generate build with correct config.
       env:
         - MATRIX_EVAL="COMPILER=clang++-7.0 && BUILD_TYPE=Release"
       if: branch != coverity_scan

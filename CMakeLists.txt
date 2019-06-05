@@ -95,14 +95,17 @@ else (ENABLE_COVERAGE AND NOT CMAKE_CONFIGURATION_TYPES)
     if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         set(CMAKE_C_COMPILER    "/usr/bin/clang-7.0")
         set(CMAKE_CXX_COMPILER  "/usr/bin/clang++-7.0")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -stdlib=libstdc++ -lstdc++fs -c")
+        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -std=c++17 -stdlib=libstdc++ -lstdc++fs -c")
+        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -std=c++17 -stdlib=libstdc++ -lstdc++fs -c")
     endif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         ##
         ## Set Linux compilation flag.
         ##
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall -Wextra -std=c++17 -stdlib=libstdc++ -lstdc++fs -c")
-        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -std=c++17 -stdlib=libstdc++ -lstdc++fs -c")
-        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -std=c++17 -stdlib=libstdc++ -lstdc++fs -c")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall -Wextra")
+        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
+        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2")
     elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         ##
         ## Set Windows compilation flag.
@@ -140,7 +143,12 @@ set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${cRegister_VERSION})
 ##
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include ${CMAKE_BINARY_DIR}/include)
 
-target_link_libraries(${PROJECT_NAME} PUBLIC /usr/lib/libstdc++.dylib stdc++fs)
+##
+## Library linkage with fystem & stdc++ lib on macos only.
+##
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    target_link_libraries(${PROJECT_NAME} PUBLIC stdc++ stdc++fs)
+endif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 
 ##
 ## Check os type to copy libraries on windows case.
