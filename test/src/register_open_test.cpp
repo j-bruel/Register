@@ -7,7 +7,9 @@
 #include <jbr/Register.hpp>
 #include <jbr/reg/exception.hpp>
 #include <doctest.h>
+#include <iostream>
 #include <fstream>
+#include <string>
 
 TEST_CASE("Register::open")
 {
