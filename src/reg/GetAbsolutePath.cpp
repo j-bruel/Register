@@ -20,7 +20,7 @@ namespace jbr::reg
         const std::string   absolutePath(std::filesystem::canonical(std::filesystem::path(relativePath), ec).string());
 
         if (ec)
-            throw jbr::reg::exception("Impossible to extract the absolute path from : " + relativePath + ". Error code : " + std::to_string(ec.value()) + ", why : " + ec.message());
+            throw jbr::reg::exception("Impossible to extract the absolute path from : " + relativePath + ". Error code : " + std::to_string(ec.value()) + ", why : " + ec.message() + ".");
         return (absolutePath);
     }
 
