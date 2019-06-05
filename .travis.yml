@@ -95,6 +95,8 @@ matrix:
           update: true
       before_script:
         - sudo ls -l /usr/bin/clang*
+        - sudo ls -l /usr/lib/libstdc++*
+        - sudo ls -l /usr/lib/libstd*
         - clang --version
         - mkdir -p build && cd build # Create a build directory and go into it
         - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++-8 -DBUILD_TESTS=ON -DENABLE_COVERAGE=ON -DGEN_DOCS=OFF .. # Generate build with correct config.
