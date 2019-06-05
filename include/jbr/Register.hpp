@@ -7,7 +7,6 @@
 #ifndef JBR_CREGISTER_REGISTER_HPP
 # define JBR_CREGISTER_REGISTER_HPP
 
-# include <jbr/reg/GetAbsolutePath.hpp>
 # include <filesystem>
 
 //!
@@ -61,7 +60,7 @@ namespace jbr
         //! @return True if exist, false if not.
         //! @warning This function does not check if the register is corrupt or valid. This function only check if the file exist.
         //!
-        inline bool    exist(const std::string &path) const { return (!path.empty() && std::filesystem::exists(jbr::reg::getAbsolutePath(path))); }
+        inline bool    exist(const std::string &path) const { return (!path.empty() && std::filesystem::exists(path)); }
 
     public:
         //!
