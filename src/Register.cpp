@@ -94,12 +94,12 @@ namespace jbr
         if (err != tinyxml2::XMLError::XML_SUCCESS)
             throw jbr::reg::exception("Parsing error while loading the register file, error code : " + std::to_string(err) + ".");
 
-        tinyxml2::XMLNode       *nodeReg = reg.FirstChild();
+        tinyxml2::XMLNode       *nodeReg = reg.FirstChildElement("register");
 
         if (nodeReg == nullptr)
             throw jbr::reg::exception("Register corrupted. Did not find register node, the format is corrupt.");
 
-        tinyxml2::XMLNode       *nodeHeader = nodeReg->FirstChild();
+        tinyxml2::XMLNode       *nodeHeader = nodeReg->FirstChildElement("header");
 
         if (nodeHeader == nullptr)
             throw jbr::reg::exception("Register corrupted. Did not find header node, the format is corrupt.");
@@ -114,13 +114,22 @@ namespace jbr
         if (nodeRights == nullptr)
             throw jbr::reg::exception("Register corrupted. Did not find rights node, the format is corrupt.");
 
-        tinyxml2::XMLElement    *read = nodeRights->FirstChildElement("read");
-        tinyxml2::XMLElement    *write = nodeRights->FirstChildElement("write");
+        tinyxml2::XMLElement    *readElement = nodeRights->FirstChildElement("read");
+        tinyxml2::XMLElement    *writeElement = nodeRights->FirstChildElement("write");
 
-        if (read == nullptr)
+        if (readElement == nullptr)
             throw jbr::reg::exception("Register corrupted. Did not find read field from register/header/rights nodes, mandatory field missing.");
-        if (write == nullptr)
+        if (writeElement == nullptr)
             throw jbr::reg::exception("Register corrupted. Did not find write field from register/header/rights nodes, mandatory field missing.");
+
+        bool boolVal;
+
+        err = readElement->QueryBoolText(&boolVal);
+        if (err != tinyxml2::XMLError::XML_SUCCESS)
+            throw jbr::reg::exception("Register corrupted. Field read from register/header/rights nodes not set or invalid, error code : " + std::to_string(err) + ".");
+        err = writeElement->QueryBoolText(&boolVal);
+        if (err != tinyxml2::XMLError::XML_SUCCESS)
+            throw jbr::reg::exception("Register corrupted. Field write from register/header/rights nodes not set or invalid, error code : " + std::to_string(err) + ".");
     }
 
 }
