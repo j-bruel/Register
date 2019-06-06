@@ -6,6 +6,7 @@
 
 #include "jbr/Register.hpp"
 #include "jbr/reg/exception.hpp"
+#include <tinyxml2.h>
 #include <fstream>
 #include <iostream>
 
@@ -18,6 +19,13 @@ namespace jbr
         if (exist(path))
             throw jbr::reg::exception("The register " + path + " already exist. You must remove it before create it or open it.");
         std::ofstream(path.c_str());
+
+        tinyxml2::XMLDocument   reg;
+        tinyxml2::XMLNode       *node = reg.NewElement("register");
+
+        reg.InsertFirstChild(node);
+
+        /*tinyxml2::XMLError  err = */reg.SaveFile(path.c_str());
     }
 
     void    Register::open(const std::string &path) const
