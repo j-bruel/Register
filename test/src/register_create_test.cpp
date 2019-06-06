@@ -69,6 +69,7 @@ TEST_CASE("Register::create")
                         "    </header>\n"
                         "    <body/>\n"
                         "</register>\n");
+        ifs.close();
         std::filesystem::remove("ut.reg");
     }
 
