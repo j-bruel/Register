@@ -9,6 +9,7 @@
 #include <doctest.h>
 #include <iostream>
 #include <string>
+#include <fstream>
 
 TEST_CASE("Register::create")
 {
@@ -49,6 +50,30 @@ TEST_CASE("Register::create")
         std::filesystem::remove("../ut_create_2");
         std::filesystem::remove("ut_create_3");
         std::filesystem::remove_all("./nextDirectory");
+    }
+
+    SUBCASE("content")
+    {
+        mRegister.create("ut.reg");
+
+        std::ifstream   regFile("ut.reg");
+        std::string     buffer;
+
+        regFile.seekg(0, std::ios::end);
+        buffer.resize(regFile.tellg());
+        regFile.seekg(0);
+        regFile.read(buffer.data(), buffer.size());
+        CHECK(buffer == "<register>\n"
+                        "    <header>\n"
+                        "        <version>1</version>\n"
+                        "        <rights>\n"
+                        "            <read>true</read>\n"
+                        "            <write>true</write>\n"
+                        "        </rights>\n"
+                        "    </header>\n"
+                        "    <body/>\n"
+                        "</register>\n");
+        std::filesystem::remove("ut.reg");
     }
 
     SUBCASE("already exist")

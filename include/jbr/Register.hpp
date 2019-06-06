@@ -69,6 +69,9 @@ namespace jbr
         //! @param path Register path to destroy.
         //!
         void    destroy(const std::string &path) const;
+
+    private:
+        void    createHeader(const std::string &path) const;
     };
 }
 

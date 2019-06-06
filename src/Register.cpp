@@ -18,14 +18,7 @@ namespace jbr
             throw jbr::reg::exception("To create a register the path must not be empty.");
         if (exist(path))
             throw jbr::reg::exception("The register " + path + " already exist. You must remove it before create it or open it.");
-        std::ofstream(path.c_str());
-
-        tinyxml2::XMLDocument   reg;
-        tinyxml2::XMLNode       *node = reg.NewElement("register");
-
-        reg.InsertFirstChild(node);
-
-        /*tinyxml2::XMLError  err = */reg.SaveFile(path.c_str());
+        createHeader(path);
     }
 
     void    Register::open(const std::string &path) const
@@ -57,6 +50,34 @@ namespace jbr
 
         if (!std::filesystem::remove(path, ec))
             throw jbr::reg::exception("Impossible to destroy this next register : " + path + ". Error code : " + std::to_string(ec.value()) + ", why : " + ec.message());
+    }
+
+    void    Register::createHeader(const std::string &path) const
+    {
+        tinyxml2::XMLDocument   reg;
+        tinyxml2::XMLNode       *nodeReg = reg.NewElement("register");
+        tinyxml2::XMLNode       *nodeHeader = reg.NewElement("header");
+        tinyxml2::XMLNode       *nodeBody = reg.NewElement("body");
+        tinyxml2::XMLElement    *version = reg.NewElement("version");
+        tinyxml2::XMLNode       *nodeRights = reg.NewElement("rights");
+        tinyxml2::XMLElement    *read = reg.NewElement("read");
+        tinyxml2::XMLElement    *write = reg.NewElement("write");
+
+        reg.InsertFirstChild(nodeReg);
+        nodeReg->InsertFirstChild(nodeHeader);
+        nodeReg->InsertAfterChild(nodeHeader, nodeBody);
+        version->SetText(1.0);
+        nodeHeader->InsertEndChild(version);
+        nodeHeader->InsertAfterChild(version, nodeRights);
+        read->SetText(true);
+        write->SetText(true);
+        nodeRights->InsertFirstChild(read);
+        nodeRights->InsertAfterChild(read, write);
+
+        tinyxml2::XMLError  err = reg.SaveFile(path.c_str());
+
+        if (err != tinyxml2::XMLError::XML_SUCCESS)
+            throw jbr::reg::exception("Parsing error, error code : " + std::to_string(err));
     }
 
 }
