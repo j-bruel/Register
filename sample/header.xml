@@ -1,53 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <register>
-<header>
-<!-- Header side, all register configuration informations.  -->
-<version>1.0</version>
-<!-- Register path, automatic update on API use. -->
-    <attach>
-
-                                               <!-- List of attached registers.  -->
-
-                                               <path>/tmp/my.reg</path>
-
-                                               <!-- Path to attached register. -->
-
-                                               <path>/tmp/my2.reg</path>
-
-                               </attach>
-
-                               <rights>
-
-                                               <!-- Rights administration, will be apply to all variables by default. -->
-
-                                               <read>true</read>
-
-                                               <!-- For reading. -->
-
-                                               <write>true</write>
-
-                                               <!-- For writting. -->
-
-                                               <evaluation>
-
-                                                               <!-- Evaluations rights. -->
-
-                                                               <enable>true</enable>
-
-                                                               <!-- Enable evaluation. -->
-
-                                                               <runtime>false</runtime>
-
-                                                               <!-- Enable run time evaluation. -->
-
-                                               </evaluation>
-
-                               </rights>
-
-                </header>
-
-                <body>
-
-
-              </body>
+    <header>
+        <!-- Header side, all register configuration information's.  -->
+        <version>1.0</version>
+        <!-- Register path, automatic update on API use. -->
+        <rights>
+            <!-- Rights administration, will be apply to all variables by default. -->
+            <read>true</read>
+            <!-- For reading. -->
+            <write>true</write>
+            <!-- For writing. -->
+        </rights>
+    </header>
+    <body>
+    </body>
 </register>
