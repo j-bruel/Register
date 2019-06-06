@@ -7,6 +7,7 @@
 #include "jbr/Register.hpp"
 #include "jbr/reg/exception.hpp"
 #include <fstream>
+#include <iostream>
 
 namespace jbr
 {
