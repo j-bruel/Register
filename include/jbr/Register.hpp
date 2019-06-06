@@ -7,6 +7,7 @@
 #ifndef JBR_CREGISTER_REGISTER_HPP
 # define JBR_CREGISTER_REGISTER_HPP
 
+# include <jbr/reg/GetAbsolutePath.hpp>
 # include <filesystem>
 # include <string>
 
