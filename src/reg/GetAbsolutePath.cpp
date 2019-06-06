@@ -7,7 +7,6 @@
 #include "jbr/reg/GetAbsolutePath.hpp"
 #include "jbr/reg/exception.hpp"
 #include <filesystem>
-#include <iostream>
 
 namespace jbr::reg
 {
