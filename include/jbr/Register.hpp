@@ -71,6 +71,10 @@ namespace jbr
         void    destroy(const std::string &path) const;
 
     private:
+        //!
+        //! @brief Create the header of the new target register.
+        //! @param path Register path to create.
+        //!
         void    createHeader(const std::string &path) const;
     };
 }
