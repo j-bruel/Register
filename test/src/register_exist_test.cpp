@@ -6,6 +6,8 @@
 
 #include <jbr/Register.hpp>
 #include <doctest.h>
+#include <iostream>
+#include <string>
 
 TEST_CASE("Register::exist")
 {
