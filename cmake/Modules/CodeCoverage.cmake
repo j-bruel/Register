@@ -75,7 +75,7 @@ find_program( GENHTML_PATH NAMES genhtml genhtml.perl genhtml.bat )
 find_program( GCOVR_PATH gcovr PATHS ${CMAKE_SOURCE_DIR}/scripts/test)
 find_program( SIMPLE_PYTHON_EXECUTABLE python )
 
-set(COVERAGE_EXCLUDES '*/8/*' '*/third_party/doctest/*' '*/test/src/*' '*/test/include/*')
+set(COVERAGE_EXCLUDES '*/8/*' '*/third_party/doctest/*' '*/third_party/tinyxml2/*' '*/test/src/*' '*/test/include/*')
 
 if(NOT GCOV_PATH)
     message(FATAL_ERROR "gcov not found! Aborting...")
