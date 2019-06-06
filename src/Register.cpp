@@ -27,6 +27,7 @@ namespace jbr
             throw jbr::reg::exception("To open a register the path must not be empty.");
         if (!exist(path))
             throw jbr::reg::exception("The register " + path + " does not exist. You must create it before.");
+        validity(path);
     }
 
     bool    Register::exist(const std::string &path) const noexcept
@@ -77,7 +78,49 @@ namespace jbr
         tinyxml2::XMLError  err = reg.SaveFile(path.c_str());
 
         if (err != tinyxml2::XMLError::XML_SUCCESS)
-            throw jbr::reg::exception("Parsing error, error code : " + std::to_string(err));
+            throw jbr::reg::exception("Error while saving the register content, error code : " + std::to_string(err) + ".");
+    }
+
+    void    Register::validity(const std::string &path) const
+    {
+        if (path.empty())
+            throw jbr::reg::exception("To check if a register is corrupt the path must not be empty.");
+        if (!exist(path))
+            throw jbr::reg::exception("Impossible to check the corruption status of a not existing register : " + path + ".");
+
+        tinyxml2::XMLDocument   reg;
+        tinyxml2::XMLError      err = reg.LoadFile(path.c_str());
+
+        if (err != tinyxml2::XMLError::XML_SUCCESS)
+            throw jbr::reg::exception("Parsing error while loading the register file, error code : " + std::to_string(err) + ".");
+
+        tinyxml2::XMLNode       *nodeReg = reg.FirstChild();
+
+        if (nodeReg == nullptr)
+            throw jbr::reg::exception("Register corrupted. Did not find register node, the format is corrupt.");
+
+        tinyxml2::XMLNode       *nodeHeader = nodeReg->FirstChild();
+
+        if (nodeHeader == nullptr)
+            throw jbr::reg::exception("Register corrupted. Did not find header node, the format is corrupt.");
+
+        tinyxml2::XMLElement    *version = nodeHeader->FirstChildElement("version");
+
+        if (version == nullptr)
+            throw jbr::reg::exception("Register corrupted. Did not find version field from register/header nodes, mandatory field missing.");
+
+        tinyxml2::XMLNode       *nodeRights = nodeHeader->FirstChildElement("rights");
+
+        if (nodeRights == nullptr)
+            throw jbr::reg::exception("Register corrupted. Did not find rights node, the format is corrupt.");
+
+        tinyxml2::XMLElement    *read = nodeRights->FirstChildElement("read");
+        tinyxml2::XMLElement    *write = nodeRights->FirstChildElement("write");
+
+        if (read == nullptr)
+            throw jbr::reg::exception("Register corrupted. Did not find read field from register/header/rights nodes, mandatory field missing.");
+        if (write == nullptr)
+            throw jbr::reg::exception("Register corrupted. Did not find write field from register/header/rights nodes, mandatory field missing.");
     }
 
 }

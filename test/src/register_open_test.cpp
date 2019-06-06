@@ -28,7 +28,20 @@ TEST_CASE("Register::open")
 
     SUBCASE("open one")
     {
-        std::ofstream("./ut_open_one_register");
+        std::ofstream   reg("./ut_open_one_register");
+
+        reg << "<register>\n"
+        "    <header>\n"
+        "        <version>1.0</version>\n"
+        "        <rights>\n"
+        "            <read>true</read>\n"
+        "            <write>true</write>\n"
+        "        </rights>\n"
+        "    </header>\n"
+        "    <body>\n"
+        "    </body>\n"
+        "</register>\n";
+        reg.close();
         CHECK_NOTHROW(mRegister.open("./ut_open_one_register"));
         std::filesystem::remove("./ut_open_one_register");
     }
@@ -40,7 +53,21 @@ TEST_CASE("Register::open")
         CHECK_NOTHROW(mRegister.create("ut_open_3"));
         std::filesystem::create_directory("./nextDirectory");
         CHECK_NOTHROW(mRegister.create("./nextDirectory/ut_open_4"));
-        std::ofstream("./ut_open_5");
+
+        std::ofstream   reg("./ut_open_5");
+
+        reg << "<register>\n"
+        "    <header>\n"
+        "        <version>1.0</version>\n"
+        "        <rights>\n"
+        "            <read>true</read>\n"
+        "            <write>true</write>\n"
+        "        </rights>\n"
+        "    </header>\n"
+        "    <body>\n"
+        "    </body>\n"
+        "</register>\n";
+        reg.close();
         CHECK_NOTHROW(mRegister.open("./ut_open_1"));
         CHECK_NOTHROW(mRegister.open("../ut_open_2"));
         CHECK_NOTHROW(mRegister.open("ut_open_3"));

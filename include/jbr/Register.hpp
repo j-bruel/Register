@@ -76,6 +76,11 @@ namespace jbr
         //! @param path Register path to create.
         //!
         void    createHeader(const std::string &path) const;
+        //!
+        //! @brief Check if a register is valid. The register is corrupt if the format is broken, missing mandatory field or wild characters.
+        //! @param path Register path to check.
+        //!
+        void    validity(const std::string &path) const;
     };
 }
 
