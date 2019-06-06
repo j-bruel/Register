@@ -72,6 +72,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 ## Include headers directory.
 ##
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/third_party/tinyxml2)
 
 ##
 ## Cmake build configuration options.
@@ -127,6 +128,9 @@ endif (ENABLE_COVERAGE AND NOT CMAKE_CONFIGURATION_TYPES)
 ##
 file(GLOB_RECURSE SOURCE_FILES  ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 file(GLOB_RECURSE INCLUDE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp)
+set(SOURCE_FILES                ${CMAKE_CURRENT_SOURCE_DIR}/third_party/tinyxml2/tinyxml2.cpp
+                                ${SOURCE_FILES})
+set(INCLUDE_FILES               ${CMAKE_CURRENT_SOURCE_DIR}/third_party/tinyxml2/tinyxml2.h)
 
 ##
 ## Generation static library.
