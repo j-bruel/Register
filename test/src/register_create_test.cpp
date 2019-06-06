@@ -56,14 +56,10 @@ TEST_CASE("Register::create")
     {
         mRegister.create("ut.reg");
 
-        std::ifstream   regFile("ut.reg");
-        std::string     buffer;
+        std::ifstream   ifs("ut.reg");
+        std::string     content((std::istreambuf_iterator<char>(ifs)), (std::istreambuf_iterator<char>()));
 
-        regFile.seekg(0, std::ios::end);
-        buffer.resize(regFile.tellg());
-        regFile.seekg(0);
-        regFile.read(buffer.data(), buffer.size());
-        CHECK(buffer == "<register>\n"
+        CHECK(content == "<register>\n"
                         "    <header>\n"
                         "        <version>1</version>\n"
                         "        <rights>\n"
