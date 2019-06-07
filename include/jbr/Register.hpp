@@ -49,7 +49,7 @@ namespace jbr
         //!
         void    create(const std::string &path) const;
         //!
-        //! @brief Open a existing register according a input path.
+        //! @brief Open and check the validity of a existing register according a input path.
         //! @param path Register path to open.
         //!
         void    open(const std::string &path) const;
@@ -62,6 +62,12 @@ namespace jbr
         //! @warning This function does not check if the register is corrupt or valid. This function only check if the file exist.
         //!
         bool    exist(const std::string &path) const noexcept;
+        //!
+        //! @brief Check if a register is valid. The register is corrupt if the format is broken, missing mandatory field or wild characters.
+        //! @param path Register path to check.
+        //! @warning This function does not need to be called after open function.
+        //!
+        void    validity(const std::string &path) const;
 
     public:
         //!
@@ -76,11 +82,6 @@ namespace jbr
         //! @param path Register path to create.
         //!
         void    createHeader(const std::string &path) const;
-        //!
-        //! @brief Check if a register is valid. The register is corrupt if the format is broken, missing mandatory field or wild characters.
-        //! @param path Register path to check.
-        //!
-        void    validity(const std::string &path) const;
     };
 }
 

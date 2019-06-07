@@ -40,47 +40,6 @@ namespace jbr
         return (std::filesystem::exists(path, ec));
     }
 
-    void    Register::destroy(const std::string &path) const
-    {
-        if (path.empty())
-            throw jbr::reg::exception("To destroy a register the path must not be empty.");
-        if (!exist(path))
-            throw jbr::reg::exception("Impossible to destroy a not existing register : " + path + ".");
-
-        std::error_code     ec;
-
-        if (!std::filesystem::remove(path, ec))
-            throw jbr::reg::exception("Impossible to destroy this next register : " + path + ". Error code : " + std::to_string(ec.value()) + ", why : " + ec.message());
-    }
-
-    void    Register::createHeader(const std::string &path) const
-    {
-        tinyxml2::XMLDocument   reg;
-        tinyxml2::XMLNode       *nodeReg = reg.NewElement("register");
-        tinyxml2::XMLNode       *nodeHeader = reg.NewElement("header");
-        tinyxml2::XMLNode       *nodeBody = reg.NewElement("body");
-        tinyxml2::XMLElement    *version = reg.NewElement("version");
-        tinyxml2::XMLNode       *nodeRights = reg.NewElement("rights");
-        tinyxml2::XMLElement    *read = reg.NewElement("read");
-        tinyxml2::XMLElement    *write = reg.NewElement("write");
-
-        reg.InsertFirstChild(nodeReg);
-        nodeReg->InsertFirstChild(nodeHeader);
-        nodeReg->InsertAfterChild(nodeHeader, nodeBody);
-        version->SetText(1.0);
-        nodeHeader->InsertEndChild(version);
-        nodeHeader->InsertAfterChild(version, nodeRights);
-        read->SetText(true);
-        write->SetText(true);
-        nodeRights->InsertFirstChild(read);
-        nodeRights->InsertAfterChild(read, write);
-
-        tinyxml2::XMLError  err = reg.SaveFile(path.c_str());
-
-        if (err != tinyxml2::XMLError::XML_SUCCESS)
-            throw jbr::reg::exception("Error while saving the register content, error code : " + std::to_string(err) + ".");
-    }
-
     void    Register::validity(const std::string &path) const
     {
         if (path.empty())
@@ -141,6 +100,47 @@ namespace jbr
 
         if (bodyNode == nullptr)
             throw jbr::reg::exception("Register corrupted. Did not find body node, the format is corrupt.");
+    }
+
+    void    Register::destroy(const std::string &path) const
+    {
+        if (path.empty())
+            throw jbr::reg::exception("To destroy a register the path must not be empty.");
+        if (!exist(path))
+            throw jbr::reg::exception("Impossible to destroy a not existing register : " + path + ".");
+
+        std::error_code     ec;
+
+        if (!std::filesystem::remove(path, ec))
+            throw jbr::reg::exception("Impossible to destroy this next register : " + path + ". Error code : " + std::to_string(ec.value()) + ", why : " + ec.message());
+    }
+
+    void    Register::createHeader(const std::string &path) const
+    {
+        tinyxml2::XMLDocument   reg;
+        tinyxml2::XMLNode       *nodeReg = reg.NewElement("register");
+        tinyxml2::XMLNode       *nodeHeader = reg.NewElement("header");
+        tinyxml2::XMLNode       *nodeBody = reg.NewElement("body");
+        tinyxml2::XMLElement    *version = reg.NewElement("version");
+        tinyxml2::XMLNode       *nodeRights = reg.NewElement("rights");
+        tinyxml2::XMLElement    *read = reg.NewElement("read");
+        tinyxml2::XMLElement    *write = reg.NewElement("write");
+
+        reg.InsertFirstChild(nodeReg);
+        nodeReg->InsertFirstChild(nodeHeader);
+        nodeReg->InsertAfterChild(nodeHeader, nodeBody);
+        version->SetText(1.0);
+        nodeHeader->InsertEndChild(version);
+        nodeHeader->InsertAfterChild(version, nodeRights);
+        read->SetText(true);
+        write->SetText(true);
+        nodeRights->InsertFirstChild(read);
+        nodeRights->InsertAfterChild(read, write);
+
+        tinyxml2::XMLError  err = reg.SaveFile(path.c_str());
+
+        if (err != tinyxml2::XMLError::XML_SUCCESS)
+            throw jbr::reg::exception("Error while saving the register content, error code : " + std::to_string(err) + ".");
     }
 
 }
