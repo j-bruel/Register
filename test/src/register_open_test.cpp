@@ -172,6 +172,33 @@ TEST_CASE("Register::open")
         std::filesystem::remove("./ut_open_version_field_not_found");
     }
 
+    SUBCASE("corrupt : version not set")
+    {
+        std::ofstream   reg("./ut_open_version_field_not_set");
+        std::string     msg;
+
+        reg << "<register>\n"
+            "    <header>\n"
+            "        <version></version>\n"
+            "        <rights>\n"
+            "            <read>1</read>\n"
+            "            <write>0</write>\n"
+            "        </rights>\n"
+            "    </header>\n"
+            "    <body>\n"
+            "    </body>\n"
+            "</register>\n";
+        reg.close();
+        try {
+            mRegister.open("./ut_open_version_field_not_set");
+        }
+        catch (jbr::reg::exception &e) {
+            msg = e.what();
+        }
+        CHECK(msg == "Register corrupted. Field version from register/header nodes not set or invalid, error code : 17.");
+        std::filesystem::remove("./ut_open_version_field_not_set");
+    }
+
     SUBCASE("corrupt : rights node not found")
     {
         std::ofstream   reg("./ut_open_rights_node_not_found");
@@ -353,6 +380,31 @@ TEST_CASE("Register::open")
         }
                 CHECK(msg == "Register corrupted. Field write from register/header/rights nodes not set or invalid, error code : 16.");
         std::filesystem::remove("./ut_open_write_field_invalid");
+    }
+
+    SUBCASE("corrupt : body node not found")
+    {
+        std::ofstream   reg("./ut_open_body_node_not_found");
+        std::string     msg;
+
+        reg << "<register>\n"
+        "    <header>\n"
+        "        <version>1.0</version>\n"
+        "        <rights>\n"
+        "            <read>1</read>\n"
+        "            <write>true</write>\n"
+        "        </rights>\n"
+        "    </header>\n"
+        "</register>\n";
+        reg.close();
+        try {
+            mRegister.open("./ut_open_body_node_not_found");
+        }
+        catch (jbr::reg::exception &e) {
+            msg = e.what();
+        }
+        CHECK(msg == "Register corrupted. Did not find body node, the format is corrupt.");
+        std::filesystem::remove("./ut_open_body_node_not_found");
     }
 
 }

@@ -109,6 +109,12 @@ namespace jbr
         if (version == nullptr)
             throw jbr::reg::exception("Register corrupted. Did not find version field from register/header nodes, mandatory field missing.");
 
+        double  versionValue;
+
+        err = version->QueryDoubleText(&versionValue);
+        if (err != tinyxml2::XMLError::XML_SUCCESS)
+            throw jbr::reg::exception("Register corrupted. Field version from register/header nodes not set or invalid, error code : " + std::to_string(err) + ".");
+
         tinyxml2::XMLNode       *nodeRights = nodeHeader->FirstChildElement("rights");
 
         if (nodeRights == nullptr)
@@ -130,6 +136,11 @@ namespace jbr
         err = writeElement->QueryBoolText(&boolVal);
         if (err != tinyxml2::XMLError::XML_SUCCESS)
             throw jbr::reg::exception("Register corrupted. Field write from register/header/rights nodes not set or invalid, error code : " + std::to_string(err) + ".");
+
+        tinyxml2::XMLElement    *bodyNode = nodeReg->FirstChildElement("body");
+
+        if (bodyNode == nullptr)
+            throw jbr::reg::exception("Register corrupted. Did not find body node, the format is corrupt.");
     }
 
 }
