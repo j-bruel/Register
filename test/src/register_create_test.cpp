@@ -6,11 +6,11 @@
 
 #include <jbr/Register.hpp>
 #include <jbr/reg/exception.hpp>
-#include <doctest.h>
 #include <filesystem>
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <doctest.h>
 
 TEST_CASE("Register::create")
 {

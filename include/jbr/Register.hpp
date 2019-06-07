@@ -52,8 +52,6 @@ namespace jbr
         //! @param path Register path to open.
         //!
         void    open(const std::string &path) const;
-
-    public:
         //!
         //! @brief Check if a register exist. Only check if the register file exist on system.
         //! @param path Register path.
@@ -67,8 +65,6 @@ namespace jbr
         //! @warning This function does not need to be called after open function.
         //!
         void    validity(const std::string &path) const;
-
-    public:
         //!
         //! @brief Destroy a existing register. The target register will be removed definitively on the system.
         //! @param path Register path to destroy.
