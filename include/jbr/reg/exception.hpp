@@ -31,7 +31,7 @@ namespace jbr::reg
         //! @brief Custom exception.
         //! @param msg Exception message.
         //!
-        explicit exception(std::string msg) : mMsg(std::move(msg)) {}
+        explicit exception(const std::string &msg) : mMsg(msg) {}
         //!
         //! @brief Exception throw destructor.
         //!
