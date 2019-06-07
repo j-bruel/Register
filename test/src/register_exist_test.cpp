@@ -6,6 +6,7 @@
 
 #include <jbr/Register.hpp>
 #include <doctest.h>
+#include <filesystem>
 #include <iostream>
 #include <string>
 
