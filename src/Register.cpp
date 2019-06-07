@@ -163,7 +163,7 @@ namespace jbr
         tinyxml2::XMLNode       *nodeRights = reg.NewElement("rights");
         tinyxml2::XMLElement    *read = reg.NewElement("read");
         tinyxml2::XMLElement    *write = reg.NewElement("write");
-        
+
         if (nodeReg == nullptr || nodeHeader == nullptr || nodeBody == nullptr || version == nullptr ||
             nodeRights == nullptr || read == nullptr || write == nullptr)
             throw jbr::reg::exception("Error while saving the register content, null pointer detected.");

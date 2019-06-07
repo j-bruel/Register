@@ -40,6 +40,9 @@ namespace jbr
         //!
         ~Register() = default;
 
+/*    public:
+        jbr::reg::Variable  operator[](const std::string &path) const;*/
+
     public:
         //!
         //! @brief Create a register according a input path.
