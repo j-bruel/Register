@@ -28,7 +28,7 @@ namespace jbr
             throw jbr::reg::exception("To open a register the path must not be empty.");
         if (!exist(path))
             throw jbr::reg::exception("The register " + path + " does not exist. You must create it before.");
-        validity(path);
+        verify(path);
     }
 
     bool    Register::exist(const std::string &path) const noexcept
@@ -41,18 +41,18 @@ namespace jbr
         return (std::filesystem::exists(path, ec));
     }
 
-    void    Register::validity(const std::string &path) const
+    void    Register::verify(const std::string &path) const
     {
         if (path.empty())
             throw jbr::reg::exception("To check if a register is corrupt the path must not be empty.");
         if (!exist(path))
-            throw jbr::reg::exception("Impossible to check the corruption status of a not existing register : " + path + ".");
+            throw jbr::reg::exception("Impossible to check the corruption status of a not existing register : " + path + '.');
 
         tinyxml2::XMLDocument   reg;
         tinyxml2::XMLError      err = reg.LoadFile(path.c_str());
 
         if (err != tinyxml2::XMLError::XML_SUCCESS)
-            throw jbr::reg::exception("Parsing error while loading the register file, error code : " + std::to_string(err) + ".");
+            throw jbr::reg::exception("Parsing error while loading the register file, error code : " + std::to_string(err) + '.');
 
         tinyxml2::XMLNode       *nodeReg = reg.FirstChildElement("register");
 
@@ -73,7 +73,7 @@ namespace jbr
 
         err = version->QueryDoubleText(&versionValue);
         if (err != tinyxml2::XMLError::XML_SUCCESS)
-            throw jbr::reg::exception("Register corrupted. Field version from register/header nodes not set or invalid, error code : " + std::to_string(err) + ".");
+            throw jbr::reg::exception("Register corrupted. Field version from register/header nodes not set or invalid, error code : " + std::to_string(err) + '.');
 
         tinyxml2::XMLNode       *nodeRights = nodeHeader->FirstChildElement("rights");
 
@@ -92,15 +92,52 @@ namespace jbr
 
         err = readElement->QueryBoolText(&boolVal);
         if (err != tinyxml2::XMLError::XML_SUCCESS)
-            throw jbr::reg::exception("Register corrupted. Field read from register/header/rights nodes not set or invalid, error code : " + std::to_string(err) + ".");
+            throw jbr::reg::exception("Register corrupted. Field read from register/header/rights nodes not set or invalid, error code : " + std::to_string(err) + '.');
         err = writeElement->QueryBoolText(&boolVal);
         if (err != tinyxml2::XMLError::XML_SUCCESS)
-            throw jbr::reg::exception("Register corrupted. Field write from register/header/rights nodes not set or invalid, error code : " + std::to_string(err) + ".");
+            throw jbr::reg::exception("Register corrupted. Field write from register/header/rights nodes not set or invalid, error code : " + std::to_string(err) + '.');
 
         tinyxml2::XMLElement    *bodyNode = nodeReg->FirstChildElement("body");
 
         if (bodyNode == nullptr)
             throw jbr::reg::exception("Register corrupted. Did not find body node, the format is corrupt.");
+    }
+
+    void    Register::copy(const std::string &pathFrom, const std::string &pathTo) const
+    {
+        if (pathFrom.empty())
+            throw jbr::reg::exception("To copy a register the copied register path must not be empty.");
+        if (pathTo.empty())
+            throw jbr::reg::exception("To copy a register the new register path must not be empty.");
+        if (!exist(pathFrom))
+            throw jbr::reg::exception("Impossible to copy a not existing register : " + pathFrom + ".");
+        if (exist(pathTo))
+            throw jbr::reg::exception("Impossible to copy the register " + pathFrom + ". Target path already have a register existing : " + pathTo + ".");
+        verify(pathFrom);
+
+        std::error_code     ec;
+
+        if (!std::filesystem::copy_file(pathFrom, pathTo, ec))
+            throw jbr::reg::exception("Impossible to copy this next register : " + pathFrom + " to : " + pathTo + ". Error code : " + std::to_string(ec.value()) + ", why : " + ec.message() + '.');
+    }
+
+    void    Register::move(const std::string &pathOld, const std::string &pathNew) const
+    {
+        if (pathOld.empty())
+            throw jbr::reg::exception("To move a register the reference path must not be empty.");
+        if (pathNew.empty())
+            throw jbr::reg::exception("To move a register the destination path must not be empty.");
+        if (!exist(pathOld))
+            throw jbr::reg::exception("Impossible to move a not existing register : " + pathOld + ".");
+        if (exist(pathNew))
+            throw jbr::reg::exception("Impossible to move the register " + pathOld + ". Target path already have a register existing : " + pathNew + ".");
+        verify(pathOld);
+
+        std::error_code     ec;
+
+        std::filesystem::rename(pathOld, pathNew, ec);
+        if (ec)
+            throw jbr::reg::exception("Impossible to move this next register : " + pathOld + " to : " + pathNew + ". Error code : " + std::to_string(ec.value()) + ", why : " + ec.message() + '.');
     }
 
     void    Register::destroy(const std::string &path) const
@@ -109,11 +146,12 @@ namespace jbr
             throw jbr::reg::exception("To destroy a register the path must not be empty.");
         if (!exist(path))
             throw jbr::reg::exception("Impossible to destroy a not existing register : " + path + ".");
+        verify(path);
 
         std::error_code     ec;
 
         if (!std::filesystem::remove(path, ec))
-            throw jbr::reg::exception("Impossible to destroy this next register : " + path + ". Error code : " + std::to_string(ec.value()) + ", why : " + ec.message());
+            throw jbr::reg::exception("Impossible to destroy this next register : " + path + ". Error code : " + std::to_string(ec.value()) + ", why : " + ec.message() + '.');
     }
 
     void    Register::createHeader(const std::string &path) const

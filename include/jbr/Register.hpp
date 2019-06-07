@@ -64,7 +64,19 @@ namespace jbr
         //! @param path Register path to check.
         //! @warning This function does not need to be called after open function.
         //!
-        void    validity(const std::string &path) const;
+        void    verify(const std::string &path) const;
+        //!
+        //! @brief Copy a existing register to a new one.
+        //! @param pathFrom Register copied.
+        //! @param pathTo New register path.
+        //!
+        void    copy(const std::string &pathFrom, const std::string &pathTo) const;
+        //!
+        //! @brief Move a existing register. Can be use as a rename register function.
+        //! @param pathOld Old register path.
+        //! @param pathNew New register path.
+        //!
+        void    move(const std::string &pathOld, const std::string &pathNew) const;
         //!
         //! @brief Destroy a existing register. The target register will be removed definitively on the system.
         //! @param path Register path to destroy.

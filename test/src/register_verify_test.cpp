@@ -8,7 +8,7 @@
 #include <jbr/reg/exception.hpp>
 #include <doctest.h>
 
-TEST_CASE("Register::validity")
+TEST_CASE("Register::verify")
 {
     jbr::Register   mRegister;
 
@@ -17,7 +17,7 @@ TEST_CASE("Register::validity")
         std::string msg;
 
         try {
-            mRegister.validity("");
+            mRegister.verify("");
         }
         catch (jbr::reg::exception &e) {
             msg = e.what();
@@ -30,7 +30,7 @@ TEST_CASE("Register::validity")
         std::string msg;
 
         try {
-            mRegister.validity("./ut_not_exist");
+            mRegister.verify("./ut_not_exist");
         }
         catch (jbr::reg::exception &e) {
             msg = e.what();
