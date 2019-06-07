@@ -88,7 +88,7 @@ TEST_CASE("Register::move")
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
-        CHECK(msg == "Impossible to move this next register : ./invalid.reg to : ./unknown/to.reg. Error code : 2, why : No such file or directory.");
+        CHECK(msg.find("Impossible to move this next register : ./invalid.reg to : ./unknown/to.reg. Error code ") != std::string::npos);
         mRegister.destroy("./invalid.reg");
     }
 

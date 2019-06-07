@@ -89,7 +89,7 @@ TEST_CASE("Register::copy")
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
-        CHECK(msg == "Impossible to copy this next register : ./invalid.reg to : ./unknown/to.reg. Error code : 2, why : No such file or directory.");
+        CHECK(msg.find("Impossible to copy this next register : ./invalid.reg to : ./unknown/to.reg. Error code ") != std::string::npos);
         mRegister.destroy("./invalid.reg");
     }
 

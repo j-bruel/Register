@@ -8,7 +8,6 @@
 #include "jbr/reg/exception.hpp"
 #include <tinyxml2.h>
 #include <filesystem>
-#include <fstream>
 #include <iostream>
 
 namespace jbr
