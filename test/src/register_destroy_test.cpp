@@ -32,7 +32,7 @@ TEST_CASE("Register::destroy")
         CHECK_NOTHROW(mRegister.destroy("./ut_destroy_one_register"));
         CHECK(!std::filesystem::exists("./ut_destroy_one_register"));
     }
-
+/*
     SUBCASE("destroy few")
     {
         mRegister.create("./ut_destroy_1");
@@ -66,7 +66,7 @@ TEST_CASE("Register::destroy")
         }
         CHECK(msg == "Impossible to destroy a not existing register : ./ut_not_exist.");
     }
-
+*/
 }
 
 

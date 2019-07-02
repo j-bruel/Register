@@ -5,7 +5,6 @@
         <version>1.0</version>
         <!-- Register path, automatic update on API use. -->
         <rights>
-            <!-- Rights administration, will be apply to all variables by default. -->
             <read>true</read>
             <!-- For reading. -->
             <write>true</write>
@@ -19,7 +18,34 @@
             <destroy>true</destroy>
             <!-- For destroying, not mandatory, true by default. -->
         </rights>
+        <!-- Rights administration, not mandatory, true will be apply to all variables by default. -->
     </header>
     <body>
+        <variable>
+            <key>my_variable</key>
+            <!-- Variable key. -->
+            <value>my value</value>
+            <!-- Variable value. -->
+            <config>
+                <rights>
+                    <read>true</read>
+                    <!-- Reading rights. -->
+                    <write>true</write>
+                    <!-- Writing rights. -->
+                    <update>true</update>
+                    <!-- For content updating. -->
+                    <rename>true</rename>
+                    <!-- For renaming. -->
+                    <copy>true</copy>
+                    <!-- For copying. -->
+                    <remove>true</remove>
+                    <!-- For removing. -->
+                </rights>
+                <!-- Variable rights, not mandatory, true will be apply to all variables by default. -->
+            </config>
+            <!-- Variable configuration. -->
+        </variable>
+        <!-- All register variable description. -->
     </body>
+    <!-- Body information's. -->
 </register>
