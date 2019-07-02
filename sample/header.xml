@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <register>
     <header>
-        <!-- Header side, all register configuration information's.  -->
         <version>1.0</version>
         <!-- Register path, automatic update on API use. -->
         <rights>
@@ -20,6 +19,7 @@
         </rights>
         <!-- Rights administration, not mandatory, true will be apply to all variables by default. -->
     </header>
+    <!-- Header side, all register configuration information's.  -->
     <body>
         <variable>
             <key>my_variable</key>

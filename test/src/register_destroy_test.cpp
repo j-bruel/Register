@@ -32,7 +32,7 @@ TEST_CASE("Register::destroy")
         CHECK_NOTHROW(mRegister.destroy("./ut_destroy_one_register"));
         CHECK(!std::filesystem::exists("./ut_destroy_one_register"));
     }
-    
+
 }
 
 
