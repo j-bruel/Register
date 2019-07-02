@@ -4,17 +4,17 @@
 //! @date 05/06/19
 //!
 
+#include <doctest.h>
 #include <jbr/Register.hpp>
 #include <jbr/reg/exception.hpp>
 #include <filesystem>
 #include <iostream>
-#include <doctest.h>
 
-TEST_CASE("Register::destroy")
+TEST_CASE("Register::destroys")
 {
-    jbr::Register   mRegister;
+//    jbr::Register   mRegister;
 /*
- * 
+ *
     SUBCASE("empty input path")
     {
         std::string msg;
