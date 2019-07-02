@@ -7,6 +7,9 @@
 #include <jbr/Register.hpp>
 #include <jbr/reg/exception.hpp>
 #include <doctest.h>
+#include <filesystem>
+#include <iostream>
+#include <string>
 
 TEST_CASE("Register::destroy")
 {
