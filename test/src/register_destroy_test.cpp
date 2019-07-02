@@ -9,11 +9,12 @@
 #include <filesystem>
 #include <iostream>
 #include <doctest.h>
-/*
+
 TEST_CASE("Register::destroy")
 {
     jbr::Register   mRegister;
-
+/*
+ * 
     SUBCASE("empty input path")
     {
         std::string msg;
@@ -66,7 +67,6 @@ TEST_CASE("Register::destroy")
             msg = e.what();
         }
         CHECK(msg == "Impossible to destroy a not existing register : ./ut_not_exist.");
-    }
+    }*/
 
 }
-*/

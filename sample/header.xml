@@ -10,6 +10,14 @@
             <!-- For reading. -->
             <write>true</write>
             <!-- For writing. -->
+            <open>true</open>
+            <!-- For opening, not mandatory, true by default. -->
+            <copy>true</copy>
+            <!-- For copying, not mandatory, true by default. -->
+            <move>true</move>
+            <!-- For moving, not mandatory, true by default. -->
+            <destroy>true</destroy>
+            <!-- For destroying, not mandatory, true by default. -->
         </rights>
     </header>
     <body>
