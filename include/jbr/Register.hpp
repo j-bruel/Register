@@ -7,6 +7,8 @@
 #ifndef JBR_CREGISTER_REGISTER_HPP
 # define JBR_CREGISTER_REGISTER_HPP
 
+# include <jbr/reg/Rights.hpp>
+# include <tinyxml2.h>
 # include <string>
 
 //!
@@ -20,6 +22,9 @@ namespace jbr
     //!
     class Register
     {
+    private:
+        jbr::reg::Rights    mRights; //!< Register configuration rights.
+
     public:
         //!
         //! @brief Register constructor.
@@ -54,7 +59,7 @@ namespace jbr
         //! @brief Open and check the validity of a existing register according a input path.
         //! @param path Register path to open.
         //!
-        void    open(const std::string &path) const;
+        void    open(const std::string &path);
         //!
         //! @brief Check if a register exist. Only check if the register file exist on system.
         //! @param path Register path.
@@ -67,24 +72,24 @@ namespace jbr
         //! @param path Register path to check.
         //! @warning This function does not need to be called after open function.
         //!
-        void    verify(const std::string &path) const;
+        void    verify(const std::string &path);
         //!
         //! @brief Copy a existing register to a new one.
         //! @param pathFrom Register copied.
         //! @param pathTo New register path.
         //!
-        void    copy(const std::string &pathFrom, const std::string &pathTo) const;
+        void    copy(const std::string &pathFrom, const std::string &pathTo);
         //!
         //! @brief Move a existing register. Can be use as a rename register function.
         //! @param pathOld Old register path.
         //! @param pathNew New register path.
         //!
-        void    move(const std::string &pathOld, const std::string &pathNew) const;
+        void    move(const std::string &pathOld, const std::string &pathNew);
         //!
         //! @brief Destroy a existing register. The target register will be removed definitively on the system.
         //! @param path Register path to destroy.
         //!
-        void    destroy(const std::string &path) const;
+        void    destroy(const std::string &path);
 
     private:
         //!
@@ -92,6 +97,37 @@ namespace jbr
         //! @param path Register path to create.
         //!
         void    createHeader(const std::string &path) const;
+
+    private:
+        //!
+        //! @brief Check if a register rights is valid. The register is corrupt if the format is broken, missing mandatory field or wild characters.
+        //! @param path Register path to check.
+        //!
+        void    verifyRights(tinyxml2::XMLNode  *nodeHeader);
+        //!
+        //! @brief Check if a register is openable. The register is not openable if the fields read or open from register/header/rights nodes is false.
+        //! @param path Register path to check.
+        //! @warning Verify must be called before or other method how set all register rights.
+        //!
+        inline bool isOpenable() const noexcept { return (mRights.mRead && mRights.mOpen); }
+        //!
+        //! @brief Check if a register is copyable. The register is not copyable if the fields read or copy from register/header/rights nodes is false.
+        //! @param path Register path to check.
+        //! @warning Verify must be called before or other method how set all register rights.
+        //!
+        inline bool isCopyable() const noexcept { return (mRights.mRead && mRights.mCopy); }
+        //!
+        //! @brief Check if a register is movable. The register is not movable if the fields write, read or copy from register/header/rights nodes is false.
+        //! @param path Register path to check.
+        //! @warning Verify must be called before or other method how set all register rights.
+        //!
+        inline bool isMovable() const noexcept { return (mRights.mWrite && mRights.mRead && mRights.mCopy); }
+        //!
+        //! @brief Check if a register is destroyable. The register is not destroyable if the fields write, read or destroy from register/header/rights nodes is false.
+        //! @param path Register path to check.
+        //! @warning Verify must be called before or other method how set all register rights.
+        //!
+        inline bool isDestroyable() const noexcept { return (mRights.mWrite && mRights.mRead && mRights.mDestroy); }
     };
 }
 
