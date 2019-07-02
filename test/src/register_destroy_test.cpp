@@ -13,6 +13,19 @@ TEST_CASE("Register::destroy")
 {
     jbr::Register   mRegister;
 
+    SUBCASE("empty input path")
+    {
+        std::string msg;
+
+        try {
+            mRegister.destroy("");
+        }
+        catch (jbr::reg::exception &e) {
+            msg = e.what();
+        }
+        CHECK(msg == "To destroy a register the path must not be empty.");
+    }
+
 }
 
 
