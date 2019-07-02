@@ -4,13 +4,18 @@
 //! @date 05/06/19
 //!
 
+/*
 #include <doctest.h>
 #include <jbr/Register.hpp>
 #include <jbr/reg/exception.hpp>
 #include <filesystem>
 #include <iostream>
+*/
+#include <jbr/Register.hpp>
+#include <jbr/reg/exception.hpp>
+#include <doctest.h>
 
-TEST_CASE("Register::destroys")
+TEST_CASE("Register::destroy")
 {
 //    jbr::Register   mRegister;
 /*
