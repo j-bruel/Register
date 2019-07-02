@@ -4,22 +4,69 @@
 //! @date 05/06/19
 //!
 
+#include <jbr/Register.hpp>
+#include <jbr/reg/exception.hpp>
+#include <doctest.h>
+
+TEST_CASE("Register::destroyTestFuck")
+{
+    jbr::Register   mRegister;
+
+    SUBCASE("empty input path222")
+    {
+        std::string msg;
+
+        try {
+        mRegister.verify("");
+        }
+        catch (jbr::reg::exception &e) {
+        msg = e.what();
+        }
+        CHECK(msg == "To check if a register is corrupt the path must not be empty.");
+    }
+
+    SUBCASE("not existing22")
+    {
+        std::string msg;
+
+        try {
+        mRegister.verify("./ut_not_exist");
+        }
+        catch (jbr::reg::exception &e) {
+        msg = e.what();
+        }
+        CHECK(msg == "Impossible to check the corruption status of a not existing register : ./ut_not_exist.");
+    }
+
+    /**
+     * All usecase on validity function are done into the open function.
+     */
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 #include <doctest.h>
 #include <jbr/Register.hpp>
 #include <jbr/reg/exception.hpp>
 #include <filesystem>
 #include <iostream>
-*/
-#include <jbr/Register.hpp>
-#include <jbr/reg/exception.hpp>
-#include <doctest.h>
 
 TEST_CASE("Register::destroy")
 {
-//    jbr::Register   mRegister;
-/*
- *
+    jbr::Register   mRegister;
+
     SUBCASE("empty input path")
     {
         std::string msg;
@@ -72,6 +119,7 @@ TEST_CASE("Register::destroy")
             msg = e.what();
         }
         CHECK(msg == "Impossible to destroy a not existing register : ./ut_not_exist.");
-    }*/
+    }
 
 }
+*/
