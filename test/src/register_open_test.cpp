@@ -200,7 +200,7 @@ TEST_CASE("Register::open")
         std::filesystem::remove("./ut_open_version_field_not_set");
     }
 
-    SUBCASE("corrupt : rights node not found")
+    SUBCASE("rights node not set")
     {
         std::ofstream   reg("./ut_open_rights_node_not_found");
         std::string     msg;
@@ -219,11 +219,11 @@ TEST_CASE("Register::open")
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
-        CHECK(msg == "Register corrupted. Did not find rights node, the format is corrupt.");
+        CHECK(msg.empty());
         std::filesystem::remove("./ut_open_rights_node_not_found");
     }
 
-    SUBCASE("corrupt : read field not found")
+    SUBCASE("read field not found")
     {
         std::ofstream   reg("./ut_open_read_field_not_found");
         std::string     msg;
@@ -245,7 +245,7 @@ TEST_CASE("Register::open")
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
-        CHECK(msg == "Register corrupted. Did not find read field from register/header/rights nodes, mandatory field missing.");
+        CHECK(msg.empty());
         std::filesystem::remove("./ut_open_read_field_not_found");
     }
 
@@ -272,7 +272,7 @@ TEST_CASE("Register::open")
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
-                CHECK(msg == "Register corrupted. Field read from register/header/rights nodes not set or invalid, error code : 17.");
+        CHECK(msg == "Register corrupted. Field read from register/header/rights nodes is invalid, error code : 17.");
         std::filesystem::remove("./ut_open_read_field_missing");
     }
 
@@ -299,11 +299,11 @@ TEST_CASE("Register::open")
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
-        CHECK(msg == "Register corrupted. Field read from register/header/rights nodes not set or invalid, error code : 16.");
+        CHECK(msg == "Register corrupted. Field read from register/header/rights nodes is invalid, error code : 16.");
         std::filesystem::remove("./ut_open_read_field_invliad");
     }
 
-    SUBCASE("corrupt : write field not found")
+    SUBCASE("write field not found")
     {
         std::ofstream   reg("./ut_open_write_field_not_found");
         std::string     msg;
@@ -325,7 +325,7 @@ TEST_CASE("Register::open")
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
-        CHECK(msg == "Register corrupted. Did not find write field from register/header/rights nodes, mandatory field missing.");
+        CHECK(msg.empty());
         std::filesystem::remove("./ut_open_write_field_not_found");
     }
 
@@ -352,7 +352,7 @@ TEST_CASE("Register::open")
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
-        CHECK(msg == "Register corrupted. Field write from register/header/rights nodes not set or invalid, error code : 17.");
+        CHECK(msg == "Register corrupted. Field write from register/header/rights nodes is invalid, error code : 17.");
         std::filesystem::remove("./ut_open_write_field_missing");
     }
 
@@ -379,7 +379,7 @@ TEST_CASE("Register::open")
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
-                CHECK(msg == "Register corrupted. Field write from register/header/rights nodes not set or invalid, error code : 16.");
+        CHECK(msg == "Register corrupted. Field write from register/header/rights nodes is invalid, error code : 16.");
         std::filesystem::remove("./ut_open_write_field_invalid");
     }
 

@@ -4,9 +4,8 @@
 //! @date 07/06/19
 //!
 
-#include "jbr/reg/exception.hpp"
 #include "jbr/reg/Variable.hpp"
-#include <tinyxml2.h>
+#include "jbr/reg/exception.hpp"
 
 namespace jbr::reg
 {
