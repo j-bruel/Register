@@ -6,6 +6,7 @@
 
 #include "jbr/reg/Variable.hpp"
 #include "jbr/reg/exception.hpp"
+#include <iostream>
 
 namespace jbr::reg
 {
