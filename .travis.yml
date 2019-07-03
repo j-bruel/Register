@@ -63,7 +63,7 @@ matrix:
         - (echo y;echo o conf prerequisites_policy follow;echo o conf commit) | sudo perl -MCPAN -e 'install PerlIO::gzip' # Pre-condig perl and install perl IO::gzip packet.
         - sudo cpan JSON # Install perl JSON packet.
         - mkdir -p build && cd build # Create a build directory and go into it
-        - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++-8 -DBUILD_TESTS=ON -DENABLE_COVERAGE=ON -DGEN_DOCS=OFF .. # Generate build with correct config.
+        - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++-8 -DBUILD_TESTS=ON -DENABLE_COVERAGE=ON -DGEN_DOCS=ON .. # Generate build with correct config.
       script:
         - cmake --build . -- -j2 # Build lib.
         - cmake --build . --target test # Build lib.
@@ -101,7 +101,15 @@ matrix:
           update: true
       before_script:
         - mkdir -p build && cd build # Create a build directory and go into it
-        - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++-8 -DBUILD_TESTS=ON -DENABLE_COVERAGE=ON -DGEN_DOCS=OFF .. # Generate build with correct config.
+        - cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTS=ON -DENABLE_COVERAGE=ON -DGEN_DOCS=ON .. # Generate build with correct config.
+      script:
+        - cmake --build . -- -j2 # Build lib.
+        - cmake --build . --target test # Build lib.
+        - cmake --build . --target doc # Build documentation.
+        - sudo cmake --build . --target install # Install library.
+        - cmake --build . -- -j2 # Build lib.
+        - cmake --build . --target test # Build lib.
+        - cmake --build . --target coverage # Build & run test / coverage.
       env:
         - MATRIX_EVAL="COMPILER=clang++-7.0 && BUILD_TYPE=Debug"
       if: branch != coverity_scan
