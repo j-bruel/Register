@@ -6,9 +6,9 @@
 
 #include "jbr/Register.hpp"
 #include "jbr/reg/exception.hpp"
+#include <iostream>
 #include <filesystem>
 #include <fstream>
-#include <iostream>
 
 namespace jbr
 {
@@ -152,15 +152,33 @@ namespace jbr
 
     void                Register::applyRights(const std::string &path, const jbr::reg::Rights &rights)
     {
-        (void)rights;
         if (path.empty())
             throw jbr::reg::exception("To apply new register rights, the path must not be empty.");
         if (!exist(path))
             throw jbr::reg::exception("Impossible to apply new register rights from a not existing register : " + path + ".");
         verify(path);
-        /**
-         * Faire l'application des droits ...
-         */
+
+        tinyxml2::XMLDocument   reg;
+        tinyxml2::XMLError      err = reg.LoadFile(path.c_str());
+
+        if (err != tinyxml2::XMLError::XML_SUCCESS)
+            throw jbr::reg::exception("Parsing error while loading the register file, error code : " + std::to_string(err) + '.');
+
+        tinyxml2::XMLNode       *nodeReg = reg.FirstChildElement("register");
+
+        if (nodeReg == nullptr)
+            throw jbr::reg::exception("Register corrupted. Did not find register node, the format is corrupt.");
+
+        tinyxml2::XMLNode       *nodeHeader = nodeReg->FirstChildElement("header");
+
+        if (nodeHeader == nullptr)
+            throw jbr::reg::exception("Register corrupted. Did not find header node, the format is corrupt.");
+
+        tinyxml2::XMLElement    *version = nodeHeader->FirstChildElement("version");
+
+        if (version == nullptr)
+            throw jbr::reg::exception("Register corrupted. Did not find version field from register/header nodes, mandatory field missing.");
+        writeRights(&reg, nodeHeader, version, rights);
     }
 
     void    Register::createHeader(const std::string &path, const std::optional<jbr::reg::Rights> &rights) const
@@ -180,32 +198,7 @@ namespace jbr
         nodeHeader->InsertEndChild(version);
 
         if (rights != std::nullopt)
-        {
-            tinyxml2::XMLNode       *nodeRights = reg.NewElement("rights");
-            tinyxml2::XMLElement    *readElement = reg.NewElement("read");
-            tinyxml2::XMLElement    *writeElement = reg.NewElement("write");
-            tinyxml2::XMLElement    *openElement = reg.NewElement("open");
-            tinyxml2::XMLElement    *copyElement = reg.NewElement("copy");
-            tinyxml2::XMLElement    *moveElement = reg.NewElement("move");
-            tinyxml2::XMLElement    *destroyElement = reg.NewElement("destroy");
-
-            if (nodeRights == nullptr || readElement == nullptr || writeElement == nullptr || openElement == nullptr ||
-                copyElement == nullptr || moveElement == nullptr || destroyElement == nullptr)
-                throw jbr::reg::exception("Error while saving the register content, null pointer detected.");
-            nodeHeader->InsertAfterChild(version, nodeRights);
-            readElement->SetText(rights->mRead);
-            writeElement->SetText(rights->mWrite);
-            openElement->SetText(rights->mOpen);
-            copyElement->SetText(rights->mCopy);
-            moveElement->SetText(rights->mMove);
-            destroyElement->SetText(rights->mDestroy);
-            nodeRights->InsertFirstChild(readElement);
-            nodeRights->InsertAfterChild(readElement, writeElement);
-            nodeRights->InsertAfterChild(writeElement, openElement);
-            nodeRights->InsertAfterChild(openElement, copyElement);
-            nodeRights->InsertAfterChild(copyElement, moveElement);
-            nodeRights->InsertAfterChild(moveElement, destroyElement);
-        }
+            writeRights(&reg, nodeHeader, version, rights.value());
 
         tinyxml2::XMLError  err = reg.SaveFile(path.c_str());
 
@@ -264,6 +257,38 @@ namespace jbr
             if (err != tinyxml2::XMLError::XML_SUCCESS)
                 throw jbr::reg::exception("Register corrupted. Field destroy from register/header/rights nodes is invalid, error code : " + std::to_string(err) + '.');
         }
+    }
+
+    void    Register::writeRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeHeader,
+                                  tinyxml2::XMLElement *version, const jbr::reg::Rights &rights) const
+    {
+        if (reg == nullptr || nodeHeader == nullptr || version == nullptr)
+            throw jbr::reg::exception("Pointers must not be null during writing rights process.");
+
+        tinyxml2::XMLNode       *nodeRights = reg->NewElement("rights");
+        tinyxml2::XMLElement    *readElement = reg->NewElement("read");
+        tinyxml2::XMLElement    *writeElement = reg->NewElement("write");
+        tinyxml2::XMLElement    *openElement = reg->NewElement("open");
+        tinyxml2::XMLElement    *copyElement = reg->NewElement("copy");
+        tinyxml2::XMLElement    *moveElement = reg->NewElement("move");
+        tinyxml2::XMLElement    *destroyElement = reg->NewElement("destroy");
+
+        if (nodeRights == nullptr || readElement == nullptr || writeElement == nullptr || openElement == nullptr ||
+            copyElement == nullptr || moveElement == nullptr || destroyElement == nullptr)
+            throw jbr::reg::exception("Error while saving the register content, null pointer detected.");
+        nodeHeader->InsertAfterChild(version, nodeRights);
+        readElement->SetText(rights.mRead);
+        writeElement->SetText(rights.mWrite);
+        openElement->SetText(rights.mOpen);
+        copyElement->SetText(rights.mCopy);
+        moveElement->SetText(rights.mMove);
+        destroyElement->SetText(rights.mDestroy);
+        nodeRights->InsertFirstChild(readElement);
+        nodeRights->InsertAfterChild(readElement, writeElement);
+        nodeRights->InsertAfterChild(writeElement, openElement);
+        nodeRights->InsertAfterChild(openElement, copyElement);
+        nodeRights->InsertAfterChild(copyElement, moveElement);
+        nodeRights->InsertAfterChild(moveElement, destroyElement);
     }
 
 }

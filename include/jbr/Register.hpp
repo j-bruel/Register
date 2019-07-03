@@ -120,7 +120,19 @@ namespace jbr
         //! @brief Check if a register rights is valid. The register is corrupt if the format is broken, missing mandatory field or wild characters.
         //! @param path Register path to check.
         //!
-        void    verifyRights(tinyxml2::XMLNode  *nodeHeader);
+        void    verifyRights(tinyxml2::XMLNode *nodeHeader);
+        //!
+        //! @brief Write rights information's on register.
+        //! @param reg XML document object.
+        //! @param nodeHeader Header node from register.
+        //! @param version Version node from register.
+        //! @param rights Register rights.
+        //! @warning This function must be call into a process, no check on pointers, object validity are done. File must be saved after call.
+        //!
+        void    writeRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeHeader,
+                            tinyxml2::XMLElement *version, const jbr::reg::Rights &rights) const;
+
+    private:
         //!
         //! @brief Check if a register is openable. The register is not openable if the fields read or open from register/header/rights nodes is false.
         //! @param path Register path to check.
