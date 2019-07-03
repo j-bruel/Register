@@ -6,6 +6,7 @@
 
 #include <jbr/Register.hpp>
 #include <jbr/reg/exception.hpp>
+#include <iostream>
 #include <doctest.h>
 
 TEST_CASE("Register::verify")
