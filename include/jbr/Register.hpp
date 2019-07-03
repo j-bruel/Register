@@ -10,6 +10,7 @@
 # include <jbr/reg/Rights.hpp>
 # include <tinyxml2.h>
 # include <string>
+# include <optional>
 
 //!
 //! @namespace jbr
@@ -52,9 +53,10 @@ namespace jbr
         //!
         //! @brief Create a register according a input path.
         //! @param path Register path to create.
+        //! @param rights Register rights.
         //! @warning The register must exist. Exception are raised in error cases.
         //!
-        void    create(const std::string &path) const;
+        void    create(const std::string &path, const std::optional<jbr::reg::Rights> &rights) const;
         //!
         //! @brief Open and check the validity of a existing register according a input path.
         //! @param path Register path to open.
@@ -95,8 +97,9 @@ namespace jbr
         //!
         //! @brief Create the header of the new target register.
         //! @param path Register path to create.
+        //! @param rights Register rights.
         //!
-        void    createHeader(const std::string &path) const;
+        void    createHeader(const std::string &path, const std::optional<jbr::reg::Rights> &rights) const;
 
     private:
         //!
