@@ -98,6 +98,7 @@ matrix:
             - beanstalk
             - lcov
             - llvm
+            - doxygen
           update: true
       before_script:
         - mkdir -p build && cd build # Create a build directory and go into it

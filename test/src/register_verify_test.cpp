@@ -9,12 +9,6 @@
 
 TEST_CASE("Register::verify")
 {
-    jbr::Register   mRegister;
-
-    SUBCASE("empty input path")
-    {
-
-    }
 }
 
 /**
