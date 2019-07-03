@@ -66,6 +66,11 @@ matrix:
         - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++-8 -DBUILD_TESTS=ON -DENABLE_COVERAGE=ON -DGEN_DOCS=OFF .. # Generate build with correct config.
       script:
         - cmake --build . -- -j2 # Build lib.
+        - cmake --build . --target test # Build lib.
+        - cmake --build . --target doc # Build documentation.
+        - sudo cmake --build . --target install # Install library.
+        - cmake --build . -- -j2 # Build lib.
+        - cmake --build . --target test # Build lib.
         - cmake --build . --target coverage # Build & run test / coverage.
       after_success:
         - bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
