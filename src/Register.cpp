@@ -140,6 +140,29 @@ namespace jbr
             throw jbr::reg::exception("Impossible to destroy this next register : " + path + ". Error code : " + std::to_string(ec.value()) + ", why : " + ec.message() + '.');
     }
 
+    jbr::reg::Rights    Register::rights(const std::string &path)
+    {
+        if (path.empty())
+            throw jbr::reg::exception("To get register rights, the path must not be empty.");
+        if (!exist(path))
+            throw jbr::reg::exception("Impossible to extract register rights from a not existing register : " + path + ".");
+        verify(path);
+        return (mRights);
+    }
+
+    void                Register::applyRights(const std::string &path, const jbr::reg::Rights &rights)
+    {
+        (void)rights;
+        if (path.empty())
+            throw jbr::reg::exception("To apply new register rights, the path must not be empty.");
+        if (!exist(path))
+            throw jbr::reg::exception("Impossible to apply new register rights from a not existing register : " + path + ".");
+        verify(path);
+        /**
+         * Faire l'application des droits ...
+         */
+    }
+
     void    Register::createHeader(const std::string &path, const std::optional<jbr::reg::Rights> &rights) const
     {
         tinyxml2::XMLDocument   reg;

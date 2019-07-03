@@ -61,10 +61,6 @@ TEST_CASE("Register::create")
         CHECK(content == "<register>\n"
                         "    <header>\n"
                         "        <version>1</version>\n"
-                        "        <rights>\n"
-                        "            <read>true</read>\n"
-                        "            <write>true</write>\n"
-                        "        </rights>\n"
                         "    </header>\n"
                         "    <body/>\n"
                         "</register>\n");

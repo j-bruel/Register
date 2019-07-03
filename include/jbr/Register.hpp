@@ -56,7 +56,7 @@ namespace jbr
         //! @param rights Register rights.
         //! @warning The register must exist. Exception are raised in error cases.
         //!
-        void    create(const std::string &path, const std::optional<jbr::reg::Rights> &rights) const;
+        void    create(const std::string &path, const std::optional<jbr::reg::Rights> &rights = std::nullopt) const;
         //!
         //! @brief Open and check the validity of a existing register according a input path.
         //! @param path Register path to open.
@@ -92,6 +92,20 @@ namespace jbr
         //! @param path Register path to destroy.
         //!
         void    destroy(const std::string &path);
+
+    public:
+        //!
+        //! @brief Extract register rights information's.
+        //! @param path Register path.
+        //! @return Register rights.
+        //!
+        jbr::reg::Rights    rights(const std::string &path);
+        //!
+        //! @brief Apply new rights on a register.
+        //! \param path Register path.
+        //! \param rights New rights to apply.
+        //!
+        void                applyRights(const std::string &path, const jbr::reg::Rights &rights);
 
     private:
         //!
