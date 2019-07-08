@@ -216,10 +216,10 @@ namespace jbr
 
         tinyxml2::XMLElement    *readElement = nodeRights->FirstChildElement("read");
         tinyxml2::XMLElement    *writeElement = nodeRights->FirstChildElement("write");
-        tinyxml2::XMLElement    *openElement = nodeRights->FirstChildElement("write");
-        tinyxml2::XMLElement    *copyElement = nodeRights->FirstChildElement("write");
-        tinyxml2::XMLElement    *moveElement = nodeRights->FirstChildElement("write");
-        tinyxml2::XMLElement    *destroyElement = nodeRights->FirstChildElement("write");
+        tinyxml2::XMLElement    *openElement = nodeRights->FirstChildElement("open");
+        tinyxml2::XMLElement    *copyElement = nodeRights->FirstChildElement("copy");
+        tinyxml2::XMLElement    *moveElement = nodeRights->FirstChildElement("move");
+        tinyxml2::XMLElement    *destroyElement = nodeRights->FirstChildElement("destroy");
 
         if (readElement != nullptr)
         {

@@ -408,4 +408,84 @@ TEST_CASE("Register::open")
         std::filesystem::remove("./ut_open_body_node_not_found");
     }
 
+    SUBCASE("no read right")
+    {
+        std::ofstream   reg("./ut_open_no_read_right_register");
+        std::string     msg;
+
+        reg << "<register>\n"
+               "    <header>\n"
+               "        <version>1.0</version>\n"
+               "        <rights>\n"
+               "            <read>false</read>\n"
+               "            <write>true</write>\n"
+               "        </rights>\n"
+               "    </header>\n"
+               "    <body>\n"
+               "    </body>\n"
+               "</register>\n";
+        reg.close();
+        try {
+            mRegister.open("./ut_open_no_read_right_register");
+        }
+        catch (jbr::reg::exception &e) {
+            msg = e.what();
+        }
+        CHECK(msg == "The register ./ut_open_no_read_right_register is not openable. Please check the register rights, read and open must be allowed.");
+        std::filesystem::remove("./ut_open_no_read_right_register");
+    }
+
+    SUBCASE("no open right")
+    {
+        std::ofstream   reg("./ut_open_no_open_right_register");
+        std::string     msg;
+
+        reg << "<register>\n"
+               "    <header>\n"
+               "        <version>1.0</version>\n"
+               "        <rights>\n"
+               "            <read>true</read>\n"
+               "            <write>true</write>\n"
+               "            <open>false</open>\n"
+               "        </rights>\n"
+               "    </header>\n"
+               "    <body>\n"
+               "    </body>\n"
+               "</register>\n";
+        reg.close();
+        try {
+            mRegister.open("./ut_open_no_open_right_register");
+        }
+        catch (jbr::reg::exception &e) {
+            msg = e.what();
+        }
+        CHECK(msg == "The register ./ut_open_no_open_right_register is not openable. Please check the register rights, read and open must be allowed.");
+        std::filesystem::remove("./ut_open_no_open_right_register");
+    }
+
+    SUBCASE("full right set")
+    {
+        std::ofstream   reg("./ut_open_full_right_set_register");
+        std::string     msg;
+
+        reg << "<register>\n"
+               "    <header>\n"
+               "        <version>1.0</version>\n"
+               "        <rights>\n"
+               "            <read>true</read>\n"
+               "            <write>true</write>\n"
+               "            <open>true</open>\n"
+               "            <copy>false</copy>\n"
+               "            <move>false</move>\n"
+               "            <destroy>false</destroy>\n"
+               "        </rights>\n"
+               "    </header>\n"
+               "    <body>\n"
+               "    </body>\n"
+               "</register>\n";
+        reg.close();
+        CHECK_NOTHROW(mRegister.open("./ut_open_full_right_set_register"));
+        std::filesystem::remove("./ut_open_full_right_set_register");
+    }
+
 }
