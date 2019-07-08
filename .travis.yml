@@ -48,6 +48,7 @@ matrix:
           packages:
             - g++-8
             - cmake
+            - doxygen
       before_script:
         - sudo apt-get install gcc-8 g++-8 # Install gcc & g++ 8 (for c++17 build).
         - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 800 --slave /usr/bin/g++ g++ /usr/bin/g++-8 # Link g++-8 to current used g++ binary.
@@ -91,10 +92,13 @@ matrix:
           packages:
             - clang-7.0
             - beanstalk
-            - lcov
             - llvm
           update: true
       before_script:
+        - git clone https://github.com/linux-test-project/lcov.git # Clone & install lcov last version from github sources.
+        - cd lcov
+        - sudo make install
+        - cd ..
         - mkdir -p build && cd build # Create a build directory and go into it
         - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++-8 -DBUILD_TESTS=ON -DENABLE_COVERAGE=ON -DGEN_DOCS=OFF .. # Generate build with correct config.
       env:
