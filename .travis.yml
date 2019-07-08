@@ -106,7 +106,6 @@ matrix:
       before_script:
         - g++ --version # Check g++ version
         - gcc --version # Check gcc version
-        - sudo ln -sf /usr/bin/gcov-8 /usr/bin/gcov # Link last gcov version to current used gcov.
         - gcov --version # Check gcov version.
         - git clone https://github.com/linux-test-project/lcov.git # Clone & install lcov last version from github sources.
         - cd lcov
