@@ -49,6 +49,7 @@ matrix:
             - g++-8
             - cmake
             - doxygen
+            - graphviz
       before_script:
         - sudo apt-get install gcc-8 g++-8 # Install gcc & g++ 8 (for c++17 build).
         - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 800 --slave /usr/bin/g++ g++ /usr/bin/g++-8 # Link g++-8 to current used g++ binary.
@@ -105,6 +106,8 @@ matrix:
         - cd lcov
         - sudo make install
         - cd ..
+        - (echo y;echo o conf prerequisites_policy follow;echo o conf commit) | sudo perl -MCPAN -e 'install PerlIO::gzip' # Pre-condig perl and install perl IO::gzip packet.
+        - sudo cpan JSON # Install perl JSON packet.
         - mkdir -p build && cd build # Create a build directory and go into it
         - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++-8 -DBUILD_TESTS=ON -DENABLE_COVERAGE=ON -DGEN_DOCS=ON .. # Generate build with correct config.
       script:
@@ -128,6 +131,7 @@ matrix:
             - beanstalk
             - lcov
             - llvm
+            - graphviz
           update: true
       before_script:
         - mkdir -p build && cd build # Create a build directory and go into it
