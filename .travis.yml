@@ -91,7 +91,7 @@ matrix:
         - MATRIX_EVAL="COMPILER=g++-8 && BUILD_TYPE=Release"
       if: branch != coverity_scan
     - os: osx # OSX Debug build.
-      osx_image: xcode10.2
+      osx_image: xcode10.1
       compiler: clang
       addons:
         homebrew:
