@@ -5,10 +5,26 @@
 //!
 
 #include <jbr/Register.hpp>
-#include <jbr/reg/exception.hpp>
 #include <doctest.h>
 
 TEST_CASE("Register::verify")
+{
+    jbr::Register   mRegister;
+
+    SUBCASE("empty input path")
+    {
+
+    }
+}
+
+/**
+
+ #include <jbr/Register.hpp>
+#include <jbr/reg/exception.hpp>
+#include <doctest.h>
+
+
+ TEST_CASE("Register::verify")
 {
     jbr::Register   mRegister;
 
@@ -37,9 +53,10 @@ TEST_CASE("Register::verify")
         }
         CHECK(msg == "Impossible to check the corruption status of a not existing register : ./ut_not_exist.");
     }
-
+*/
     /**
      * All usecase on validity function are done into the open function.
      */
-
+/*
 }
+*/
