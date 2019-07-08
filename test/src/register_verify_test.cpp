@@ -5,6 +5,7 @@
 //!
 
 #include <jbr/Register.hpp>
+#include <jbr/reg/exception.hpp>
 #include <doctest.h>
 
 TEST_CASE("Register::verify")
@@ -13,7 +14,15 @@ TEST_CASE("Register::verify")
 
     SUBCASE("empty input path")
     {
+        std::string msg;
 
+        try {
+            mRegister.verify("");
+        }
+        catch (jbr::reg::exception &e) {
+            msg = e.what();
+        }
+        CHECK(msg == "To check if a register is corrupt the path must not be empty.");
     }
 }
 
