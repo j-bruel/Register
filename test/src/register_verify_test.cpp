@@ -24,6 +24,24 @@ TEST_CASE("Register::verify")
         }
         CHECK(msg == "To check if a register is corrupt the path must not be empty.");
     }
+
+    SUBCASE("not existing")
+    {
+        std::string msg;
+
+        try {
+            mRegister.verify("./ut_not_exist");
+        }
+        catch (jbr::reg::exception &e) {
+            msg = e.what();
+        }
+        CHECK(msg == "Impossible to check the corruption status of a not existing register : ./ut_not_exist.");
+    }
+
+    /**
+    * All usecase on validity function are done into the open function.
+    */
+
 }
 
 /**
