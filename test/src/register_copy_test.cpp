@@ -110,4 +110,42 @@ TEST_CASE("Register::copy")
         std::filesystem::remove("./corrupt.reg");
     }
 
+    SUBCASE("copy without copy rights")
+    {
+        jbr::reg::Rights    rights;
+        std::string         msg;
+
+        rights.mCopy = false;
+        mRegister.create("./copy_without_right.reg", rights);
+        try {
+            mRegister.copy("./copy_without_right.reg", "./must_not_exist.reg");
+        }
+        catch (jbr::reg::exception &e) {
+            msg = e.what();
+        }
+        CHECK(msg == "The register ./copy_without_right.reg is not copyable. Please check the register rights, read and copy must be allow.");
+        CHECK(mRegister.exist("./copy_without_right.reg"));
+        CHECK(!mRegister.exist("./must_not_exist.reg"));
+        mRegister.destroy("./copy_without_right.reg");
+    }
+
+    SUBCASE("copy without read rights")
+    {
+        jbr::reg::Rights    rights;
+        std::string         msg;
+
+        rights.mRead = false;
+        mRegister.create("./copy_without_read_right.reg", rights);
+        try {
+            mRegister.copy("./copy_without_read_right.reg", "./must_not_exist.reg");
+        }
+        catch (jbr::reg::exception &e) {
+            msg = e.what();
+        }
+        CHECK(msg == "The register ./copy_without_read_right.reg is not copyable. Please check the register rights, read and copy must be allow.");
+        CHECK(mRegister.exist("./copy_without_read_right.reg"));
+        CHECK(!mRegister.exist("./must_not_exist.reg"));
+        std::filesystem::remove("./copy_without_read_right.reg");
+    }
+
 }
