@@ -109,4 +109,61 @@ TEST_CASE("Register::move")
         std::filesystem::remove("./corrupt.reg");
     }
 
+    SUBCASE("move without move rights")
+    {
+        jbr::reg::Rights    rights;
+        std::string         msg;
+
+        rights.mMove = false;
+        mRegister.create("./move_without_move_right.reg", rights);
+        try {
+            mRegister.move("./move_without_move_right.reg", "./must_not_exist.reg");
+        }
+        catch (jbr::reg::exception &e) {
+            msg = e.what();
+        }
+        CHECK(msg == "The register ./move_without_move_right.reg is not movable. Please check the register rights, write, read and copy must be allow.");
+        CHECK(mRegister.exist("./move_without_move_right.reg"));
+        CHECK(!mRegister.exist("./must_not_exist.reg"));
+        mRegister.destroy("./move_without_move_right.reg");
+    }
+
+    SUBCASE("move without read rights")
+    {
+        jbr::reg::Rights    rights;
+        std::string         msg;
+
+        rights.mRead = false;
+        mRegister.create("./move_without_read_right.reg", rights);
+        try {
+            mRegister.move("./move_without_read_right.reg", "./must_not_exist.reg");
+        }
+        catch (jbr::reg::exception &e) {
+            msg = e.what();
+        }
+        CHECK(msg == "The register ./move_without_read_right.reg is not movable. Please check the register rights, write, read and copy must be allow.");
+        CHECK(mRegister.exist("./move_without_read_right.reg"));
+        CHECK(!mRegister.exist("./must_not_exist.reg"));
+        std::filesystem::remove("./move_without_read_right.reg");
+    }
+
+    SUBCASE("move without write rights")
+    {
+        jbr::reg::Rights    rights;
+        std::string         msg;
+
+        rights.mWrite = false;
+        mRegister.create("./move_without_write_right.reg", rights);
+        try {
+            mRegister.move("./move_without_write_right.reg", "./must_not_exist.reg");
+        }
+        catch (jbr::reg::exception &e) {
+            msg = e.what();
+        }
+        CHECK(msg == "The register ./move_without_write_right.reg is not movable. Please check the register rights, write, read and copy must be allow.");
+        CHECK(mRegister.exist("./move_without_write_right.reg"));
+        CHECK(!mRegister.exist("./must_not_exist.reg"));
+        std::filesystem::remove("./move_without_write_right.reg");
+    }
+
 }

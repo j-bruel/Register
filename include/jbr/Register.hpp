@@ -150,7 +150,7 @@ namespace jbr
         //! @param path Register path to check.
         //! @warning Verify must be called before or other method how set all register rights.
         //!
-        inline bool isMovable() const noexcept { return (mRights.mWrite && mRights.mRead && mRights.mCopy); }
+        inline bool isMovable() const noexcept { return (mRights.mWrite && mRights.mRead && mRights.mMove); }
         //!
         //! @brief Check if a register is destroyable. The register is not destroyable if the fields write, read or destroy from register/header/rights nodes is false.
         //! @param path Register path to check.
