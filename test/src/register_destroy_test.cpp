@@ -67,84 +67,41 @@ TEST_CASE("Register::destroy")
         CHECK(msg == "Impossible to destroy a not existing register : ./ut_not_exist.");
     }
 
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-#include <doctest.h>
-#include <jbr/Register.hpp>
-#include <jbr/reg/exception.hpp>
-#include <filesystem>
-#include <iostream>
-
-TEST_CASE("Register::destroy")
-{
-    jbr::Register   mRegister;
-
-    SUBCASE("empty input path")
+    SUBCASE("destroy without destroy rights")
     {
-        std::string msg;
+        jbr::reg::Rights    rights;
+        std::string         msg;
 
+        rights.mDestroy = false;
+        mRegister.create("./destroy_without_destroy_right.reg", rights);
         try {
-            mRegister.destroy("");
+            mRegister.destroy("./destroy_without_destroy_right.reg");
         }
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
-        CHECK(msg == "To destroy a register the path must not be empty.");
+        CHECK(msg == "The register ./destroy_without_destroy_right.reg is not destroyable. Please check the register rights, read and destroy must be allow.");
+        CHECK(mRegister.exist("./destroy_without_destroy_right.reg"));
+        std::filesystem::remove("./destroy_without_destroy_right.reg");
     }
 
-    SUBCASE("destroy one")
+    SUBCASE("destroy without read rights")
     {
-        mRegister.create("./ut_destroy_one_register");
-        CHECK_NOTHROW(mRegister.destroy("./ut_destroy_one_register"));
-        CHECK(!std::filesystem::exists("./ut_destroy_one_register"));
-    }
+        jbr::reg::Rights    rights;
+        std::string         msg;
 
-    SUBCASE("destroy few")
-    {
-        mRegister.create("./ut_destroy_1");
-        mRegister.create("../ut_destroy_2");
-        mRegister.create("ut_destroy_3");
-        std::filesystem::create_directory("./nextDirectory");
-        mRegister.create("./nextDirectory/ut_destroy_4");
-        CHECK_NOTHROW(mRegister.destroy("./ut_destroy_1"));
-        CHECK_NOTHROW(mRegister.destroy("../ut_destroy_2"));
-        CHECK_NOTHROW(mRegister.destroy("ut_destroy_3"));
-        CHECK_NOTHROW(mRegister.destroy("./nextDirectory/ut_destroy_4"));
-        CHECK(!std::filesystem::exists("./ut_create_1"));
-        CHECK(!std::filesystem::exists("../ut_create_2"));
-        CHECK(!std::filesystem::exists("ut_create_3"));
-        CHECK(!std::filesystem::exists("./nextDirectory/ut_create_4"));
-        std::filesystem::remove("./ut_destroy_1");
-        std::filesystem::remove("../ut_destroy_2");
-        std::filesystem::remove("ut_destroy_3");
-        std::filesystem::remove_all("./nextDirectory");
-    }
-
-    SUBCASE("not exist")
-    {
-        std::string msg;
-
+        rights.mRead = false;
+        mRegister.create("./destroy_without_read_right.reg", rights);
         try {
-            mRegister.destroy("./ut_not_exist");
+            mRegister.destroy("./destroy_without_read_right.reg");
         }
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
-        CHECK(msg == "Impossible to destroy a not existing register : ./ut_not_exist.");
+        CHECK(msg == "The register ./destroy_without_read_right.reg is not destroyable. Please check the register rights, read and destroy must be allow.");
+        CHECK(mRegister.exist("./destroy_without_read_right.reg"));
+        std::filesystem::remove("./destroy_without_read_right.reg");
     }
 
 }
-*/
+
