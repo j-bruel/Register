@@ -5,6 +5,7 @@
 //!
 
 #include "jbr/Register.hpp"
+#include "jbr/reg/Variable.hpp"
 #include "jbr/reg/exception.hpp"
 #include <iostream>
 #include <filesystem>
@@ -12,6 +13,9 @@
 
 namespace jbr
 {
+
+    jbr::reg::Variable  Register::operator[](const std::string &path) { return (jbr::reg::Variable(path)); }
+
     void    Register::create(const std::string &path, const std::optional<jbr::reg::Rights> &rights) const
     {
         if (path.empty())

@@ -7,10 +7,11 @@
 #ifndef JBR_CREGISTER_REGISTER_VARIABLE_HPP
 # define JBR_CREGISTER_REGISTER_VARIABLE_HPP
 
+# include <string>
 # include <jbr/Register.hpp>
 
 //!
-//! @namespace jbr
+//! @namespace jbr::reg
 //!
 namespace jbr::reg
 {
@@ -22,7 +23,7 @@ namespace jbr::reg
     class Variable : private jbr::Register
     {
     private:
-        std::string mPath;
+        std::string mPath; //!< Register path handle for this variable.
 
     public:
         //!
@@ -50,10 +51,32 @@ namespace jbr::reg
         //!
         ~Variable() = default;
 
-/*    public:
-        void    operator=(const std::string &value) const;*/
-    };
+    public:
+        //!
+        //! @brief Set (create or update) a variable from the current target register.
+        //! @param key Target key to create or update.
+        //! @param value Value link to the key.
+        //!
+        void        set(const std::string &key, const std::string &value);
+        //!
+        //! @brief Extract a variable from the target register.
+        //! @param key Key to extract.
+        //! @return Value link to the key extracted.
+        //!
+        std::string get(const std::string &key);
+        //!
+        //! @brief Remove a key from the target register.
+        //! @param key Key to extract.
+        //!
+        void        remove(const std::string &key);
+        //!
+        //! @brief Check if a key exist on the target register.
+        //! @param key Key to check.
+        //! @return Key status, true if exist.
+        //!
+        bool        available(const std::string &key);
 
+    };
 }
 
 #endif //JBR_CREGISTER_REGISTER_VARIABLE_HPP

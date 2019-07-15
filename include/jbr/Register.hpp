@@ -13,10 +13,23 @@
 # include <optional>
 
 //!
+//! @namespace jbr::reg
+//!
+namespace jbr::reg
+{
+    //!
+    //! @class Variable
+    //! @note Forward declaration
+    //!
+    class Variable;
+}
+
+//!
 //! @namespace jbr
 //!
 namespace jbr
 {
+
     //!
     //! @class Register
     //! @brief Smart memory, allowing to interact and persist data in an architectural, dynamic and simplified way.
@@ -46,8 +59,13 @@ namespace jbr
         //!
         ~Register() = default;
 
-/*    public:
-        jbr::reg::Variable  operator[](const std::string &path) const;*/
+    public:
+        //!
+        //! @brief Variable extractor operator.
+        //! @param path Register path used.
+        //! @return Variable class.
+        //!
+        jbr::reg::Variable  operator[](const std::string &path);// { return (jbr::reg::Variable(path)); }
 
     public:
         //!
