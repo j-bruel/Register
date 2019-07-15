@@ -132,7 +132,7 @@ namespace jbr
             throw jbr::reg::exception("Impossible to destroy a not existing register : " + path + ".");
         verify(path);
         if (!isDestroyable())
-            throw jbr::reg::exception("The register " + path + " is not destroyable. Please check the register rights, write, read and destroy must be allow.");
+            throw jbr::reg::exception("The register " + path + " is not destroyable. Please check the register rights, read and destroy must be allow.");
 
         std::error_code     ec;
 
