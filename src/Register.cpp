@@ -159,28 +159,23 @@ namespace jbr
         if (!exist(path))
             throw jbr::reg::exception("Impossible to apply new register rights from a not existing register : " + path + ".");
         verify(path);
+        if (!mRights.mWrite)
+            throw jbr::reg::exception("The register " + path + " is not writable. Please check the register rights, write must be allow.");
 
         tinyxml2::XMLDocument   reg;
-        tinyxml2::XMLError      err = reg.LoadFile(path.c_str());
+        tinyxml2::XMLError      err;
 
-        if (err != tinyxml2::XMLError::XML_SUCCESS)
-            throw jbr::reg::exception("Parsing error while loading the register file, error code : " + std::to_string(err) + '.');
+        reg.LoadFile(path.c_str());
 
         tinyxml2::XMLNode       *nodeReg = reg.FirstChildElement("register");
-
-        if (nodeReg == nullptr)
-            throw jbr::reg::exception("Register corrupted. Did not find register node, the format is corrupt.");
-
         tinyxml2::XMLNode       *nodeHeader = nodeReg->FirstChildElement("header");
-
-        if (nodeHeader == nullptr)
-            throw jbr::reg::exception("Register corrupted. Did not find header node, the format is corrupt.");
-
         tinyxml2::XMLElement    *version = nodeHeader->FirstChildElement("version");
 
-        if (version == nullptr)
-            throw jbr::reg::exception("Register corrupted. Did not find version field from register/header nodes, mandatory field missing.");
         writeRights(&reg, nodeHeader, version, rights);
+        err = reg.SaveFile(path.c_str());
+        if (err != tinyxml2::XMLError::XML_SUCCESS)
+            throw jbr::reg::exception("Error while saving the register content, error code : " + std::to_string(err) + ".");
+
     }
 
     void    Register::createHeader(const std::string &path, const std::optional<jbr::reg::Rights> &rights) const
