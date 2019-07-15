@@ -34,7 +34,7 @@ namespace jbr::reg
         //! @brief Register variable constructor with register owner path.
         //! @param registerPath Owner register path.
         //!
-        Variable(const std::string &registerPath);
+        explicit Variable(const std::string &registerPath);
         //!
         //! @brief Copy constructor
         //! @warning Not usable.
