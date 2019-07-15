@@ -147,6 +147,8 @@ namespace jbr
         if (!exist(path))
             throw jbr::reg::exception("Impossible to extract register rights from a not existing register : " + path + ".");
         verify(path);
+        if (!mRights.mRead)
+            throw jbr::reg::exception("The register " + path + " is not readable. Please check the register rights, read must be allow.");
         return (mRights);
     }
 
