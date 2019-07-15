@@ -29,12 +29,12 @@ TEST_CASE("Register::applyRights")
         std::string msg;
 
         try {
-            jbr::reg::Variable variable("./not_exist.reg");
+            jbr::reg::Variable variable("./variable_not_exist.reg");
         }
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
-        CHECK(msg == "Register variable can not be build according a not existing register : ./not_exist.reg.");
+        CHECK(msg == "Register variable can not be build according a not existing register : ./variable_not_exist.reg.");
     }
 
     SUBCASE("valid register")
