@@ -9,6 +9,7 @@
 
 # include <string>
 # include <jbr/Register.hpp>
+# include <jbr/reg/var/Rights.hpp>
 
 //!
 //! @namespace jbr::reg
@@ -56,8 +57,9 @@ namespace jbr::reg
         //! @brief Set (create or update) a variable from the current target register.
         //! @param key Target key to create or update.
         //! @param value Value link to the key.
+        //! @param rights Variable rights.
         //!
-        void        set(const std::string &key, const std::string &value);
+        void        set(const std::string &key, const std::string &value, const std::optional<jbr::reg::var::Rights> &rights = std::nullopt);
         //!
         //! @brief Extract a variable from the target register.
         //! @param key Key to extract.
@@ -76,6 +78,17 @@ namespace jbr::reg
         //!
         bool        available(const std::string &key);
 
+    private:
+        //!
+        //! @brief Write rights information's on variable.
+        //! @param reg XML document object.
+        //! @param nodeVariable Variable node from register.
+        //! @param valueElement Value element node from variable.
+        //! @param rights Register rights.
+        //! @warning This function must be call into a process, no check on pointers, object validity are done. File must be saved after call.
+        //!
+        void    writeVariableRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeVariable,
+                                    tinyxml2::XMLElement *valueElement, const jbr::reg::var::Rights &rights) const;
     };
 }
 
