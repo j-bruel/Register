@@ -8,7 +8,7 @@
 #include <jbr/reg/Variable.hpp>
 #include <jbr/reg/exception.hpp>
 
-TEST_CASE("Register::applyRights")
+TEST_CASE("Variable::class")
 {
 
     SUBCASE("empty input path")
