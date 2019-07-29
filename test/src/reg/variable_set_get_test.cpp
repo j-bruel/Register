@@ -57,6 +57,7 @@ TEST_CASE("Variable::set_get")
                            "            <value>value</value>\n"
                            "        </variable>\n"
                            "    </body>") != 0);
+        file.close();
         mRegister.destroy("./one_set_without_rights.reg");
     }
 
