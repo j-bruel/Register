@@ -1,5 +1,5 @@
 ##
-## Cmake minimun version
+## Cmake minimum version
 ##
 cmake_minimum_required(VERSION 3.1)
 
@@ -17,7 +17,7 @@ set(cRegister_VERSION "${cRegister_VERSION_MAJOR}.${cRegister_VERSION_MINOR}.${c
 set(PROJECT_DESCRIPTION "\"Register C++ API. Smart memory, allowing to interact and persist data in an architectural, dynamic and simplified way.\"")
 
 ##
-## Projet Name
+## Project Name
 ##
 project(cRegister VERSION ${cRegister_VERSION} DESCRIPTION ${PROJECT_DESCRIPTION})
 
@@ -33,7 +33,7 @@ configure_file(include/jbr/config.hpp.in
                ${CMAKE_BINARY_DIR}/include/jbr/config.hpp)
 
 ##
-## C++ Stantard compilation
+## C++ standard compilation
 ##
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -148,7 +148,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${cRegister_VERSION})
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include ${CMAKE_BINARY_DIR}/include)
 
 ##
-## Library linkage with fystem & stdc++ lib on macos only.
+## Library linkage with system & stdc++ lib on macos only.
 ##
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_link_libraries(${PROJECT_NAME} PUBLIC stdc++fs)
