@@ -10,13 +10,13 @@
 
 namespace jbr::reg
 {
-    const std::string   getAbsolutePath(const std::string &relativePath)
+    std::string     getAbsolutePath(const std::string &relativePath)
     {
         if (relativePath.empty())
             throw jbr::reg::exception("Relative input string must not be empty.");
 
-        std::error_code     ec;
-        const std::string   absolutePath(std::filesystem::canonical(std::filesystem::path(relativePath), ec).string());
+        std::error_code ec;
+        std::string     absolutePath(std::filesystem::canonical(std::filesystem::path(relativePath), ec).string());
 
         if (ec)
             throw jbr::reg::exception("Impossible to extract the absolute path from : " + relativePath + ". Error code : " + std::to_string(ec.value()) + ", why : " + ec.message() + ".");

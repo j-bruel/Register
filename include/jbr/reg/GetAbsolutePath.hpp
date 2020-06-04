@@ -16,12 +16,11 @@ namespace jbr::reg
 {
 
     //!
-    //! @static
     //! @brief Extract absolute path from relative path.
     //! @param relativePath Relative reference path.
     //! @return Absolute path generate from relative input path.
     //!
-    const std::string    getAbsolutePath(const std::string &relativePath);
+    [[nodiscard]] std::string    getAbsolutePath(const std::string &relativePath);
 
 }
 
