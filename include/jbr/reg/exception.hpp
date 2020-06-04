@@ -31,7 +31,7 @@ namespace jbr::reg
         //! @brief Custom exception.
         //! @param msg Exception message.
         //!
-        explicit exception(const std::string &msg) : mMsg(msg) {}
+        explicit exception(std::string &&msg) : mMsg(std::move(msg)) {}
         //!
         //! @brief Exception throw destructor.
         //!
@@ -42,7 +42,7 @@ namespace jbr::reg
         //! @brief What exception information.
         //! @return What message.
         //!
-        const char  *what() const noexcept override { return (mMsg.c_str()); }
+        [[nodiscard]] const char  *what() const noexcept override { return (mMsg.c_str()); }
     };
 
 }
