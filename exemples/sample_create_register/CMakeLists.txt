@@ -1,17 +1,17 @@
 ##
-## Cmake minimun version
+## Cmake minimum version
 ##
 cmake_minimum_required(VERSION 3.13)
 
 ##
-## Projet Name
+## Project Name
 ##
 project(sample_create_register)
 
 ##
-## C++ Stantard compilation
+## C++ standard compilation
 ##
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 ##
 ## Binary location
@@ -42,11 +42,11 @@ endif(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "G
 ##
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     message(STATUS              "Unix system detected.")
-    set(OS_DYNAMIQUE_LIB_EXT    "so")
+    set(OS_DYNAMIC_LIB_EXT    "so")
 endif(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 if (WIN32 OR MSVC OR MSYS OR MINGW)
     message(STATUS              "Windows OS detected.")
-    set(OS_DYNAMIQUE_LIB_EXT    "lib")
+    set(OS_DYNAMIC_LIB_EXT    "lib")
 endif (WIN32 OR MSVC OR MSYS OR MINGW)
 
 ##
@@ -62,20 +62,20 @@ if (REGISTER_LIBS_DIR)
     message(STATUS  "The Register library directory (REGISTER_LIBS_DIR) is " ${REGISTER_LIBS_DIR})
 else()
     if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        message(STATUS  "The register library directory (REGISTER_LIBS_DIR) is undefine.")
+        message(STATUS  "The register library directory (REGISTER_LIBS_DIR) is undefined.")
     endif(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     if (WIN32 OR MSVC OR MSYS OR MINGW)
-        message(FATAL_ERROR "The register library directory (REGISTER_LIBS_DIR) is undefine. This variable must be define in cmake argument or in the environment.")
+        message(FATAL_ERROR "The register library directory (REGISTER_LIBS_DIR) is undefined. This variable must be define in cmake argument or in the environment.")
     endif (WIN32 OR MSVC OR MSYS OR MINGW)
 endif()
 if (REGISTER_HEADERS_DIR)
     message(STATUS  "The Register headers directory (REGISTER_HEADERS_DIR) is " ${REGISTER_HEADERS_DIR})
 else()
     if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        message(STATUS  "The register headers directory (REGISTER_HEADERS_DIR) is undefine.")
+        message(STATUS  "The register headers directory (REGISTER_HEADERS_DIR) is undefined.")
     endif(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     if (WIN32 OR MSVC OR MSYS OR MINGW)
-        message(FATAL_ERROR "The register headers directory (REGISTER_HEADERS_DIR) is undefine. This variable must be define in cmake argument or in the environment.")
+        message(FATAL_ERROR "The register headers directory (REGISTER_HEADERS_DIR) is undefined. This variable must be define in cmake argument or in the environment.")
     endif (WIN32 OR MSVC OR MSYS OR MINGW)
 
 endif()
@@ -100,7 +100,7 @@ file(GLOB_RECURSE INCLUDE_FILES         ${CMAKE_CURRENT_SOURCE_DIR}/include/*.hp
 add_executable(${PROJECT_NAME}          ${SOURCE_FILES} ${INCLUDE_FILES})
 
 if (REGISTER_LIBS_DIR)
-    target_link_libraries(${PROJECT_NAME}   ${REGISTER_LIBS_DIR}/cRegister.${OS_DYNAMIQUE_LIB_EXT})
+    target_link_libraries(${PROJECT_NAME}   ${REGISTER_LIBS_DIR}/cRegister.${OS_DYNAMIC_LIB_EXT})
 else()
     target_link_libraries(${PROJECT_NAME}   cRegister)
 endif(REGISTER_LIBS_DIR)
