@@ -193,6 +193,7 @@ install(TARGETS ${PROJECT_NAME}
 ##
 install(DIRECTORY include/ DESTINATION include PATTERN "config.hpp.in" EXCLUDE) # Install our main header files
 install(FILES ${CMAKE_BINARY_DIR}/include/jbr/config.hpp DESTINATION include/jbr) # Install our configuration file
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/third_party/tinyxml2/tinyxml2.h DESTINATION include/) # Install the tinyxml2 header file.
 
 ##
 ## Install the project's extra files
