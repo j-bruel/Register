@@ -29,8 +29,7 @@ set(PROJ_NAME "\"${PROJECT_NAME}\"")
 ##
 ## Set configuration file.
 ##
-configure_file(include/jbr/config.hpp.in
-               ${CMAKE_BINARY_DIR}/include/jbr/config.hpp)
+configure_file(include/jbr/config.hpp.in ${CMAKE_BINARY_DIR}/include/jbr/config.hpp)
 
 ##
 ## C++ standard compilation
@@ -78,7 +77,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/third_party/tinyxml2)
 ## Cmake build configuration options.
 ##
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
-    message(STATUS "Setting build type to 'Debug' as no build type was specified.")
+    message(STATUS  "Setting build type to 'Debug' as no build type was specified.")
     set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the build type (Debug/Release)" FORCE)
 endif (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 
@@ -94,24 +93,24 @@ if (ENABLE_COVERAGE AND NOT CMAKE_CONFIGURATION_TYPES)
         setup_target_for_coverage(NAME coverage EXECUTABLE ctest DEPENDENCIES coverage)
 else (ENABLE_COVERAGE AND NOT CMAKE_CONFIGURATION_TYPES)
     if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-        set(CMAKE_C_COMPILER    "/usr/bin/clang-7.0")
-        set(CMAKE_CXX_COMPILER  "/usr/bin/clang++-7.0")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -stdlib=libstdc++ -lstdc++fs -c")
-        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -std=c++17 -stdlib=libstdc++ -lstdc++fs -c")
+        set(CMAKE_C_COMPILER        "/usr/bin/clang-7.0")
+        set(CMAKE_CXX_COMPILER      "/usr/bin/clang++-7.0")
+        set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -std=c++17 -stdlib=libstdc++ -lstdc++fs -c")
+        set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_DEBUG} -std=c++17 -stdlib=libstdc++ -lstdc++fs -c")
         set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -std=c++17 -stdlib=libstdc++ -lstdc++fs -c")
     endif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         ##
         ## Set Linux compilation flag.
         ##
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall -Wextra")
-        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
+        set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -W -Wall -Wextra")
+        set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_DEBUG} -g")
         set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2")
     elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         ##
         ## Set Windows compilation flag.
         ##
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /WX")
+        set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} /W4 /WX")
         set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2")
         ##
         ## Export no symbols by default (if the compiler supports it).
