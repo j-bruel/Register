@@ -10,7 +10,7 @@
 
 namespace jbr::reg
 {
-    std::string     getAbsolutePath(const std::string &relativePath)
+    std::string     getAbsolutePath(const std::string &relativePath) noexcept(false)
     {
         if (relativePath.empty())
             throw jbr::reg::exception("Relative input string must not be empty.");
