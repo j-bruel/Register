@@ -117,7 +117,7 @@ matrix:
         - mkdir -p build && cd build # Create a build directory and go into it
         - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=/Applications/Xcode-10.2.1.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -DCMAKE_CXX_COMPILER=/Applications/Xcode-10.2.1.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -DBUILD_TESTS=ON -DENABLE_COVERAGE=OFF -DGEN_DOCS=ON .. # Generate build with correct config.
       script:
-        - cmake --build . -- -j2 # Build lib.
+        - cmake --build . -- -j2 -DCMAKE_C_COMPILER=/Applications/Xcode-10.2.1.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -DCMAKE_CXX_COMPILER=/Applications/Xcode-10.2.1.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ # Build lib.
         - cmake --build . --target test # Build lib.
         - cmake --build . --target doc # Build documentation.
         - sudo cmake --build . --target install # Install library.

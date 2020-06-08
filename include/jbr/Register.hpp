@@ -186,6 +186,13 @@ namespace jbr
         //!
         void    writeRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeHeader,
                             tinyxml2::XMLElement *version, const jbr::reg::Rights &rights) const noexcept(false);
+        //!
+        //! @brief Query a boolean into a xml element field.
+        //! @param xmlElement XML element to insert the boolean.
+        //! @param status Boolean to insert.
+        //! @throw If the element is set and the query failed.
+        //!
+        static void queryRightToXMLElement(tinyxml2::XMLElement *xmlElement, bool *status) noexcept(false);
 
     private:
         //!

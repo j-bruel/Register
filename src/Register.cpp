@@ -162,28 +162,24 @@ namespace jbr
     void    Register::createHeader(const std::string &path, const std::optional<jbr::reg::Rights> &rights) const noexcept(false)
     {
         tinyxml2::XMLDocument   reg;
-        tinyxml2::XMLNode       *nodeReg = reg.NewElement("register");
-        tinyxml2::XMLNode       *nodeHeader = reg.NewElement("header");
-        tinyxml2::XMLNode       *nodeBody = reg.NewElement("body");
-        tinyxml2::XMLElement    *version = reg.NewElement("version");
+        tinyxml2::XMLNode       *nodeReg = newXMLElement(&reg, "register");
+        tinyxml2::XMLNode       *nodeHeader = newXMLElement(&reg, "header");
+        tinyxml2::XMLNode       *nodeBody = newXMLElement(&reg, "body");
+        tinyxml2::XMLElement    *version = newXMLElement(&reg, "version");
 
-        if (nodeReg == nullptr || nodeHeader == nullptr || nodeBody == nullptr || version == nullptr)
-            throw jbr::reg::exception("Error while saving the register content, null pointer detected.");
         reg.InsertFirstChild(nodeReg);
         nodeReg->InsertFirstChild(nodeHeader);
         nodeReg->InsertAfterChild(nodeHeader, nodeBody);
         version->SetText(1.0);
         nodeHeader->InsertEndChild(version);
-
         if (rights != std::nullopt)
             writeRights(&reg, nodeHeader, version, rights.value());
         saveXMLFile(reg, path.c_str());
     }
 
-    void    Register::verifyRights(tinyxml2::XMLNode  *nodeHeader) noexcept(false)
+    void    Register::verifyRights(tinyxml2::XMLNode *nodeHeader) noexcept(false)
     {
         tinyxml2::XMLNode       *nodeRights = nodeHeader->FirstChildElement("rights");
-        tinyxml2::XMLError      err;
 
         if (nodeRights == nullptr)
             return ;
@@ -195,42 +191,12 @@ namespace jbr
         tinyxml2::XMLElement    *moveElement = nodeRights->FirstChildElement("move");
         tinyxml2::XMLElement    *destroyElement = nodeRights->FirstChildElement("destroy");
 
-        if (readElement != nullptr)
-        {
-            err = readElement->QueryBoolText(&mRights.mRead);
-            if (err != tinyxml2::XMLError::XML_SUCCESS)
-                throw jbr::reg::exception("Register corrupted. Field read from register/header/rights nodes is invalid, error code : " + std::to_string(err) + '.');
-        }
-        if (writeElement != nullptr)
-        {
-            err = writeElement->QueryBoolText(&mRights.mWrite);
-            if (err != tinyxml2::XMLError::XML_SUCCESS)
-                throw jbr::reg::exception("Register corrupted. Field write from register/header/rights nodes is invalid, error code : " + std::to_string(err) + '.');
-        }
-        if (openElement != nullptr)
-        {
-            err = openElement->QueryBoolText(&mRights.mOpen);
-            if (err != tinyxml2::XMLError::XML_SUCCESS)
-                throw jbr::reg::exception("Register corrupted. Field open from register/header/rights nodes is invalid, error code : " + std::to_string(err) + '.');
-        }
-        if (copyElement != nullptr)
-        {
-            err = copyElement->QueryBoolText(&mRights.mCopy);
-            if (err != tinyxml2::XMLError::XML_SUCCESS)
-                throw jbr::reg::exception("Register corrupted. Field copy from register/header/rights nodes is invalid, error code : " + std::to_string(err) + '.');
-        }
-        if (moveElement != nullptr)
-        {
-            err = moveElement->QueryBoolText(&mRights.mMove);
-            if (err != tinyxml2::XMLError::XML_SUCCESS)
-                throw jbr::reg::exception("Register corrupted. Field move from register/header/rights nodes is invalid, error code : " + std::to_string(err) + '.');
-        }
-        if (destroyElement != nullptr)
-        {
-            err = destroyElement->QueryBoolText(&mRights.mDestroy);
-            if (err != tinyxml2::XMLError::XML_SUCCESS)
-                throw jbr::reg::exception("Register corrupted. Field destroy from register/header/rights nodes is invalid, error code : " + std::to_string(err) + '.');
-        }
+        queryRightToXMLElement(readElement, &mRights.mRead);
+        queryRightToXMLElement(writeElement, &mRights.mWrite);
+        queryRightToXMLElement(openElement, &mRights.mOpen);
+        queryRightToXMLElement(copyElement, &mRights.mCopy);
+        queryRightToXMLElement(moveElement, &mRights.mMove);
+        queryRightToXMLElement(destroyElement, &mRights.mDestroy);
     }
 
     void    Register::writeRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeHeader,
@@ -263,6 +229,18 @@ namespace jbr
         nodeRights->InsertAfterChild(openElement, copyElement);
         nodeRights->InsertAfterChild(copyElement, moveElement);
         nodeRights->InsertAfterChild(moveElement, destroyElement);
+    }
+
+    void    Register::queryRightToXMLElement(tinyxml2::XMLElement *xmlElement, bool *status) noexcept(false)
+    {
+        tinyxml2::XMLError      err;
+
+        if (xmlElement != nullptr)
+        {
+            err = xmlElement->QueryBoolText(status);
+            if (err != tinyxml2::XMLError::XML_SUCCESS)
+                throw jbr::reg::exception("Register corrupted. Field " + std::string(xmlElement->Name()) + " from register/header/rights nodes is invalid, error code : " + std::to_string(err) + '.');
+        }
     }
 
     tinyxml2::XMLElement    *Register::getSubXMLElement(tinyxml2::XMLNode *node, const char *subNodeName) noexcept(false)
