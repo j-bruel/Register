@@ -135,7 +135,7 @@ namespace jbr
         //! @return Extract element.
         //! @throw Throw a exception when the sub node can't be extracted.
         //!
-        static tinyxml2::XMLElement    *getSubXMLElement(tinyxml2::XMLNode *node, const char *subElementName) noexcept(false);
+        tinyxml2::XMLElement    *getSubXMLElement(tinyxml2::XMLNode *node, const char *subElementName) const noexcept(false);
         //!
         //! @static
         //! @brief Create a new element according a xml document.
@@ -144,7 +144,7 @@ namespace jbr
         //! @return Created element.
         //! @throw Throw a exception when the sub element can't be created.
         //!
-        static tinyxml2::XMLElement *newXMLElement(tinyxml2::XMLDocument *xmlDocument, const char *elementName) noexcept(false);
+        tinyxml2::XMLElement    *newXMLElement(tinyxml2::XMLDocument *xmlDocument, const char *elementName) const noexcept(false);
         //!
         //! @static
         //! @brief Load xml file with error handling.
@@ -152,7 +152,7 @@ namespace jbr
         //! @param filePath XML file path to load.
         //! @throw Raise a exception if the file loading is impossible.
         //!
-        static void loadXMLFile(tinyxml2::XMLDocument &xmlDocument, const char *filePath) noexcept(false);
+        void    loadXMLFile(tinyxml2::XMLDocument &xmlDocument, const char *filePath) const noexcept(false);
         //!
         //! @static
         //! @brief Save xml file with error handling.
@@ -160,7 +160,7 @@ namespace jbr
         //! @param filePath XML file path to save.
         //! @throw Raise a exception if the file saving is impossible.
         //!
-        static void saveXMLFile(tinyxml2::XMLDocument &xmlDocument, const char *filePath) noexcept(false);
+        void    saveXMLFile(tinyxml2::XMLDocument &xmlDocument, const char *filePath) const noexcept(false);
 
     private:
         //!
@@ -192,7 +192,7 @@ namespace jbr
         //! @param status Boolean to insert.
         //! @throw If the element is set and the query failed.
         //!
-        static void queryRightToXMLElement(tinyxml2::XMLElement *xmlElement, bool *status) noexcept(false);
+        void    queryRightToXMLElement(tinyxml2::XMLElement *xmlElement, bool *status) noexcept(false);
 
     private:
         //!

@@ -205,17 +205,14 @@ namespace jbr
         if (reg == nullptr || nodeHeader == nullptr || version == nullptr)
             throw jbr::reg::exception("Pointers must not be null during writing rights process.");
 
-        tinyxml2::XMLNode       *nodeRights = reg->NewElement("rights");
-        tinyxml2::XMLElement    *readElement = reg->NewElement("read");
-        tinyxml2::XMLElement    *writeElement = reg->NewElement("write");
-        tinyxml2::XMLElement    *openElement = reg->NewElement("open");
-        tinyxml2::XMLElement    *copyElement = reg->NewElement("copy");
-        tinyxml2::XMLElement    *moveElement = reg->NewElement("move");
-        tinyxml2::XMLElement    *destroyElement = reg->NewElement("destroy");
+        tinyxml2::XMLNode       *nodeRights = newXMLElement(reg, "rights");
+        tinyxml2::XMLElement    *readElement = newXMLElement(reg, "read");
+        tinyxml2::XMLElement    *writeElement = newXMLElement(reg, "write");
+        tinyxml2::XMLElement    *openElement = newXMLElement(reg, "open");
+        tinyxml2::XMLElement    *copyElement = newXMLElement(reg, "copy");
+        tinyxml2::XMLElement    *moveElement = newXMLElement(reg, "move");
+        tinyxml2::XMLElement    *destroyElement = newXMLElement(reg, "destroy");
 
-        if (nodeRights == nullptr || readElement == nullptr || writeElement == nullptr || openElement == nullptr ||
-            copyElement == nullptr || moveElement == nullptr || destroyElement == nullptr)
-            throw jbr::reg::exception("Error while saving the register content, null pointer detected.");
         nodeHeader->InsertAfterChild(version, nodeRights);
         readElement->SetText(rights.mRead);
         writeElement->SetText(rights.mWrite);
@@ -243,7 +240,7 @@ namespace jbr
         }
     }
 
-    tinyxml2::XMLElement    *Register::getSubXMLElement(tinyxml2::XMLNode *node, const char *subNodeName) noexcept(false)
+    tinyxml2::XMLElement    *Register::getSubXMLElement(tinyxml2::XMLNode *node, const char *subNodeName) const noexcept(false)
     {
         if (node == nullptr)
             throw jbr::reg::exception("Error while extracting sub node, the parent node is null.");
@@ -257,7 +254,7 @@ namespace jbr
         return (subNode);
     }
 
-    tinyxml2::XMLElement    *Register::newXMLElement(tinyxml2::XMLDocument *xmlDocument, const char *elementName) noexcept(false)
+    tinyxml2::XMLElement    *Register::newXMLElement(tinyxml2::XMLDocument *xmlDocument, const char *elementName) const noexcept(false)
     {
         if (xmlDocument == nullptr)
             throw jbr::reg::exception("Error while creating a new element, the parent document is null.");
@@ -271,7 +268,7 @@ namespace jbr
         return (newElement);
     }
 
-    void    Register::loadXMLFile(tinyxml2::XMLDocument &xmlDocument, const char *filePath) noexcept(false)
+    void    Register::loadXMLFile(tinyxml2::XMLDocument &xmlDocument, const char *filePath) const noexcept(false)
     {
         if (filePath == nullptr)
             throw jbr::reg::exception("The register path to load is null.");
@@ -282,7 +279,7 @@ namespace jbr
             throw jbr::reg::exception("Parsing error while loading the register file, error code : " + std::to_string(err) + '.');
     }
 
-    void    Register::saveXMLFile(tinyxml2::XMLDocument &xmlDocument, const char *filePath) noexcept(false)
+    void    Register::saveXMLFile(tinyxml2::XMLDocument &xmlDocument, const char *filePath) const noexcept(false)
     {
         if (filePath == nullptr)
             throw jbr::reg::exception("The register path to save is null.");
