@@ -91,18 +91,16 @@ matrix:
         - MATRIX_EVAL="COMPILER=g++-8 && BUILD_TYPE=Release"
       if: branch != coverity_scan
     - os: osx # OSX Debug build.
-      osx_image: xcode10.2
+      osx_image: xcode11.5
       compiler: clang
       addons:
         homebrew:
           packages:
             - beanstalk
             - llvm
-            - gcc-c++
-            - libc++-dev
-            - clang++
             - doxygen
             - graphviz
+            - gcc
           update: true
       before_script:
         - g++ --version # Check g++ version
@@ -125,7 +123,7 @@ matrix:
         - MATRIX_EVAL="COMPILER=clang++ && BUILD_TYPE=Debug"
       if: branch != coverity_scan
     - os: osx # OSX Release build.
-      osx_image: xcode10.2
+      osx_image: xcode11.5
       compiler: clang
       addons:
         homebrew:
@@ -133,6 +131,7 @@ matrix:
             - beanstalk
             - lcov
             - llvm
+            - gcc
           update: true
       before_script:
         - mkdir -p build && cd build # Create a build directory and go into it
