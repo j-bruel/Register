@@ -112,15 +112,15 @@ matrix:
         - cd lcov
         - sudo make install
         - cd ..
-        - (echo y;echo o conf prerequisites_policy follow;echo o conf commit) | sudo perl -MCPAN -e 'install PerlIO::gzip' # Pre-condig perl and install perl IO::gzip packet.
+        - (echo y;echo o conf prerequisites_policy follow;echo o conf commit) | sudo perl -MCPAN -e 'install PerlIO::gzip' # Pre-config perl and install perl IO::gzip packet.
         - sudo cpan JSON # Install perl JSON packet.
         - mkdir -p build && cd build # Create a build directory and go into it
-        - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=/usr/bin/clang++ -DBUILD_TESTS=ON -DENABLE_COVERAGE=OFF -DGEN_DOCS=ON .. # Generate build with correct config.
-#      script:
-        #        - cmake --build . -- -j2 # Build lib.
-        #- cmake --build . --target test # Build lib.
-        #- cmake --build . --target doc # Build documentation.
-        #- sudo cmake --build . --target install # Install library.
+        - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ -DBUILD_TESTS=ON -DENABLE_COVERAGE=OFF -DGEN_DOCS=ON .. # Generate build with correct config.
+      script:
+        - cmake --build . -- -j2 # Build lib.
+        - cmake --build . --target test # Build lib.
+        - cmake --build . --target doc # Build documentation.
+        - sudo cmake --build . --target install # Install library.
       env:
         - MATRIX_EVAL="COMPILER=clang++ && BUILD_TYPE=Debug"
       if: branch != coverity_scan

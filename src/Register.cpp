@@ -47,21 +47,15 @@ namespace jbr
 
     void    Register::verify(const std::string &path) noexcept(false)
     {
+        tinyxml2::XMLDocument   reg;
+
         if (path.empty())
             throw jbr::reg::exception("To check if a register is corrupt the path must not be empty.");
         if (!exist(path))
             throw jbr::reg::exception("Impossible to check the corruption status of a not existing register : " + path + '.');
+        loadXMLFile(reg, path.c_str());
 
-        tinyxml2::XMLDocument   reg;
-        tinyxml2::XMLError      err = reg.LoadFile(path.c_str());
-
-        if (err != tinyxml2::XMLError::XML_SUCCESS)
-            throw jbr::reg::exception("Parsing error while loading the register file, error code : " + std::to_string(err) + '.');
-
-        tinyxml2::XMLNode       *nodeReg = reg.FirstChildElement("register");
-
-        if (nodeReg == nullptr)
-            throw jbr::reg::exception("Register corrupted. Did not find register node, the format is corrupt.");
+        tinyxml2::XMLNode       *nodeReg = getSubXMLNode(&reg, "register");
 
         tinyxml2::XMLNode       *nodeHeader = nodeReg->FirstChildElement("header");
 
@@ -74,6 +68,7 @@ namespace jbr
             throw jbr::reg::exception("Register corrupted. Did not find version field from register/header nodes, mandatory field missing.");
 
         double  versionValue;
+        tinyxml2::XMLError      err;
 
         err = version->QueryDoubleText(&versionValue);
         if (err != tinyxml2::XMLError::XML_SUCCESS)
@@ -289,6 +284,45 @@ namespace jbr
         nodeRights->InsertAfterChild(openElement, copyElement);
         nodeRights->InsertAfterChild(copyElement, moveElement);
         nodeRights->InsertAfterChild(moveElement, destroyElement);
+    }
+
+    tinyxml2::XMLNode   *Register::getSubXMLNode(tinyxml2::XMLNode *node, const char *subNodeName) noexcept(false)
+    {
+        if (node == nullptr)
+            throw jbr::reg::exception("Error while extracting sub node, the parent node is null.");
+        if (subNodeName == nullptr)
+            throw jbr::reg::exception("The sub node name to extract is null.");
+
+        tinyxml2::XMLNode   *subNode = node->FirstChildElement(subNodeName);
+
+        if (subNode == nullptr)
+            throw jbr::reg::exception("Error while extract the sub node, the result is null. The sub node " + std::string(subNodeName) + " does not exist.");
+        return (subNode);
+    }
+
+    tinyxml2::XMLElement    *Register::newXMLElement(tinyxml2::XMLDocument *xmlDocument, const char *elementName) noexcept(false)
+    {
+        if (xmlDocument == nullptr)
+            throw jbr::reg::exception("Error while creating a new element, the parent document is null.");
+        if (elementName == nullptr)
+            throw jbr::reg::exception("The new element name to create is null.");
+
+        tinyxml2::XMLElement   *newElement = xmlDocument->NewElement(elementName);
+
+        if (newElement == nullptr)
+            throw jbr::reg::exception("Error while creating a new element, the result is null. The element " + std::string(elementName) + " can't be created.");
+        return (newElement);
+    }
+
+    void                    Register::loadXMLFile(tinyxml2::XMLDocument &xmlDocument, const char *filePath) noexcept(false)
+    {
+        if (filePath == nullptr)
+            throw jbr::reg::exception("The register path to load is null.");
+
+        tinyxml2::XMLError      err = xmlDocument.LoadFile(filePath);
+
+        if (err != tinyxml2::XMLError::XML_SUCCESS)
+            throw jbr::reg::exception("Parsing error while loading the register file, error code : " + std::to_string(err) + '.');
     }
 
 }

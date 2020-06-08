@@ -24,16 +24,18 @@ namespace jbr::reg
                               const std::optional<jbr::reg::var::perm::Rights> &rights)
     {
         tinyxml2::XMLDocument   reg;
+        tinyxml2::XMLError      err;
 
         if (key.empty())
             throw jbr::reg::exception("Impossible to set a empty key.");
         open(mPath);
-        reg.LoadFile(mPath.c_str());
+        err = reg.LoadFile(mPath.c_str());
+        if (err != tinyxml2::XMLError::XML_SUCCESS)
+            throw jbr::reg::exception("Parsing error while loading the register file, error code : " + std::to_string(err) + '.');
 
         tinyxml2::XMLElement    *nodeVariable = newXMLElement(&reg, "variable");
         tinyxml2::XMLElement    *keyElementField = newXMLElement(&reg, "key");
         tinyxml2::XMLElement    *valueElementField = newXMLElement(&reg, "value");
-        tinyxml2::XMLError      err;
 
         getSubXMLNode(getSubXMLNode(&reg, "register"), "body")->InsertEndChild(nodeVariable);
         keyElementField->SetText(key.c_str());
@@ -80,34 +82,6 @@ namespace jbr::reg
          */
         std::cout << "EXIST:<" << key << ">" << std::endl;
         return (true);
-    }
-
-    tinyxml2::XMLNode   *Variable::getSubXMLNode(tinyxml2::XMLNode *node, const char *subNodeName) noexcept(false)
-    {
-        if (node == nullptr)
-            throw jbr::reg::exception("Error while extracting sub node, the parent node is null.");
-        if (subNodeName == nullptr)
-            throw jbr::reg::exception("The sub node name to extract is null.");
-
-        tinyxml2::XMLNode   *subNode = node->FirstChildElement(subNodeName);
-
-        if (subNode == nullptr)
-            throw jbr::reg::exception("Error while extract the sub node, the result is null. The sub node " + std::string(subNodeName) + " does not exist.");
-        return (subNode);
-    }
-
-    tinyxml2::XMLElement    *Variable::newXMLElement(tinyxml2::XMLDocument *xmlDocument, const char *elementName) noexcept(false)
-    {
-        if (xmlDocument == nullptr)
-            throw jbr::reg::exception("Error while creating a new element, the parent document is null.");
-        if (elementName == nullptr)
-            throw jbr::reg::exception("The new element name to create is null.");
-
-        tinyxml2::XMLElement   *newElement = xmlDocument->NewElement(elementName);
-
-        if (newElement == nullptr)
-            throw jbr::reg::exception("Error while creating a new element, the result is null. The element " + std::string(elementName) + " can't be created.");
-        return (newElement);
     }
 
     void    Variable::writeVariableRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeVariable,

@@ -121,10 +121,38 @@ namespace jbr
         jbr::reg::Rights    rights(const std::string &path) noexcept(false);
         //!
         //! @brief Apply new rights on a register.
-        //! \param path Register path.
-        //! \param rights New rights to apply.
+        //! @param path Register path.
+        //! @param rights New rights to apply.
         //!
         void                applyRights(const std::string &path, const jbr::reg::Rights &rights) noexcept(false);
+
+    protected:
+        //!
+        //! @static
+        //! @brief Extract a sub node from a xml node.
+        //! @param node Parent node.
+        //! @param subNodeName Name of the sub node to extract.
+        //! @return Extract node.
+        //! @throw Throw a exception when the sub node can't be extracted.
+        //!
+        static tinyxml2::XMLNode    *getSubXMLNode(tinyxml2::XMLNode *node, const char *subNodeName) noexcept(false);
+        //!
+        //! @static
+        //! @brief Create a new element according a xml document.
+        //! @param xmlDocument A Document binds together all the functionality.
+        //! @param elementName Name of the new element.
+        //! @return Created element.
+        //! @throw Throw a exception when the sub element can't be created.
+        //!
+        static tinyxml2::XMLElement *newXMLElement(tinyxml2::XMLDocument *xmlDocument, const char *elementName) noexcept(false);
+        //!
+        //! @static
+        //! @brief Load xml file with error handling.
+        //! @param xmlDocument XML documentation to load.
+        //! @param filePath XML file path to load.
+        //! @throw Raise a exception if the file loading is impossible.
+        //!
+        static void                 loadXMLFile(tinyxml2::XMLDocument &xmlDocument, const char *filePath) noexcept(false);
 
     private:
         //!
@@ -157,24 +185,28 @@ namespace jbr
         //! @param path Register path to check.
         //! @warning Verify must be called before or other method how set all register rights.
         //!
+        [[nodiscard]]
         inline bool isOpenable() const noexcept { return (mRights.mRead && mRights.mOpen); }
         //!
         //! @brief Check if a register is copyable. The register is not copyable if the fields read or copy from register/header/rights nodes is false.
         //! @param path Register path to check.
         //! @warning Verify must be called before or other method how set all register rights.
         //!
+        [[nodiscard]]
         inline bool isCopyable() const noexcept { return (mRights.mRead && mRights.mCopy); }
         //!
         //! @brief Check if a register is movable. The register is not movable if the fields write, read or copy from register/header/rights nodes is false.
         //! @param path Register path to check.
         //! @warning Verify must be called before or other method how set all register rights.
         //!
+        [[nodiscard]]
         inline bool isMovable() const noexcept { return (mRights.mWrite && mRights.mRead && mRights.mMove); }
         //!
         //! @brief Check if a register is destroyable. The register is not destroyable if the fields read or destroy from register/header/rights nodes is false.
         //! @param path Register path to check.
         //! @warning Verify must be called before or other method how set all register rights.
         //!
+        [[nodiscard]]
         inline bool isDestroyable() const noexcept { return (mRights.mRead && mRights.mDestroy); }
     };
 }

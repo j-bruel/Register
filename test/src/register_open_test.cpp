@@ -125,7 +125,7 @@ TEST_CASE("Register::open")
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
-        CHECK(msg == "Register corrupted. Did not find register node, the format is corrupt.");
+        CHECK(msg == "Error while extract the sub node, the result is null. The sub node register does not exist.");
         std::filesystem::remove("./ut_open_register_node_not_found");
     }
 
