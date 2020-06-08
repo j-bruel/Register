@@ -121,9 +121,9 @@ matrix:
         - cd ..
         - (echo y;echo o conf prerequisites_policy follow;echo o conf commit) | sudo perl -MCPAN -e 'install PerlIO::gzip' # Pre-condig perl and install perl IO::gzip packet.
         - sudo cpan JSON # Install perl JSON packet.
+      script:
         - mkdir -p build && cd build # Create a build directory and go into it
         - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=/usr/bin/clang++ -DBUILD_TESTS=ON -DENABLE_COVERAGE=OFF -DGEN_DOCS=ON .. # Generate build with correct config.
-      script:
         - cmake --build . -- -j2 # Build lib.
         - cmake --build . --target test # Build lib.
         - cmake --build . --target doc # Build documentation.

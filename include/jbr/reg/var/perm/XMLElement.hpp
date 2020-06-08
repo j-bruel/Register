@@ -8,7 +8,6 @@
 # define JBR_CREGISTER_VARIABLE_PERMISSION_XMLELEMENT_HPP
 
 # include <jbr/reg/var/perm/Rights.hpp>
-# include <jbr/reg/exception.hpp>
 # include <tinyxml2.h>
 
 //!

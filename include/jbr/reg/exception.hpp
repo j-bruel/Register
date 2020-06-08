@@ -42,7 +42,8 @@ namespace jbr::reg
         //! @brief What exception information.
         //! @return What message.
         //!
-        [[nodiscard]] const char  *what() const noexcept override { return (mMsg.c_str()); }
+        [[nodiscard]]
+        const char  *what() const noexcept override { return (mMsg.c_str()); }
     };
 
 }

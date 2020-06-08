@@ -5,6 +5,7 @@
 //!
 
 #include <jbr/reg/var/perm/XMLElement.hpp>
+#include <jbr/reg/exception.hpp>
 
 namespace jbr::reg::var::perm
 {
