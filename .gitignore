@@ -115,8 +115,7 @@ fabric.properties
 .idea/*
 
 # Custom ignore
-bin/Debug/test_runner.ilk
-bin/Debug/test_runner.pdb
+*/Debug
 exemples/sample_create_register/bin/Debug/
 exemples/sample_create_register/bin/sample.reg
 *cRegister.exp
