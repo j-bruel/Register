@@ -82,6 +82,7 @@ namespace jbr::reg
 
     private:
         //!
+        //! @static
         //! @brief Extract a sub node from a xml node.
         //! @param node Parent node.
         //! @param subNodeName Name of the sub node to extract.
@@ -89,6 +90,15 @@ namespace jbr::reg
         //! @throw Throw a exception when the sub node can't be extracted.
         //!
         static tinyxml2::XMLNode    *getSubXMLNode(tinyxml2::XMLNode *node, const char *subNodeName) noexcept(false);
+        //!
+        //! @static
+        //! @brief Create a new element according a xml document.
+        //! @param xmlDocument A Document binds together all the functionality.
+        //! @param elementName Name of the new element.
+        //! @return Created element.
+        //! @throw Throw a exception when the sub element can't be created.
+        //!
+        static tinyxml2::XMLElement *newXMLElement(tinyxml2::XMLDocument *xmlDocument, const char *elementName) noexcept(false);
         //!
         //! @static
         //! @brief Write rights information's on variable.

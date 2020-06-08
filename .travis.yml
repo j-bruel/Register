@@ -100,6 +100,8 @@ matrix:
             - llvm
             - doxygen
             - graphviz
+            - clang-10.0.1
+            - clang++-10.0.1
             - ggcov
           update: true
       before_script:

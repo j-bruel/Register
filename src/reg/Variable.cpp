@@ -32,7 +32,7 @@ namespace jbr::reg
 
         tinyxml2::XMLNode       *nodeReg = getSubXMLNode(&reg, "register");
         tinyxml2::XMLNode       *nodeBody = getSubXMLNode(nodeReg, "body");
-        tinyxml2::XMLNode       *nodeVariable = reg.NewElement("variable");
+        tinyxml2::XMLElement    *nodeVariable = reg.NewElement("variable");
 
         if (nodeVariable == nullptr)
             throw jbr::reg::exception("Error while setting the register new variable " + key + ", null pointer detected on variable node creation.");
@@ -106,6 +106,20 @@ namespace jbr::reg
         if (subNode == nullptr)
             throw jbr::reg::exception("Error while extract the sub node, the result is null. The sub node " + std::string(subNodeName) + " does not exist.");
         return (subNode);
+    }
+
+    tinyxml2::XMLElement    *newXMLElement(tinyxml2::XMLDocument *xmlDocument, const char *elementName) noexcept(false)
+    {
+        if (xmlDocument == nullptr)
+            throw jbr::reg::exception("Error while creating a new element, the parent document is null.");
+        if (elementName == nullptr)
+            throw jbr::reg::exception("The new element name to create is null.");
+
+        tinyxml2::XMLElement   *newElement = xmlDocument->NewElement(elementName);
+
+        if (newElement == nullptr)
+            throw jbr::reg::exception("Error while creating a new element, the result is null. The element " + std::string(elementName) + " can't be created.");
+        return (newElement);
     }
 
     void    Variable::writeVariableRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeVariable,
