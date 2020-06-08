@@ -96,7 +96,6 @@ matrix:
       addons:
         homebrew:
           packages:
-            - clang-9.0
             - beanstalk
             - llvm
             - doxygen
@@ -126,7 +125,7 @@ matrix:
         - cmake --build . -- -j2 # Build lib.
         - cmake --build . --target test # Build lib.
       env:
-        - MATRIX_EVAL="COMPILER=clang++-9.0 && BUILD_TYPE=Debug"
+        - MATRIX_EVAL="COMPILER=clang++ && BUILD_TYPE=Debug"
       if: branch != coverity_scan
     - os: osx # OSX Release build.
       osx_image: xcode10.2

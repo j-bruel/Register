@@ -100,7 +100,8 @@ namespace jbr::reg
     }
 
     void    Variable::writeVariableRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeVariable,
-            tinyxml2::XMLElement *valueElement, const jbr::reg::var::perm::Rights &rights) const
+                                          tinyxml2::XMLElement *valueElement,
+                                          const jbr::reg::var::perm::Rights &rights)
     {
         if (reg == nullptr || nodeVariable == nullptr)
             throw jbr::reg::exception("Pointers must not be null during writing rights process.");

@@ -82,6 +82,7 @@ namespace jbr::reg
 
     private:
         //!
+        //! @static
         //! @brief Write rights information's on variable.
         //! @param reg XML document object.
         //! @param nodeVariable Variable node from register.
@@ -89,8 +90,9 @@ namespace jbr::reg
         //! @param rights Register rights.
         //! @warning This function must be call into a process, no check on pointers, object validity are done. File must be saved after call.
         //!
-        void    writeVariableRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeVariable,
-                                    tinyxml2::XMLElement *valueElement, const jbr::reg::var::perm::Rights &rights) const noexcept(false);
+        static void    writeVariableRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeVariable,
+                                           tinyxml2::XMLElement *valueElement,
+                                           const jbr::reg::var::perm::Rights &rights) noexcept(false);
     };
 }
 
