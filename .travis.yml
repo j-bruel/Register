@@ -108,13 +108,6 @@ matrix:
         - g++ --version # Check g++ version
         - gcc --version # Check gcc version
         - gcov --version # Check gcov version.
-        - whereis clang
-        - ls -l /usr/bin/
-        - whereis clang++
-        - clang++ --version
-        - clang --version
-        - /usr/bin/clang++ --version
-        - brew config
         - git clone https://github.com/linux-test-project/lcov.git # Clone & install lcov last version from github sources.
         - cd lcov
         - sudo make install
@@ -123,11 +116,11 @@ matrix:
         - sudo cpan JSON # Install perl JSON packet.
         - mkdir -p build && cd build # Create a build directory and go into it
         - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=/usr/bin/clang++ -DBUILD_TESTS=ON -DENABLE_COVERAGE=OFF -DGEN_DOCS=ON .. # Generate build with correct config.
-      script:
-        - cmake --build . -- -j2 # Build lib.
-        - cmake --build . --target test # Build lib.
-        - cmake --build . --target doc # Build documentation.
-        - sudo cmake --build . --target install # Install library.
+#      script:
+        #        - cmake --build . -- -j2 # Build lib.
+        #- cmake --build . --target test # Build lib.
+        #- cmake --build . --target doc # Build documentation.
+        #- sudo cmake --build . --target install # Install library.
       env:
         - MATRIX_EVAL="COMPILER=clang++ && BUILD_TYPE=Debug"
       if: branch != coverity_scan
