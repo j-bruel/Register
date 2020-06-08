@@ -143,7 +143,7 @@ TEST_CASE("Register::open")
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
-        CHECK(msg == "Register corrupted. Did not find header node, the format is corrupt.");
+        CHECK(msg == "Error while extract the sub node, the result is null. The sub node header does not exist.");
         std::filesystem::remove("./ut_open_header_node_not_found");
     }
 
@@ -169,7 +169,7 @@ TEST_CASE("Register::open")
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
-                CHECK(msg == "Register corrupted. Did not find version field from register/header nodes, mandatory field missing.");
+                CHECK(msg == "Error while extract the sub node, the result is null. The sub node version does not exist.");
         std::filesystem::remove("./ut_open_version_field_not_found");
     }
 
@@ -404,7 +404,7 @@ TEST_CASE("Register::open")
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
-        CHECK(msg == "Register corrupted. Did not find body node, the format is corrupt.");
+        CHECK(msg == "Error while extract the sub node, the result is null. The sub node body does not exist.");
         std::filesystem::remove("./ut_open_body_node_not_found");
     }
 

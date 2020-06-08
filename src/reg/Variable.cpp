@@ -37,16 +37,14 @@ namespace jbr::reg
         tinyxml2::XMLElement    *keyElementField = newXMLElement(&reg, "key");
         tinyxml2::XMLElement    *valueElementField = newXMLElement(&reg, "value");
 
-        getSubXMLNode(getSubXMLNode(&reg, "register"), "body")->InsertEndChild(nodeVariable);
+        getSubXMLElement(getSubXMLElement(&reg, "register"), "body")->InsertEndChild(nodeVariable);
         keyElementField->SetText(key.c_str());
         valueElementField->SetText(value.c_str());
         nodeVariable->InsertFirstChild(keyElementField);
         nodeVariable->InsertAfterChild(keyElementField, valueElementField);
         if (rights != std::nullopt)
             writeVariableRights(&reg, nodeVariable, valueElementField, rights.value());
-        err = reg.SaveFile(mPath.c_str());
-        if (err != tinyxml2::XMLError::XML_SUCCESS)
-            throw jbr::reg::exception("Error while saving the register content, error code : " + std::to_string(err) + ".");
+        saveXMLFile(reg, mPath.c_str());
     }
 
     std::string Variable::get(const std::string &key)

@@ -129,13 +129,13 @@ namespace jbr
     protected:
         //!
         //! @static
-        //! @brief Extract a sub node from a xml node.
+        //! @brief Extract a sub element from a xml node.
         //! @param node Parent node.
         //! @param subNodeName Name of the sub node to extract.
-        //! @return Extract node.
+        //! @return Extract element.
         //! @throw Throw a exception when the sub node can't be extracted.
         //!
-        static tinyxml2::XMLNode    *getSubXMLNode(tinyxml2::XMLNode *node, const char *subNodeName) noexcept(false);
+        static tinyxml2::XMLElement    *getSubXMLElement(tinyxml2::XMLNode *node, const char *subElementName) noexcept(false);
         //!
         //! @static
         //! @brief Create a new element according a xml document.
@@ -152,7 +152,15 @@ namespace jbr
         //! @param filePath XML file path to load.
         //! @throw Raise a exception if the file loading is impossible.
         //!
-        static void                 loadXMLFile(tinyxml2::XMLDocument &xmlDocument, const char *filePath) noexcept(false);
+        static void loadXMLFile(tinyxml2::XMLDocument &xmlDocument, const char *filePath) noexcept(false);
+        //!
+        //! @static
+        //! @brief Save xml file with error handling.
+        //! @param xmlDocument XML documentation to save.
+        //! @param filePath XML file path to save.
+        //! @throw Raise a exception if the file saving is impossible.
+        //!
+        static void saveXMLFile(tinyxml2::XMLDocument &xmlDocument, const char *filePath) noexcept(false);
 
     private:
         //!
