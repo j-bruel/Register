@@ -102,7 +102,7 @@ matrix:
             - graphviz
             - clang-10.0.1
             - clang++-10.0.1
-            - ggcov
+#            - ggcov
           update: true
       before_script:
         - g++ --version # Check g++ version
@@ -113,6 +113,7 @@ matrix:
         - whereis clang++
         - clang++ --version
         - clang --version
+        - /usr/bin/clang++ --version
         - brew config
         - git clone https://github.com/linux-test-project/lcov.git # Clone & install lcov last version from github sources.
         - cd lcov

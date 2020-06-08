@@ -30,30 +30,18 @@ namespace jbr::reg
         open(mPath);
         reg.LoadFile(mPath.c_str());
 
-        tinyxml2::XMLNode       *nodeReg = getSubXMLNode(&reg, "register");
-        tinyxml2::XMLNode       *nodeBody = getSubXMLNode(nodeReg, "body");
-        tinyxml2::XMLElement    *nodeVariable = reg.NewElement("variable");
+        tinyxml2::XMLElement    *nodeVariable = newXMLElement(&reg, "variable");
+        tinyxml2::XMLElement    *keyElementField = newXMLElement(&reg, "key");
+        tinyxml2::XMLElement    *valueElementField = newXMLElement(&reg, "value");
+        tinyxml2::XMLError      err;
 
-        if (nodeVariable == nullptr)
-            throw jbr::reg::exception("Error while setting the register new variable " + key + ", null pointer detected on variable node creation.");
-        nodeBody->InsertEndChild(nodeVariable);
-
-        tinyxml2::XMLElement    *keyElementField = reg.NewElement("key");
-        tinyxml2::XMLElement    *valueElementField = reg.NewElement("value");
-
-        if (keyElementField == nullptr)
-            throw jbr::reg::exception("Error while setting the register new variable " + key + ", impossible to create the key field.");
-        if (valueElementField == nullptr)
-            throw jbr::reg::exception("Error while setting the register new variable " + key + ", impossible to create the value field.");
+        getSubXMLNode(getSubXMLNode(&reg, "register"), "body")->InsertEndChild(nodeVariable);
         keyElementField->SetText(key.c_str());
         valueElementField->SetText(value.c_str());
         nodeVariable->InsertFirstChild(keyElementField);
         nodeVariable->InsertAfterChild(keyElementField, valueElementField);
         if (rights != std::nullopt)
             writeVariableRights(&reg, nodeVariable, valueElementField, rights.value());
-
-        tinyxml2::XMLError      err;
-
         err = reg.SaveFile(mPath.c_str());
         if (err != tinyxml2::XMLError::XML_SUCCESS)
             throw jbr::reg::exception("Error while saving the register content, error code : " + std::to_string(err) + ".");
@@ -108,7 +96,7 @@ namespace jbr::reg
         return (subNode);
     }
 
-    tinyxml2::XMLElement    *newXMLElement(tinyxml2::XMLDocument *xmlDocument, const char *elementName) noexcept(false)
+    tinyxml2::XMLElement    *Variable::newXMLElement(tinyxml2::XMLDocument *xmlDocument, const char *elementName) noexcept(false)
     {
         if (xmlDocument == nullptr)
             throw jbr::reg::exception("Error while creating a new element, the parent document is null.");
