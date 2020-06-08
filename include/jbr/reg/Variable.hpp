@@ -9,7 +9,7 @@
 
 # include <string>
 # include <jbr/Register.hpp>
-# include <jbr/reg/var/Rights.hpp>
+# include <jbr/reg/var/perm/Rights.hpp>
 
 //!
 //! @namespace jbr::reg
@@ -60,7 +60,7 @@ namespace jbr::reg
         //! @param rights Variable rights.
         //!
         void        set(const std::string &key, const std::string &value,
-                        const std::optional<jbr::reg::var::Rights> &rights = std::nullopt) noexcept(false);
+                        const std::optional<jbr::reg::var::perm::Rights> &rights = std::nullopt) noexcept(false);
         //!
         //! @brief Extract a variable from the target register.
         //! @param key Key to extract.
@@ -90,7 +90,7 @@ namespace jbr::reg
         //! @warning This function must be call into a process, no check on pointers, object validity are done. File must be saved after call.
         //!
         void    writeVariableRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeVariable,
-                                    tinyxml2::XMLElement *valueElement, const jbr::reg::var::Rights &rights) const noexcept(false);
+                                    tinyxml2::XMLElement *valueElement, const jbr::reg::var::perm::Rights &rights) const noexcept(false);
     };
 }
 

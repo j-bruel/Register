@@ -63,7 +63,7 @@ TEST_CASE("Variable::set_get")
 
     SUBCASE("One set with rights")
     {
-        jbr::reg::var::Rights   rights;
+        jbr::reg::var::perm::Rights   rights;
 
         rights.mRemove = false;
         mRegister.create("./one_set_with_rights.reg");

@@ -8,9 +8,9 @@
 # define JBR_CREGISTER_REGISTER_VARIABLES_RIGHTS_HPP
 
 //!
-//! @namespace jbr::reg::var
+//! @namespace jbr::reg::var::perm
 //!
-namespace jbr::reg::var
+namespace jbr::reg::var::perm
 {
     //!
     //! @struct Rights

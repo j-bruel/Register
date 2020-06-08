@@ -21,7 +21,8 @@ namespace jbr::reg
         open(registerPath);
     }
 
-    void        Variable::set(const std::string &key, const std::string &value, const std::optional<jbr::reg::var::Rights> &rights)
+    void        Variable::set(const std::string &key, const std::string &value,
+                              const std::optional<jbr::reg::var::perm::Rights> &rights)
     {
         if (key.empty())
             throw jbr::reg::exception("Impossible to set a empty key.");
@@ -100,7 +101,7 @@ namespace jbr::reg
     }
 
     void    Variable::writeVariableRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeVariable,
-            tinyxml2::XMLElement *valueElement, const jbr::reg::var::Rights &rights) const
+            tinyxml2::XMLElement *valueElement, const jbr::reg::var::perm::Rights &rights) const
     {
         if (reg == nullptr || nodeVariable == nullptr)
             throw jbr::reg::exception("Pointers must not be null during writing rights process.");
