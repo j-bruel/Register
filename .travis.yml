@@ -98,6 +98,9 @@ matrix:
           packages:
             - beanstalk
             - llvm
+            - gcc-c++
+            - libc++-dev
+            - clang++
             - doxygen
             - graphviz
           update: true

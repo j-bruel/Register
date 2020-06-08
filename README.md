@@ -101,23 +101,23 @@ You should build and run those test after installing for testing installation pu
 
 #### Variables
 
-| Variable           | Description                                                                                    | Possible Values                          | Default Value |
-|--------------------|------------------------------------------------------------------------------------------------|------------------------------------------|---------------|
-| `CMAKE_BUILD_TYPE` | Specifies what build type (configuration) will be built in this build tree. | `Debug`/`Release`/`RelWithDebInfo`/`MinSizeRel` | `Release` |
-| `GEN_DOCS`         | An option used to determine if documentation will or will not be generated.                    | `ON`/`OFF`                               | `OFF`         |
-| `BUILD_TESTS`      | An option used to determine if the test executable should or should not be built.              | `ON`/`OFF`                               | `OFF`         |
-| `ENABLE_COVERAGE`  | An option used to determine whether coverage should be enabled or not                          | `ON`/`OFF`                               | `OFF`         |
+| Variable           | Description                                                                                    | Possible Values                                 | Default Value |
+|--------------------|------------------------------------------------------------------------------------------------|-------------------------------------------------|---------------|
+| `CMAKE_BUILD_TYPE` | Specifies what build type (configuration) will be built in this build tree.                    | `Debug`/`Release`/`RelWithDebInfo`/`MinSizeRel` | `Release`     |
+| `GEN_DOCS`         | An option used to determine if documentation will or will not be generated.                    | `ON`/`OFF`                                      | `OFF`         |
+| `BUILD_TESTS`      | An option used to determine if the test executable should or should not be built.              | `ON`/`OFF`                                      | `OFF`         |
+| `ENABLE_COVERAGE`  | An option used to determine whether coverage should be enabled or not                          | `ON`/`OFF`                                      | `OFF`         |
 
 #### Targets
 
-| Target           | Description                                                    |
-|------------------|----------------------------------------------------------------|
-| `[Nothing]`      | Build the application (including `test` if `BUILD_TESTS=ON`).  |
-| `install`        | Install all built targets.                                     |
-| `test`           | If tests were built, then run all tests.                       |
+| Target           | Description                                                         |
+|------------------|---------------------------------------------------------------------|
+| `[Nothing]`      | Build the application (including `test` if `BUILD_TESTS=ON`).       |
+| `install`        | Install all built targets.                                          |
+| `test`           | If tests were built, then run all tests.                            |
 | `doc`            | If `GEN_DOCS=ON`, then generates the documentation using `Doxygen`. |
 | `coverage`       | If `ENABLE_COVERAGE=ON`, then generates the code coverage.          |
-| `clean`          | Clean all built targets.                                       |
+| `clean`          | Clean all built targets.                                            |
 
 #### Windows
 
