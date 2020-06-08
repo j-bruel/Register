@@ -19,7 +19,7 @@ TEST_CASE("Variable::operator")
         std::string msg;
 
         try {
-            mRegister[""].get("none");
+            (void)mRegister[""].get("none");
         }
         catch (jbr::reg::exception &e) {
             msg = e.what();
@@ -32,7 +32,7 @@ TEST_CASE("Variable::operator")
         std::string msg;
 
         try {
-            mRegister["./not_exist.reg"].get("none");
+            (void)mRegister["./not_exist.reg"].get("none");
         }
         catch (jbr::reg::exception &e) {
             msg = e.what();
@@ -43,7 +43,7 @@ TEST_CASE("Variable::operator")
     SUBCASE("valid register")
     {
         mRegister.create("./valid.reg");
-        mRegister["./valid.reg"].get("none");
+        (void)mRegister["./valid.reg"].get("none");
         mRegister.destroy("./valid.reg");
     }
 

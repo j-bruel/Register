@@ -21,7 +21,7 @@ namespace jbr::reg
     //! @class Variable
     //! @brief Unique register variable.
     //!
-    class Variable : private jbr::Register
+    class Variable final : private jbr::Register
     {
     private:
         std::string mPath; //!< Register path handle for this variable.
@@ -59,24 +59,26 @@ namespace jbr::reg
         //! @param value Value link to the key.
         //! @param rights Variable rights.
         //!
-        void        set(const std::string &key, const std::string &value, const std::optional<jbr::reg::var::Rights> &rights = std::nullopt);
+        void        set(const std::string &key, const std::string &value,
+                        const std::optional<jbr::reg::var::Rights> &rights = std::nullopt) noexcept(false);
         //!
         //! @brief Extract a variable from the target register.
         //! @param key Key to extract.
         //! @return Value link to the key extracted.
         //!
-        std::string get(const std::string &key);
+        [[nodiscard]]
+        std::string get(const std::string &key) noexcept(false);
         //!
         //! @brief Remove a key from the target register.
         //! @param key Key to extract.
         //!
-        void        remove(const std::string &key);
+        void        remove(const std::string &key) noexcept(false);
         //!
         //! @brief Check if a key exist on the target register.
         //! @param key Key to check.
         //! @return Key status, true if exist.
         //!
-        bool        available(const std::string &key);
+        bool        available(const std::string &key) noexcept(false);
 
     private:
         //!
@@ -88,7 +90,7 @@ namespace jbr::reg
         //! @warning This function must be call into a process, no check on pointers, object validity are done. File must be saved after call.
         //!
         void    writeVariableRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeVariable,
-                                    tinyxml2::XMLElement *valueElement, const jbr::reg::var::Rights &rights) const;
+                                    tinyxml2::XMLElement *valueElement, const jbr::reg::var::Rights &rights) const noexcept(false);
     };
 }
 

@@ -20,7 +20,8 @@ namespace jbr::reg
     //! @param relativePath Relative reference path.
     //! @return Absolute path generate from relative input path.
     //!
-    [[nodiscard]] std::string    getAbsolutePath(const std::string &relativePath) noexcept(false);
+    [[nodiscard]]
+    std::string    getAbsolutePath(const std::string &relativePath) noexcept(false);
 
 }
 

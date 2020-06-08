@@ -35,7 +35,7 @@ TEST_CASE("Variable::set_get")
         std::string msg;
 
         try {
-            mRegister["./not_exist.reg"].get("none");
+            (void)mRegister["./not_exist.reg"].get("none");
         }
         catch (jbr::reg::exception &e) {
             msg = e.what();

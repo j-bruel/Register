@@ -5,7 +5,6 @@
 //!
 
 #include "jbr/reg/Variable.hpp"
-#include "jbr/Register.hpp"
 #include "jbr/reg/exception.hpp"
 #include <iostream>
 #include <tinyxml2.h>
@@ -22,20 +21,8 @@ namespace jbr::reg
         open(registerPath);
     }
 
-/*    void    Variable::operator=(const std::string &value) const
-    {
-    }*/
-
     void        Variable::set(const std::string &key, const std::string &value, const std::optional<jbr::reg::var::Rights> &rights)
     {
-        /**
-         * Reste a faire :
-         *
-         * Multi sets
-         * Check if a var exist et ecraser la nouvelle valeur.
-         * Gestion des droits (au niveau registre et niveau variable).
-         * Clean le code et découper au maximun les fonctions.
-         */
         if (key.empty())
             throw jbr::reg::exception("Impossible to set a empty key.");
         open(mPath);
@@ -82,6 +69,9 @@ namespace jbr::reg
         if (key.empty())
             throw jbr::reg::exception("Impossible to get a empty key.");
         open(mPath);
+        /**
+         * @todo
+         */
         std::cout << "GET:<" << key << ">" << std::endl;
         return ("");
     }
@@ -91,6 +81,9 @@ namespace jbr::reg
         if (key.empty())
             throw jbr::reg::exception("Impossible to remove a empty key.");
         open(mPath);
+        /**
+         * @todo
+         */
         std::cout << "REMOVE:<" << key << ">>" << std::endl;
     }
 
@@ -99,6 +92,9 @@ namespace jbr::reg
         if (key.empty())
             throw jbr::reg::exception("Impossible to check if a empty key exist.");
         open(mPath);
+        /**
+         * @todo
+         */
         std::cout << "EXIST:<" << key << ">" << std::endl;
         return (true);
     }
