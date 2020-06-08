@@ -45,7 +45,7 @@ TEST_CASE("GetAbsolutePath")
     //!
     SUBCASE("Use empty input path")
     {
-        CHECK_THROWS(jbr::reg::getAbsolutePath(""));
+        CHECK_THROWS((void)jbr::reg::getAbsolutePath(""));
     }
 
     //!
@@ -61,9 +61,9 @@ TEST_CASE("GetAbsolutePath")
     //!
     SUBCASE("Random characters")
     {
-        CHECK_THROWS(jbr::reg::getAbsolutePath("sdofuhoodfijdofhdiofjspdvbyz7687908754 7S897D 67D7 87987SQQ5 8°ù£% ° 3°EP 20 9682568 3PM udgfho ajré_yc "));
-        CHECK_THROWS(jbr::reg::getAbsolutePath("IHD/egdèrR5662ç///éùếp')//°-'_èçjHGFDRgh/"));
-        CHECK_THROWS(jbr::reg::getAbsolutePath("/IHD/egdèrR5662ç///éùếp')//°-'_èçjHGFDRgh/"));
+        CHECK_THROWS((void)jbr::reg::getAbsolutePath("sdofuhoodfijdofhdiofjspdvbyz7687908754 7S897D 67D7 87987SQQ5 8°ù£% ° 3°EP 20 9682568 3PM udgfho ajré_yc "));
+        CHECK_THROWS((void)jbr::reg::getAbsolutePath("IHD/egdèrR5662ç///éùếp')//°-'_èçjHGFDRgh/"));
+        CHECK_THROWS((void)jbr::reg::getAbsolutePath("/IHD/egdèrR5662ç///éùếp')//°-'_èçjHGFDRgh/"));
     }
 
 }
