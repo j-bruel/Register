@@ -7,7 +7,9 @@
 #ifndef JBR_CREGISTER_VARIABLE_PERMISSION_XMLELEMENT_HPP
 # define JBR_CREGISTER_VARIABLE_PERMISSION_XMLELEMENT_HPP
 
+# include <jbr/reg/var/perm/Rights.hpp>
 # include <jbr/reg/exception.hpp>
+# include <tinyxml2.h>
 
 //!
 //! @namespace jbr::reg::var::perm
@@ -43,12 +45,19 @@ namespace jbr::reg::var::perm
                                                             mUpdateElement(reg->NewElement("update")),
                                                             mRenameElement(reg->NewElement("rename")),
                                                             mCopyElement(reg->NewElement("copy")),
-                                                            mRemoveElement(reg->NewElement("remove"))
-        {
-            if (mReadElement == nullptr || mWriteElement == nullptr || mUpdateElement == nullptr ||
-                mRenameElement == nullptr || mCopyElement == nullptr || mRemoveElement == nullptr)
-                throw jbr::reg::exception("Error while saving the variable rights content, null pointer detected.");
-        }
+                                                            mRemoveElement(reg->NewElement("remove")) { checkValidity(); }
+
+        //!
+        //! @brief Initialize all text field of xml elements.
+        //! @param rights Rights used to set the text field.
+        //!
+        void setText(const jbr::reg::var::perm::Rights &rights) const noexcept(false);
+
+        //!
+        //! @brief Check all xml element validity.
+        //! @throw Raise if one of the xml element is null.
+        //!
+        void checkValidity() const noexcept(false);
     };
 
 }

@@ -8,7 +8,6 @@
 #include <jbr/reg/exception.hpp>
 #include <jbr/reg/var/perm/XMLElement.hpp>
 #include <iostream>
-#include <tinyxml2.h>
 
 namespace jbr::reg
 {
@@ -114,12 +113,7 @@ namespace jbr::reg
             throw jbr::reg::exception("Error while saving the variable rights content, null pointer detected.");
         nodeVariable->InsertAfterChild(valueElement, nodeConfig);
         nodeConfig->InsertFirstChild(nodeRights);
-        xmlElements.mReadElement->SetText(rights.mRead);
-        xmlElements.mWriteElement->SetText(rights.mWrite);
-        xmlElements.mUpdateElement->SetText(rights.mUpdate);
-        xmlElements.mRenameElement->SetText(rights.mCopy);
-        xmlElements.mCopyElement->SetText(rights.mCopy);
-        xmlElements.mRemoveElement->SetText(rights.mRemove);
+        xmlElements.setText(rights);
         nodeRights->InsertFirstChild(xmlElements.mReadElement);
         nodeRights->InsertAfterChild(xmlElements.mReadElement, xmlElements.mWriteElement);
         nodeRights->InsertAfterChild(xmlElements.mWriteElement, xmlElements.mUpdateElement);
