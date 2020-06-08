@@ -7,9 +7,9 @@
 #ifndef JBR_CREGISTER_REGISTER_VARIABLE_HPP
 # define JBR_CREGISTER_REGISTER_VARIABLE_HPP
 
-# include <string>
 # include <jbr/Register.hpp>
 # include <jbr/reg/var/perm/Rights.hpp>
+# include <string>
 
 //!
 //! @namespace jbr::reg

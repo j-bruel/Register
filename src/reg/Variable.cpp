@@ -4,8 +4,9 @@
 //! @date 07/06/19
 //!
 
-#include "jbr/reg/Variable.hpp"
-#include "jbr/reg/exception.hpp"
+#include <jbr/reg/Variable.hpp>
+#include <jbr/reg/exception.hpp>
+#include <jbr/reg/var/perm/XMLElement.hpp>
 #include <iostream>
 #include <tinyxml2.h>
 
@@ -108,30 +109,24 @@ namespace jbr::reg
 
         tinyxml2::XMLNode       *nodeConfig = reg->NewElement("config");
         tinyxml2::XMLNode       *nodeRights = reg->NewElement("rights");
-        tinyxml2::XMLElement    *readElement = reg->NewElement("read");
-        tinyxml2::XMLElement    *writeElement = reg->NewElement("write");
-        tinyxml2::XMLElement    *updateElement = reg->NewElement("update");
-        tinyxml2::XMLElement    *renameElement = reg->NewElement("rename");
-        tinyxml2::XMLElement    *copyElement = reg->NewElement("copy");
-        tinyxml2::XMLElement    *removeElement = reg->NewElement("remove");
+        var::perm::XMLElement   xmlElements(reg);
 
-        if (nodeConfig == nullptr || nodeRights == nullptr || readElement == nullptr || writeElement == nullptr ||
-            updateElement == nullptr || renameElement == nullptr || copyElement == nullptr || removeElement == nullptr)
+        if (nodeConfig == nullptr || nodeRights == nullptr)
             throw jbr::reg::exception("Error while saving the variable rights content, null pointer detected.");
         nodeVariable->InsertAfterChild(valueElement, nodeConfig);
         nodeConfig->InsertFirstChild(nodeRights);
-        readElement->SetText(rights.mRead);
-        writeElement->SetText(rights.mWrite);
-        updateElement->SetText(rights.mUpdate);
-        renameElement->SetText(rights.mCopy);
-        copyElement->SetText(rights.mCopy);
-        removeElement->SetText(rights.mRemove);
-        nodeRights->InsertFirstChild(readElement);
-        nodeRights->InsertAfterChild(readElement, writeElement);
-        nodeRights->InsertAfterChild(writeElement, updateElement);
-        nodeRights->InsertAfterChild(updateElement, renameElement);
-        nodeRights->InsertAfterChild(renameElement, copyElement);
-        nodeRights->InsertAfterChild(copyElement, removeElement);
+        xmlElements.mReadElement->SetText(rights.mRead);
+        xmlElements.mWriteElement->SetText(rights.mWrite);
+        xmlElements.mUpdateElement->SetText(rights.mUpdate);
+        xmlElements.mRenameElement->SetText(rights.mCopy);
+        xmlElements.mCopyElement->SetText(rights.mCopy);
+        xmlElements.mRemoveElement->SetText(rights.mRemove);
+        nodeRights->InsertFirstChild(xmlElements.mRemoveElement);
+        nodeRights->InsertAfterChild(xmlElements.mReadElement, xmlElements.mWriteElement);
+        nodeRights->InsertAfterChild(xmlElements.mWriteElement, xmlElements.mUpdateElement);
+        nodeRights->InsertAfterChild(xmlElements.mUpdateElement, xmlElements.mRenameElement);
+        nodeRights->InsertAfterChild(xmlElements.mRenameElement, xmlElements.mCopyElement);
+        nodeRights->InsertAfterChild(xmlElements.mCopyElement, xmlElements.mRemoveElement);
     }
 
 }
