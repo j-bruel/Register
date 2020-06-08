@@ -23,25 +23,17 @@ namespace jbr::reg
     void        Variable::set(const std::string &key, const std::string &value,
                               const std::optional<jbr::reg::var::perm::Rights> &rights)
     {
+        tinyxml2::XMLDocument   reg;
+
         if (key.empty())
             throw jbr::reg::exception("Impossible to set a empty key.");
         open(mPath);
-
-        tinyxml2::XMLDocument   reg;
-        tinyxml2::XMLError      err;
-
         reg.LoadFile(mPath.c_str());
 
-        tinyxml2::XMLNode       *nodeReg = reg.FirstChildElement("register");
-
-        if (nodeReg == nullptr)
-            throw jbr::reg::exception("Error while setting the register new variable " + key + ", register node not found.");
-
-        tinyxml2::XMLNode       *nodeBody = nodeReg->FirstChildElement("body");
+        tinyxml2::XMLNode       *nodeReg = getSubXMLNode(&reg, "register");
+        tinyxml2::XMLNode       *nodeBody = getSubXMLNode(nodeReg, "body");
         tinyxml2::XMLNode       *nodeVariable = reg.NewElement("variable");
 
-        if (nodeBody == nullptr)
-            throw jbr::reg::exception("Error while setting the register new variable " + key + ", register/body node not found.");
         if (nodeVariable == nullptr)
             throw jbr::reg::exception("Error while setting the register new variable " + key + ", null pointer detected on variable node creation.");
         nodeBody->InsertEndChild(nodeVariable);
@@ -59,6 +51,9 @@ namespace jbr::reg
         nodeVariable->InsertAfterChild(keyElementField, valueElementField);
         if (rights != std::nullopt)
             writeVariableRights(&reg, nodeVariable, valueElementField, rights.value());
+
+        tinyxml2::XMLError      err;
+
         err = reg.SaveFile(mPath.c_str());
         if (err != tinyxml2::XMLError::XML_SUCCESS)
             throw jbr::reg::exception("Error while saving the register content, error code : " + std::to_string(err) + ".");
@@ -99,9 +94,23 @@ namespace jbr::reg
         return (true);
     }
 
+    tinyxml2::XMLNode   *Variable::getSubXMLNode(tinyxml2::XMLNode *node, const char *subNodeName) noexcept(false)
+    {
+        if (node == nullptr)
+            throw jbr::reg::exception("Error while extracting sub node, the parent node is null.");
+        if (subNodeName == nullptr)
+            throw jbr::reg::exception("The sub node name to extract is null.");
+
+        tinyxml2::XMLNode   *subNode = node->FirstChildElement(subNodeName);
+
+        if (subNode == nullptr)
+            throw jbr::reg::exception("Error while extract the sub node, the result is null. The sub node " + std::string(subNodeName) + " does not exist.");
+        return (subNode);
+    }
+
     void    Variable::writeVariableRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeVariable,
                                           tinyxml2::XMLElement *valueElement,
-                                          const jbr::reg::var::perm::Rights &rights)
+                                          const jbr::reg::var::perm::Rights &rights) noexcept(false)
     {
         if (reg == nullptr || nodeVariable == nullptr)
             throw jbr::reg::exception("Pointers must not be null during writing rights process.");

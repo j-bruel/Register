@@ -109,6 +109,9 @@ matrix:
         - whereis clang
         - ls -l /usr/bin/
         - whereis clang++
+        - clang++ --version
+        - clang --version
+        - brew config
         - git clone https://github.com/linux-test-project/lcov.git # Clone & install lcov last version from github sources.
         - cd lcov
         - sudo make install
@@ -133,16 +136,16 @@ matrix:
       addons:
         homebrew:
           packages:
-            - clang-9.0
             - beanstalk
             - lcov
             - llvm
+            - clang++-9.0.0
           update: true
       before_script:
         - mkdir -p build && cd build # Create a build directory and go into it
-        - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=/usr/bin/clang++-9.0 -DBUILD_TESTS=ON -DENABLE_COVERAGE=ON -DGEN_DOCS=OFF .. # Generate build with correct config.
+        - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=/usr/bin/clang++ -DBUILD_TESTS=ON -DENABLE_COVERAGE=ON -DGEN_DOCS=OFF .. # Generate build with correct config.
       env:
-        - MATRIX_EVAL="COMPILER=clang++-9.0 && BUILD_TYPE=Release"
+        - MATRIX_EVAL="COMPILER=clang++ && BUILD_TYPE=Release"
       if: branch != coverity_scan
 
 before_install:

@@ -82,6 +82,14 @@ namespace jbr::reg
 
     private:
         //!
+        //! @brief Extract a sub node from a xml node.
+        //! @param node Parent node.
+        //! @param subNodeName Name of the sub node to extract.
+        //! @return Extract node.
+        //! @throw Throw a exception when the sub node can't be extracted.
+        //!
+        static tinyxml2::XMLNode    *getSubXMLNode(tinyxml2::XMLNode *node, const char *subNodeName) noexcept(false);
+        //!
         //! @static
         //! @brief Write rights information's on variable.
         //! @param reg XML document object.
@@ -90,9 +98,10 @@ namespace jbr::reg
         //! @param rights Register rights.
         //! @warning This function must be call into a process, no check on pointers, object validity are done. File must be saved after call.
         //!
-        static void    writeVariableRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeVariable,
-                                           tinyxml2::XMLElement *valueElement,
-                                           const jbr::reg::var::perm::Rights &rights) noexcept(false);
+        static void                 writeVariableRights(tinyxml2::XMLDocument *reg,
+                                                        tinyxml2::XMLNode *nodeVariable,
+                                                        tinyxml2::XMLElement *valueElement,
+                                                        const jbr::reg::var::perm::Rights &rights) noexcept(false);
     };
 }
 
