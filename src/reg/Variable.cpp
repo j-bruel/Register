@@ -120,7 +120,7 @@ namespace jbr::reg
         xmlElements.mRenameElement->SetText(rights.mCopy);
         xmlElements.mCopyElement->SetText(rights.mCopy);
         xmlElements.mRemoveElement->SetText(rights.mRemove);
-        nodeRights->InsertFirstChild(xmlElements.mRemoveElement);
+        nodeRights->InsertFirstChild(xmlElements.mReadElement);
         nodeRights->InsertAfterChild(xmlElements.mReadElement, xmlElements.mWriteElement);
         nodeRights->InsertAfterChild(xmlElements.mWriteElement, xmlElements.mUpdateElement);
         nodeRights->InsertAfterChild(xmlElements.mUpdateElement, xmlElements.mRenameElement);

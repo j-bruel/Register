@@ -108,6 +108,7 @@ matrix:
         - gcc --version # Check gcc version
         - gcov --version # Check gcov version.
         - whereis clang
+        - ls -l /usr/bin/
         - git clone https://github.com/linux-test-project/lcov.git # Clone & install lcov last version from github sources.
         - cd lcov
         - sudo make install

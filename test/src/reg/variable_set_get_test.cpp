@@ -9,6 +9,7 @@
 #include <jbr/reg/Variable.hpp>
 #include <jbr/reg/exception.hpp>
 #include <fstream>
+#include <iostream>
 
 TEST_CASE("Variable::set_get")
 {
@@ -69,7 +70,7 @@ TEST_CASE("Variable::set_get")
         mRegister.create("./one_set_with_rights.reg");
         mRegister["./one_set_with_rights.reg"].set("key", "value", rights);
 
-        std::ifstream   file("./valid_var.reg");
+        std::ifstream   file("./one_set_with_rights.reg");
         std::string     content = std::string((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
 
         CHECK(content.find("    <body>\n"
@@ -88,6 +89,7 @@ TEST_CASE("Variable::set_get")
                            "            </config>\n"
                            "        </variable>\n"
                            "    </body>") != 0);
+        file.close();
         mRegister.destroy("./one_set_with_rights.reg");
     }
 
