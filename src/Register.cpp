@@ -9,14 +9,13 @@
 #include "jbr/reg/exception.hpp"
 #include <iostream>
 #include <filesystem>
-#include <fstream>
 
 namespace jbr
 {
 
     jbr::reg::Variable  Register::operator[](const std::string &path) { return (jbr::reg::Variable(path)); }
 
-    void    Register::create(const std::string &path, const std::optional<jbr::reg::Rights> &rights) const
+    void    Register::create(const std::string &path, const std::optional<jbr::reg::Rights> &rights) const noexcept(false)
     {
         if (path.empty())
             throw jbr::reg::exception("To create a register the path must not be empty.");
@@ -25,7 +24,7 @@ namespace jbr
         createHeader(path, rights);
     }
 
-    void    Register::open(const std::string &path)
+    void    Register::open(const std::string &path) noexcept(false)
     {
         if (path.empty())
             throw jbr::reg::exception("To open a register the path must not be empty.");
@@ -36,7 +35,7 @@ namespace jbr
             throw jbr::reg::exception("The register " + path + " is not openable. Please check the register rights, read and open must be allowed.");
     }
 
-    bool    Register::exist(const std::string &path) const noexcept
+    bool    Register::exist(const std::string &path) noexcept
     {
         if (path.empty())
             return (false);
@@ -46,7 +45,7 @@ namespace jbr
         return (std::filesystem::exists(path, ec));
     }
 
-    void    Register::verify(const std::string &path)
+    void    Register::verify(const std::string &path) noexcept(false)
     {
         if (path.empty())
             throw jbr::reg::exception("To check if a register is corrupt the path must not be empty.");
@@ -87,7 +86,7 @@ namespace jbr
             throw jbr::reg::exception("Register corrupted. Did not find body node, the format is corrupt.");
     }
 
-    void    Register::copy(const std::string &pathFrom, const std::string &pathTo)
+    void    Register::copy(const std::string &pathFrom, const std::string &pathTo) noexcept(false)
     {
         if (pathFrom.empty())
             throw jbr::reg::exception("To copy a register the copied register path must not be empty.");
@@ -107,7 +106,7 @@ namespace jbr
             throw jbr::reg::exception("Impossible to copy this next register : " + pathFrom + " to : " + pathTo + ". Error code : " + std::to_string(ec.value()) + ", why : " + ec.message() + '.');
     }
 
-    void    Register::move(const std::string &pathOld, const std::string &pathNew)
+    void    Register::move(const std::string &pathOld, const std::string &pathNew)noexcept(false)
     {
         if (pathOld.empty())
             throw jbr::reg::exception("To move a register the reference path must not be empty.");
@@ -128,7 +127,7 @@ namespace jbr
             throw jbr::reg::exception("Impossible to move this next register : " + pathOld + " to : " + pathNew + ". Error code : " + std::to_string(ec.value()) + ", why : " + ec.message() + '.');
     }
 
-    void    Register::destroy(const std::string &path)
+    void    Register::destroy(const std::string &path) noexcept(false)
     {
         if (path.empty())
             throw jbr::reg::exception("To destroy a register the path must not be empty.");
@@ -144,7 +143,7 @@ namespace jbr
             throw jbr::reg::exception("Impossible to destroy this next register : " + path + ". Error code : " + std::to_string(ec.value()) + ", why : " + ec.message() + '.');
     }
 
-    jbr::reg::Rights    Register::rights(const std::string &path)
+    jbr::reg::Rights    Register::rights(const std::string &path) noexcept(false)
     {
         if (path.empty())
             throw jbr::reg::exception("To get register rights, the path must not be empty.");
@@ -156,7 +155,7 @@ namespace jbr
         return (mRights);
     }
 
-    void                Register::applyRights(const std::string &path, const jbr::reg::Rights &rights)
+    void                Register::applyRights(const std::string &path, const jbr::reg::Rights &rights) noexcept(false)
     {
         if (path.empty())
             throw jbr::reg::exception("To apply new register rights, the path must not be empty.");
@@ -182,7 +181,7 @@ namespace jbr
 
     }
 
-    void    Register::createHeader(const std::string &path, const std::optional<jbr::reg::Rights> &rights) const
+    void    Register::createHeader(const std::string &path, const std::optional<jbr::reg::Rights> &rights) const noexcept(false)
     {
         tinyxml2::XMLDocument   reg;
         tinyxml2::XMLNode       *nodeReg = reg.NewElement("register");
@@ -207,7 +206,7 @@ namespace jbr
             throw jbr::reg::exception("Error while saving the register content, error code : " + std::to_string(err) + ".");
     }
 
-    void    Register::verifyRights(tinyxml2::XMLNode  *nodeHeader)
+    void    Register::verifyRights(tinyxml2::XMLNode  *nodeHeader) noexcept(false)
     {
         tinyxml2::XMLNode       *nodeRights = nodeHeader->FirstChildElement("rights");
         tinyxml2::XMLError      err;
@@ -261,7 +260,7 @@ namespace jbr
     }
 
     void    Register::writeRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeHeader,
-                                  tinyxml2::XMLElement *version, const jbr::reg::Rights &rights) const
+                                  tinyxml2::XMLElement *version, const jbr::reg::Rights &rights) const noexcept(false)
     {
         if (reg == nullptr || nodeHeader == nullptr || version == nullptr)
             throw jbr::reg::exception("Pointers must not be null during writing rights process.");

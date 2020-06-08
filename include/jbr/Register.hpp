@@ -65,7 +65,7 @@ namespace jbr
         //! @param path Register path used.
         //! @return Variable class.
         //!
-        jbr::reg::Variable  operator[](const std::string &path);// { return (jbr::reg::Variable(path)); }
+        jbr::reg::Variable  operator[](const std::string &path);
 
     public:
         //!
@@ -74,42 +74,43 @@ namespace jbr
         //! @param rights Register rights.
         //! @warning The register must exist. Exception are raised in error cases.
         //!
-        void    create(const std::string &path, const std::optional<jbr::reg::Rights> &rights = std::nullopt) const;
+        void    create(const std::string &path, const std::optional<jbr::reg::Rights> &rights = std::nullopt) const noexcept(false);
         //!
         //! @brief Open and check the validity of a existing register according a input path.
         //! @param path Register path to open.
         //!
-        void    open(const std::string &path);
+        void    open(const std::string &path) noexcept(false);
         //!
         //! @brief Check if a register exist. Only check if the register file exist on system.
         //! @param path Register path.
         //! @return True if exist, false if not.
         //! @warning This function does not check if the register is corrupt or valid. This function only check if the file exist.
         //!
-        bool    exist(const std::string &path) const noexcept;
+        [[nodiscard]]
+        static bool exist(const std::string &path) noexcept;
         //!
         //! @brief Check if a register is valid. The register is corrupt if the format is broken, missing mandatory field or wild characters.
         //! @param path Register path to check.
         //! @warning This function does not need to be called after open function.
         //!
-        void    verify(const std::string &path);
+        void    verify(const std::string &path) noexcept(false);
         //!
         //! @brief Copy a existing register to a new one.
         //! @param pathFrom Register copied.
         //! @param pathTo New register path.
         //!
-        void    copy(const std::string &pathFrom, const std::string &pathTo);
+        void    copy(const std::string &pathFrom, const std::string &pathTo) noexcept(false);
         //!
         //! @brief Move a existing register. Can be use as a rename register function.
         //! @param pathOld Old register path.
         //! @param pathNew New register path.
         //!
-        void    move(const std::string &pathOld, const std::string &pathNew);
+        void    move(const std::string &pathOld, const std::string &pathNew) noexcept(false);
         //!
         //! @brief Destroy a existing register. The target register will be removed definitively on the system.
         //! @param path Register path to destroy.
         //!
-        void    destroy(const std::string &path);
+        void    destroy(const std::string &path) noexcept(false);
 
     public:
         //!
@@ -117,13 +118,13 @@ namespace jbr
         //! @param path Register path.
         //! @return Register rights.
         //!
-        jbr::reg::Rights    rights(const std::string &path);
+        jbr::reg::Rights    rights(const std::string &path) noexcept(false);
         //!
         //! @brief Apply new rights on a register.
         //! \param path Register path.
         //! \param rights New rights to apply.
         //!
-        void                applyRights(const std::string &path, const jbr::reg::Rights &rights);
+        void                applyRights(const std::string &path, const jbr::reg::Rights &rights) noexcept(false);
 
     private:
         //!
@@ -131,14 +132,14 @@ namespace jbr
         //! @param path Register path to create.
         //! @param rights Register rights.
         //!
-        void    createHeader(const std::string &path, const std::optional<jbr::reg::Rights> &rights) const;
+        void    createHeader(const std::string &path, const std::optional<jbr::reg::Rights> &rights) const noexcept(false);
 
     private:
         //!
         //! @brief Check if a register rights is valid. The register is corrupt if the format is broken, missing mandatory field or wild characters.
         //! @param path Register path to check.
         //!
-        void    verifyRights(tinyxml2::XMLNode *nodeHeader);
+        void    verifyRights(tinyxml2::XMLNode *nodeHeader) noexcept(false)
         //!
         //! @brief Write rights information's on register.
         //! @param reg XML document object.
@@ -148,7 +149,7 @@ namespace jbr
         //! @warning This function must be call into a process, no check on pointers, object validity are done. File must be saved after call.
         //!
         void    writeRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeHeader,
-                            tinyxml2::XMLElement *version, const jbr::reg::Rights &rights) const;
+                            tinyxml2::XMLElement *version, const jbr::reg::Rights &rights) const noexcept(false)
 
     private:
         //!
