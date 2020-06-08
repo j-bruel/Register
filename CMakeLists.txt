@@ -91,36 +91,36 @@ if (ENABLE_COVERAGE AND NOT CMAKE_CONFIGURATION_TYPES)
         include(CodeCoverage)
         append_coverage_compiler_flags()
         setup_target_for_coverage(NAME coverage EXECUTABLE ctest DEPENDENCIES coverage)
-else (ENABLE_COVERAGE AND NOT CMAKE_CONFIGURATION_TYPES)
-    if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-        set(CMAKE_C_COMPILER        "/usr/bin/clang")
-        set(CMAKE_CXX_COMPILER      "/usr/bin/clang++")
-        set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -std=c++17 -stdlib=libstdc++ -lstdc++fs -c")
-        set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_DEBUG} -std=c++17 -stdlib=libstdc++ -lstdc++fs -c")
-        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -std=c++17 -stdlib=libstdc++ -lstdc++fs -c")
-    endif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        ##
-        ## Set Linux compilation flag.
-        ##
-        set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -W -Wall -Wextra")
-        set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_DEBUG} -g")
-        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2")
-    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        ##
-        ## Set Windows compilation flag.
-        ##
-        set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} /W4 /WX")
-        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2")
-        ##
-        ## Export no symbols by default (if the compiler supports it).
-        ## This makes e.g. GCC's "visibility behavior" consistent with MSVC's.
-        ## On Windows/MSVC this is a noop.
-        ##
-        set(CMAKE_C_VISIBILITY_PRESET hidden)
-        set(CMAKE_CXX_VISIBILITY_PRESET hidden)
-    endif(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-endif (ENABLE_COVERAGE AND NOT CMAKE_CONFIGURATION_TYPES)
+endif(ENABLE_COVERAGE AND NOT CMAKE_CONFIGURATION_TYPES)
+
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    set(CMAKE_C_COMPILER        "/usr/bin/clang")
+    set(CMAKE_CXX_COMPILER      "/usr/bin/clang++")
+    set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -std=c++17 -stdlib=libstdc++ -lstdc++fs -c")
+    set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_DEBUG} -std=c++17 -stdlib=libstdc++ -lstdc++fs -c")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -std=c++17 -stdlib=libstdc++ -lstdc++fs -c")
+endif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    ##
+    ## Set Linux compilation flag.
+    ##
+    set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -W -Wall -Wextra")
+    set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_DEBUG} -g")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    ##
+    ## Set Windows compilation flag.
+    ##
+    set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} /W4 /WX")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2")
+    ##
+    ## Export no symbols by default (if the compiler supports it).
+    ## This makes e.g. GCC's "visibility behavior" consistent with MSVC's.
+    ## On Windows/MSVC this is a noop.
+    ##
+    set(CMAKE_C_VISIBILITY_PRESET hidden)
+    set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+endif(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 
 ##
 ## Sources files
