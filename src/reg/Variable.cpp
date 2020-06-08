@@ -10,7 +10,6 @@
 #include <iostream>
 #include <tinyxml2.h>
 
-
 namespace jbr::reg
 {
     Variable::Variable(const std::string &registerPath) : mPath(registerPath)
