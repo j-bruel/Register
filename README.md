@@ -62,7 +62,6 @@ More complex and interesting features will be available for future release.
 cRegister API platforms available :
 
 * `Linux`
-* `MacOS`
 * `Windows`
 
 ### Requirements
@@ -79,7 +78,7 @@ These are the base requirements to build and use cRegister library from a source
 * Windows `command prompt`
 * Microsoft `Visual C++ 2015`
 
-##### Linux & MacOS Requirements
+##### Linux Requirements
 
 * GNU-compatible `CMake` and `Make` (at least v3.1).
 * POSIX-standard `shell`.
@@ -139,9 +138,9 @@ Installing the library (after building the application and the documentation) :
 
 * `cmake --build . --target install`
 
-#### Linux & MacOS
+#### Linux
 
-To build the library on linux or MacOS :
+To build the library on linux :
 
 * `mkdir build` _In the root project directory_
 * `cd build`
