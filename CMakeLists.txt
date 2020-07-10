@@ -154,16 +154,6 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU
 endif(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 
 ##
-## Check os type to copy libraries on windows case.
-##
-if (WIN32 OR MSVC OR MSYS OR MINGW)
-    message(STATUS              "Windows OS detected, copying libraries files.")
-    add_custom_command( TARGET ${PROJECT_NAME}
-            POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> ${CMAKE_BINARY_DIR}/test/${PROJECT_NAME}.dll)
-endif (WIN32 OR MSVC OR MSYS OR MINGW)
-
-##
 ## Build test settings.
 ##
 if (BUILD_TESTS)

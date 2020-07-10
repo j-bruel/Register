@@ -41,19 +41,14 @@ add_executable(${TESTING_PROJECT_NAME} ${SOURCE_FILES} ${INCLUDE_FILES} ${TEST_S
 ## Link testing library.
 ##
 if (WIN32 OR MSVC OR MSYS OR MINGW)
-    target_link_libraries(${TESTING_PROJECT_NAME} ${PROJECT_NAME} doctest)
+    target_link_libraries(${TESTING_PROJECT_NAME} doctest)
 else()
     target_link_libraries(${TESTING_PROJECT_NAME} doctest stdc++fs)
 endif (WIN32 OR MSVC OR MSYS OR MINGW)
 
+message(${CMAKE_BINARY_DIR}/test/${TESTING_PROJECT_NAME}${OS_DYNAMIQUE_BIN_EXT})
+
 ##
 ## Add test.
 ##
-add_test(all_tests ${TESTING_PROJECT_NAME})
-
-##
-## Copy test file to building directory for auto-testing scripts.
-##
-add_custom_command( TARGET ${TESTING_PROJECT_NAME}
-                    POST_BUILD
-                    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${TESTING_PROJECT_NAME}> ${CMAKE_BINARY_DIR}/test/${TESTING_PROJECT_NAME}${OS_DYNAMIQUE_BIN_EXT})
+add_test(NAME RUN_TESTS COMMAND ${TESTING_PROJECT_NAME})
