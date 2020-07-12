@@ -1,0 +1,108 @@
+@startuml
+
+namespace std {
+    class exception {
+    }
+}
+
+namespace jbr {
+
+    note "using std::unique_ptr<jbr::reg::Instence> = jbr::Register" as Register_Class_Name
+
+    namespace reg {
+
+        std.exception <|-- jbr.reg.exception
+
+        class exception {
+            -mMsg : std::string
+            __
+            +explicit exception(std::string &&msg)
+            +~exception() noexcept override
+            ..
+            +const char  *what() const noexcept override
+        }
+
+        Manager --o	Instance
+        Instance --o Rights
+        Instance --o Variable
+
+        class   Manager {
+            +{static} jbr::Register create(const std::string &path, const std::optional<jbr::reg::Rights> &rights = std::nullopt) noexcept(false)
+            +{static} jbr::Register open(const std::string &path) noexcept(false)
+            +{static} bool          exist(const std::string &path) noexcept
+            +{static} void          destroy(jbr::Register &register) noexcept(false)
+        }
+
+        class Instance {
+            -mPath : std::string
+            __
+            +Instance()
+            +~Instance()
+            ..
+            +void   verify() const noexcept(false)
+            +void   copy(const std::string &pathTo) const noexcept(false)
+            +void   move(const std::string &pathTo) noexcept(false)
+            ..
+            +jbr::reg::Rights   rights() const noexcept(false)
+            +void               applyRights(const jbr::reg::Rights &rights) const noexcept(false)
+            ..
+            +jbr::reg::Variable operator[](const char *variableName) const noexcept(false)
+            +jbr::reg::Variable get(const char *variableName) const noexcept(false)
+            +void               set(const jbr::reg::Variable &variable) const noexcept(false)
+            +void               update(const jbr::reg::Variable &variable) const noexcept(false)
+            +void               copy(const char *variableNameFrom, const char *variableNameTo) const noexcept(false)
+            +void               rename(const char *variableNameFrom, const char *variableNameTo) const noexcept(false)
+            +void               remove(const char *variableName) const noexcept(false)
+        }
+
+        class Variable {
+            -mName : std::string
+            -mValue : std::string
+            -mRights : jbr::reg::Rights
+            __
+            +Variable()
+            +Variable(std::string &&name, std::string &&value, const std::optional<jbr::reg::Rights> &rights = std::nullopt)
+            +~Variable()
+            ..
+            +void               set(std::string &&name, std::string &&value, const std::optional<jbr::reg::Rights> &rights = std::nullopt) const noexcept(false)
+            +const char         *getName() const noexcept(false)
+            +const char         *getValue() const noexcept(false)
+            +const jbr::Rights  &getRights() const noexcept(false)
+        }
+
+        class Rights {
+            +mRead : bool
+            +mWrite : bool
+            +mOpen : bool
+            +mCopy : bool
+            +mMove : bool
+            +mDestroy : bool
+            __
+            +Rights()
+        }
+
+        namespace var {
+
+            namespace perm {
+
+                jbr.reg.Variable --* jbr.reg.var.perm.Rights
+
+                class Rights {
+                    +mRead : bool
+                    +mWrite : bool
+                    +mUpdate : bool
+                    +mRename : bool
+                    +mCopy : bool
+                    +mRemove : bool
+                    __
+                    +Rights()
+                }
+
+            }
+        }
+
+    }
+
+}
+
+@enduml
