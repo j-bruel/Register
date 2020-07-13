@@ -7,7 +7,7 @@ namespace std {
 
 namespace jbr {
 
-    note "using std::unique_ptr<jbr::reg::Instence> = jbr::Register" as Register_Class_Name
+    note "using std::unique_ptr<jbr::reg::Instance> = jbr::Register" as Register_Class_Name
 
     namespace reg {
 
@@ -30,7 +30,7 @@ namespace jbr {
             +{static} jbr::Register create(const std::string &path, const std::optional<jbr::reg::Rights> &rights = std::nullopt) noexcept(false)
             +{static} jbr::Register open(const std::string &path) noexcept(false)
             +{static} bool          exist(const std::string &path) noexcept
-            +{static} void          destroy(jbr::Register &register) noexcept(false)
+            +{static} void          destroy(jbr::Register &reg) noexcept(false)
         }
 
         class Instance {
