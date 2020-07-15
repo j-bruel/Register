@@ -5,42 +5,40 @@
 //!
 
 #include <jbr/Register.hpp>
+#include <jbr/reg/Manager.hpp>
 #include <jbr/reg/exception.hpp>
 #include <doctest.h>
 #include <filesystem>
 #include <fstream>
 
-TEST_CASE("Register::create")
+TEST_CASE("jbr::reg::Manager::create")
 {
-    jbr::Register   mRegister;
-
-    SUBCASE("empty input path")
+    SUBCASE("Create register with empty input path.")
     {
-        std::string msg;
-
         try {
-            mRegister.create("");
+            (void)jbr::reg::Manager::create("");
         }
         catch (jbr::reg::exception &e) {
-            msg = e.what();
+            CHECK(std::string(e.what()) == "To create a register the path must not be empty.");
+            return ;
         }
-        CHECK(msg == "To create a register the path must not be empty.");
+        FAIL("Create a empty register must throw a exception.");
     }
 
-    SUBCASE("create one")
+    SUBCASE("Basic register created.")
     {
-        CHECK_NOTHROW(mRegister.create("./ut_create_one_register"));
+        CHECK_NOTHROW((void)jbr::reg::Manager::create("./ut_create_one_register"));
         CHECK(std::filesystem::exists("./ut_create_one_register"));
         std::filesystem::remove("./ut_create_one_register");
     }
 
-    SUBCASE("create few")
+    SUBCASE("Create few register on the same frame.")
     {
-        CHECK_NOTHROW(mRegister.create("./ut_create_1"));
-        CHECK_NOTHROW(mRegister.create("../ut_create_2"));
-        CHECK_NOTHROW(mRegister.create("ut_create_3"));
+        CHECK_NOTHROW((void)jbr::reg::Manager::create("./ut_create_1"));
+        CHECK_NOTHROW((void)jbr::reg::Manager::create("../ut_create_2"));
+        CHECK_NOTHROW((void)jbr::reg::Manager::create("ut_create_3"));
         std::filesystem::create_directory("./nextDirectory");
-        CHECK_NOTHROW(mRegister.create("./nextDirectory/ut_create_4"));
+        CHECK_NOTHROW((void)jbr::reg::Manager::create("./nextDirectory/ut_create_4"));
         CHECK(std::filesystem::exists("./ut_create_1"));
         CHECK(std::filesystem::exists("../ut_create_2"));
         CHECK(std::filesystem::exists("ut_create_3"));
@@ -51,16 +49,16 @@ TEST_CASE("Register::create")
         std::filesystem::remove_all("./nextDirectory");
     }
 
-    SUBCASE("content")
+    SUBCASE("Verify the mandatory register content.")
     {
-        mRegister.create("ut.reg");
+        (void)jbr::reg::Manager::create("ut.reg");
 
         std::ifstream   ifs("ut.reg");
         std::string     content((std::istreambuf_iterator<char>(ifs)), (std::istreambuf_iterator<char>()));
 
         CHECK(content == "<register>\n"
                         "    <header>\n"
-                        "        <version>1</version>\n"
+                        "        <version>1.0.0</version>\n"
                         "    </header>\n"
                         "    <body/>\n"
                         "</register>\n");
@@ -68,14 +66,14 @@ TEST_CASE("Register::create")
         std::filesystem::remove("ut.reg");
     }
 
-    SUBCASE("already exist")
+    SUBCASE("Create a register on already existing file.")
     {
         std::string msg;
 
-        CHECK_NOTHROW(mRegister.create("./ut_already_1"));
+        CHECK_NOTHROW((void)jbr::reg::Manager::create("./ut_already_1"));
         std::filesystem::create_directory("./ut_already_2");
         try {
-            mRegister.create("./ut_already_1");
+            (void)jbr::reg::Manager::create("./ut_already_1");
         }
         catch (jbr::reg::exception &e) {
             msg = e.what();
@@ -83,7 +81,7 @@ TEST_CASE("Register::create")
         CHECK(msg == "The register ./ut_already_1 already exist. You must remove it before create it or open it.");
         msg.clear();
         try {
-            mRegister.create("./ut_already_2");
+            (void)jbr::reg::Manager::create("./ut_already_2");
         }
         catch (jbr::reg::exception &e) {
             msg = e.what();
