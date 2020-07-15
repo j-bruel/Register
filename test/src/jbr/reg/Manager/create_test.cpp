@@ -1,5 +1,5 @@
 //!
-//! @file register_create.cpp
+//! @file create_test.cpp
 //! @author jbruel
 //! @date 20/05/19
 //!
@@ -15,14 +15,15 @@ TEST_CASE("jbr::reg::Manager::create")
 {
     SUBCASE("Create register with empty input path.")
     {
+        std::string msg;
+
         try {
             (void)jbr::reg::Manager::create("");
         }
         catch (jbr::reg::exception &e) {
-            CHECK(std::string(e.what()) == "To create a register the path must not be empty.");
-            return ;
+            msg = e.what();
         }
-        FAIL("Create a empty register must throw a exception.");
+        CHECK(msg == "To create a register the path must not be empty.");
     }
 
     SUBCASE("Basic register created.")
