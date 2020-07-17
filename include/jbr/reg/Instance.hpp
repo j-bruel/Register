@@ -9,6 +9,7 @@
 
 # include <jbr/reg/Rights.hpp>
 # include <tinyxml2.h>
+# include <filesystem>
 # include <string>
 # include <optional>
 
@@ -69,6 +70,20 @@ namespace jbr::reg
 
     public:
         //!
+        //! @brief Check if a register is valid. The register is corrupt if the format is broken, missing mandatory field or wild characters.
+        //! @warning This function does not need to be called after open function.
+        //!
+        void        verify() const noexcept(false);
+        //!
+        //! @brief Check if a register exist. Only check if the register file exist on system.
+        //! @return True if exist, false if not.
+        //! @warning This function does not check if the register is corrupt or valid. This function only check if the file exist.
+        //!
+        [[nodiscard]]
+        inline bool exist() const noexcept { return (std::filesystem::exists(mPath)); }
+
+    public:
+        //!
         //! @brief Extract the register localization.
         //! @return Register location.
         //!
@@ -92,11 +107,28 @@ namespace jbr::reg
         [[nodiscard]]
         tinyxml2::XMLElement    *newXMLElement(tinyxml2::XMLDocument *xmlDocument, const char *elementName) const noexcept(false);
         //!
+        //! @brief Extract a sub element from a xml node.
+        //! @param node Parent node.
+        //! @param subNodeName Name of the sub node to extract.
+        //! @return Extract element.
+        //! @throw Throw a exception when the sub node can't be extracted.
+        //!
+        [[nodiscard]]
+        tinyxml2::XMLElement    *getSubXMLElement(tinyxml2::XMLNode *node, const char *subNodeName) const noexcept(false);
+
+    private:
+        //!
         //! @brief Save xml file with error handling.
         //! @param xmlDocument XML documentation to save.
         //! @throw Raise a exception if the file saving is impossible.
         //!
         void    saveXMLFile(tinyxml2::XMLDocument &xmlDocument) const noexcept(false);
+        //!
+        //! @brief Load xml file with error handling.
+        //! @param xmlDocument XML documentation to load.
+        //! @throw Raise a exception if the file loading is impossible.
+        //!
+        void    loadXMLFile(tinyxml2::XMLDocument &xmlDocument) const noexcept(false);
 
     private:
         //!
@@ -118,6 +150,18 @@ namespace jbr::reg
         //!
         void    writeRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeHeader,
                             tinyxml2::XMLElement *version, const jbr::reg::Rights &rights) const noexcept(false);
+        //!
+        //! @brief Check if a register rights is valid. The register is corrupt if the format is broken, missing mandatory field or wild characters.
+        //! @param nodeHeader Header register node to check.
+        //!
+        void    verifyRights(tinyxml2::XMLNode *nodeHeader) const noexcept(false);
+        //!
+        //! @brief Query a boolean into a xml element field.
+        //! @param xmlElement XML element to insert the boolean.
+        //! @param status Boolean to insert.
+        //! @throw If the element is set and the query failed.
+        //!
+        void    queryRightToXMLElement(tinyxml2::XMLElement *xmlElement, bool *status) const noexcept(false);
     };
 }
 

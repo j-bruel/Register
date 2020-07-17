@@ -33,6 +33,7 @@ namespace jbr::reg
 
         jbr::Register   reg = std::make_unique<jbr::reg::Instance>(path.c_str());
 
+        reg->verify();
 //        if (!reg->isOpenable())
 //            throw jbr::reg::exception("The register " + path + " is not openable. Please check the register rights, read and open must be allowed.");
         return (reg);
