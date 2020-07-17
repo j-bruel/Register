@@ -33,7 +33,8 @@ namespace jbr::reg
 
         jbr::Register   reg = std::make_unique<jbr::reg::Instance>(path.c_str());
 
-        reg->verify();
+        // @todo Before, finish open() unit test import from old version.
+        reg->verify(); // @todo Remove ->verify() method and call below ->isOpenable() method when all sub-rights methods will be done.
 //        if (!reg->isOpenable())
 //            throw jbr::reg::exception("The register " + path + " is not openable. Please check the register rights, read and open must be allowed.");
         return (reg);

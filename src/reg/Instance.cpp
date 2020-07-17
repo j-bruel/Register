@@ -14,20 +14,34 @@ namespace jbr::reg
     {
         tinyxml2::XMLDocument   reg;
 
-        if (!exist())
-            throw jbr::reg::exception("Impossible to check the corruption status of a not existing register : " + mPath + '.');
         loadXMLFile(reg);
 
         tinyxml2::XMLNode       *nodeReg = getSubXMLElement(&reg, "register");
-        tinyxml2::XMLNode       *nodeHeader = getSubXMLElement(nodeReg, "header");
-        tinyxml2::XMLElement    *version = getSubXMLElement(nodeHeader, "version");
-        const char              *versionValue;
+        tinyxml2::XMLElement    *version = getSubXMLElement(getSubXMLElement(nodeReg, "header"), "version");
 
-        versionValue = version->GetText();
-        if (versionValue == nullptr)
+        if (version->GetText() == nullptr)
             throw jbr::reg::exception("Register corrupted. Field version from register/header nodes not set or invalid.");
-        verifyRights(nodeHeader);
         (void)getSubXMLElement(nodeReg, "body");
+    }
+
+    jbr::reg::Rights    Instance::rights() const noexcept(false)
+    {
+        tinyxml2::XMLDocument   reg;
+
+        loadXMLFile(reg);
+
+        tinyxml2::XMLNode   *nodeRights = getSubXMLElement(getSubXMLElement(&reg, "register"), "header")->FirstChildElement("rights");
+        jbr::reg::Rights    rights;
+
+        if (nodeRights == nullptr)
+            return (rights);
+        queryRightToXMLElement(getSubXMLElement(nodeRights, "read"), &rights.mRead);
+        queryRightToXMLElement(getSubXMLElement(nodeRights, "write"), &rights.mWrite);
+        queryRightToXMLElement(getSubXMLElement(nodeRights, "open"), &rights.mOpen);
+        queryRightToXMLElement(getSubXMLElement(nodeRights, "copy"), &rights.mCopy);
+        queryRightToXMLElement(getSubXMLElement(nodeRights, "move"), &rights.mMove);
+        queryRightToXMLElement(getSubXMLElement(nodeRights, "destroy"), &rights.mDestroy);
+        return (rights);
     }
 
     void    Instance::checkPathValidity() const noexcept(false)
@@ -75,6 +89,9 @@ namespace jbr::reg
 
     void    Instance::loadXMLFile(tinyxml2::XMLDocument &xmlDocument) const noexcept(false)
     {
+        if (!exist())
+            throw jbr::reg::exception("Impossible to load a not existing xml file : " + mPath + '.');
+
         tinyxml2::XMLError      err = xmlDocument.LoadFile(mPath.c_str());
 
         if (err != tinyxml2::XMLError::XML_SUCCESS)
@@ -86,12 +103,11 @@ namespace jbr::reg
         tinyxml2::XMLDocument   reg;
         tinyxml2::XMLNode       *nodeReg = newXMLElement(&reg, "register");
         tinyxml2::XMLNode       *nodeHeader = newXMLElement(&reg, "header");
-        tinyxml2::XMLNode       *nodeBody = newXMLElement(&reg, "body");
         tinyxml2::XMLElement    *version = newXMLElement(&reg, "version");
 
         reg.InsertFirstChild(nodeReg);
         nodeReg->InsertFirstChild(nodeHeader);
-        nodeReg->InsertAfterChild(nodeHeader, nodeBody);
+        nodeReg->InsertAfterChild(nodeHeader, newXMLElement(&reg, "body"));
         version->SetText("1.0.0");
         nodeHeader->InsertEndChild(version);
         if (rights != std::nullopt)
@@ -126,29 +142,6 @@ namespace jbr::reg
         nodeRights->InsertAfterChild(openElement, copyElement);
         nodeRights->InsertAfterChild(copyElement, moveElement);
         nodeRights->InsertAfterChild(moveElement, destroyElement);
-    }
-
-    void    Instance::verifyRights(tinyxml2::XMLNode *nodeHeader) const noexcept(false)
-    {
-        tinyxml2::XMLNode   *nodeRights = nodeHeader->FirstChildElement("rights");
-
-        if (nodeRights == nullptr)
-            return ;
-
-        tinyxml2::XMLElement    *readElement = nodeRights->FirstChildElement("read");
-        tinyxml2::XMLElement    *writeElement = nodeRights->FirstChildElement("write");
-        tinyxml2::XMLElement    *openElement = nodeRights->FirstChildElement("open");
-        tinyxml2::XMLElement    *copyElement = nodeRights->FirstChildElement("copy");
-        tinyxml2::XMLElement    *moveElement = nodeRights->FirstChildElement("move");
-        tinyxml2::XMLElement    *destroyElement = nodeRights->FirstChildElement("destroy");
-        jbr::reg::Rights        rights;
-
-        queryRightToXMLElement(readElement, &rights.mRead);
-        queryRightToXMLElement(writeElement, &rights.mWrite);
-        queryRightToXMLElement(openElement, &rights.mOpen);
-        queryRightToXMLElement(copyElement, &rights.mCopy);
-        queryRightToXMLElement(moveElement, &rights.mMove);
-        queryRightToXMLElement(destroyElement, &rights.mDestroy);
     }
 
     void    Instance::queryRightToXMLElement(tinyxml2::XMLElement *xmlElement, bool *status) const noexcept(false)

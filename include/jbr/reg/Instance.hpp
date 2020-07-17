@@ -90,6 +90,14 @@ namespace jbr::reg
         [[nodiscard]]
         const std::string   &localization() const noexcept { return (mPath); }
 
+    public:
+        //!
+        //! @brief Extract register rights.
+        //! @return Current register rights.
+        //!
+        [[nodiscard]]
+        jbr::reg::Rights    rights() const noexcept(false);
+
     private:
         //!
         //! @brief Check if the register path is valid.
@@ -150,11 +158,6 @@ namespace jbr::reg
         //!
         void    writeRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeHeader,
                             tinyxml2::XMLElement *version, const jbr::reg::Rights &rights) const noexcept(false);
-        //!
-        //! @brief Check if a register rights is valid. The register is corrupt if the format is broken, missing mandatory field or wild characters.
-        //! @param nodeHeader Header register node to check.
-        //!
-        void    verifyRights(tinyxml2::XMLNode *nodeHeader) const noexcept(false);
         //!
         //! @brief Query a boolean into a xml element field.
         //! @param xmlElement XML element to insert the boolean.
