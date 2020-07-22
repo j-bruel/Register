@@ -107,12 +107,33 @@ namespace jbr::reg
         [[nodiscard]]
         jbr::reg::Rights    rights() const noexcept(false);
         //!
-        //! @brief Check if the register is openable.
+        //! @brief Check if a register is openable. The register is not openable if the fields read or open from register/header/rights nodes is false.
         //! @return Openable status.
         //! @throw Raise if impossible to extract the rights data from the register.
         //!
         [[nodiscard]]
         bool                isOpenable() const noexcept(false);
+        //!
+        //! @brief Check if a register is copyable. The register is not copyable if the fields read or copy from register/header/rights nodes is false.
+        //! @return Copyable status.
+        //! @throw Raise if impossible to extract the rights data from the register.
+        //!
+        [[nodiscard]]
+        bool                isCopyable() const noexcept(false);
+        //!
+        //! @brief Check if a register is movable. The register is not movable if the fields write, read or copy from register/header/rights nodes is false.
+        //! @return Movable status.
+        //! @throw Raise if impossible to extract the rights data from the register.
+        //!
+        [[nodiscard]]
+        bool                isMovable() const noexcept(false);
+        //!
+        //! @brief Check if a register is destroyable. The register is not destroyable if the fields read or destroy from register/header/rights nodes is false.
+        //! @return Destroyable status.
+        //! @throw Raise if impossible to extract the rights data from the register.
+        //!
+        [[nodiscard]]
+        bool                isDestroyable() const noexcept(false);
 
     private:
         //!

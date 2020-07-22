@@ -56,6 +56,27 @@ namespace jbr::reg
         return (regRights.mRead && regRights.mOpen);
     }
 
+    bool    Instance::isCopyable() const noexcept(false)
+    {
+        jbr::reg::Rights    regRights = rights();
+
+        return (regRights.mRead && regRights.mCopy);
+    }
+
+    bool    Instance::isMovable() const noexcept(false)
+    {
+        jbr::reg::Rights    regRights = rights();
+
+        return (regRights.mWrite && regRights.mRead && regRights.mMove);
+    }
+
+    bool    Instance::isDestroyable() const noexcept(false)
+    {
+        jbr::reg::Rights    regRights = rights();
+
+        return (regRights.mRead && regRights.mDestroy);
+    }
+
     void    Instance::checkPathValidity() const noexcept(false)
     {
         if (mPath.empty())

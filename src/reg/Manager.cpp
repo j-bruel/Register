@@ -49,8 +49,8 @@ namespace jbr::reg
     {
         const std::string &regPath = reg->localization();
 
-//        if (!reg->isDestroyable())
-//            throw jbr::reg::exception("The register " + regPath + " is not destroyable. Please check the register rights, read and destroy must be allow.");
+        if (!reg->isDestroyable())
+            throw jbr::reg::exception("The register " + regPath + " is not destroyable. Please check the register rights, read and destroy must be allow.");
 
         std::error_code     ec;
 
