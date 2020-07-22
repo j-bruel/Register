@@ -92,4 +92,29 @@ TEST_CASE("jbr::reg::Manager::create")
         std::filesystem::remove_all("./ut_already_2");
     }
 
+    SUBCASE("Create a register with rights.")
+    {
+        (void)jbr::reg::Manager::create("rights.reg", jbr::reg::Rights());
+
+        std::ifstream   ifs("rights.reg");
+        std::string     content((std::istreambuf_iterator<char>(ifs)), (std::istreambuf_iterator<char>()));
+
+        CHECK(content == "<register>\n"
+                         "    <header>\n"
+                         "        <version>1.0.0</version>\n"
+                         "        <rights>\n"
+                         "            <read>true</read>\n"
+                         "            <write>true</write>\n"
+                         "            <open>true</open>\n"
+                         "            <copy>true</copy>\n"
+                         "            <move>true</move>\n"
+                         "            <destroy>true</destroy>\n"
+                         "        </rights>\n"
+                         "    </header>\n"
+                         "    <body/>\n"
+                         "</register>\n");
+        ifs.close();
+        std::filesystem::remove("rights.reg");
+    }
+
 }
