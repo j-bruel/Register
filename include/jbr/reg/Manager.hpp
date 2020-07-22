@@ -54,4 +54,5 @@ namespace jbr::reg
         static void          destroy(jbr::Register &reg) noexcept(false);
     };
 }
+
 #endif //JBR_CREGISTER_REGISTER_MANAGER_HPP

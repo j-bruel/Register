@@ -56,7 +56,6 @@ namespace jbr::reg
 
         if (!std::filesystem::remove(regPath, ec))
             throw jbr::reg::exception("Impossible to destroy this next register : " + regPath + ". Error code : " + std::to_string(ec.value()) + ", why : " + ec.message() + '.');
-
     }
 
 }
