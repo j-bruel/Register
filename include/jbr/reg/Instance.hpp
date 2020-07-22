@@ -72,8 +72,16 @@ namespace jbr::reg
         //!
         //! @brief Check if a register is valid. The register is corrupt if the format is broken, missing mandatory field or wild characters.
         //! @warning This function does not need to be called after open function.
+        //! @throw Raise if the register is invalid.
         //!
         void        verify() const noexcept(false);
+        //!
+        //! @brief Check if a register is valid. The register is corrupt if the format is broken, missing mandatory field or wild characters.
+        //! @param xmlDocument XML documentation to save.
+        //! @warning This function does not need to be called after open function.
+        //! @throw Raise if the register is invalid.
+        //!
+        void        verify(tinyxml2::XMLDocument &xmlDocument) const noexcept(false);
         //!
         //! @brief Check if a register exist. Only check if the register file exist on system.
         //! @return True if exist, false if not.
@@ -94,13 +102,22 @@ namespace jbr::reg
         //!
         //! @brief Extract register rights.
         //! @return Current register rights.
+        //! @throw Raise if impossible to extract the data from the register.
         //!
         [[nodiscard]]
         jbr::reg::Rights    rights() const noexcept(false);
+        //!
+        //! @brief Check if the register is openable.
+        //! @return Openable status.
+        //! @throw Raise if impossible to extract the rights data from the register.
+        //!
+        [[nodiscard]]
+        bool                isOpenable() const noexcept(false);
 
     private:
         //!
         //! @brief Check if the register path is valid.
+        //! @throw Raise if the register path is invalid.
         //!
         void    checkPathValidity() const noexcept(false);
 

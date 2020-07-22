@@ -15,8 +15,12 @@ namespace jbr::reg
         tinyxml2::XMLDocument   reg;
 
         loadXMLFile(reg);
+        verify(reg);
+    }
 
-        tinyxml2::XMLNode       *nodeReg = getSubXMLElement(&reg, "register");
+    void    Instance::verify(tinyxml2::XMLDocument &xmlDocument) const noexcept(false)
+    {
+        tinyxml2::XMLNode       *nodeReg = getSubXMLElement(&xmlDocument, "register");
         tinyxml2::XMLElement    *version = getSubXMLElement(getSubXMLElement(nodeReg, "header"), "version");
 
         if (version->GetText() == nullptr)
@@ -29,19 +33,27 @@ namespace jbr::reg
         tinyxml2::XMLDocument   reg;
 
         loadXMLFile(reg);
+        verify(reg);
 
         tinyxml2::XMLNode   *nodeRights = getSubXMLElement(getSubXMLElement(&reg, "register"), "header")->FirstChildElement("rights");
         jbr::reg::Rights    rights;
 
         if (nodeRights == nullptr)
             return (rights);
-        queryRightToXMLElement(getSubXMLElement(nodeRights, "read"), &rights.mRead);
-        queryRightToXMLElement(getSubXMLElement(nodeRights, "write"), &rights.mWrite);
-        queryRightToXMLElement(getSubXMLElement(nodeRights, "open"), &rights.mOpen);
-        queryRightToXMLElement(getSubXMLElement(nodeRights, "copy"), &rights.mCopy);
-        queryRightToXMLElement(getSubXMLElement(nodeRights, "move"), &rights.mMove);
-        queryRightToXMLElement(getSubXMLElement(nodeRights, "destroy"), &rights.mDestroy);
+        queryRightToXMLElement( nodeRights->FirstChildElement("read"), &rights.mRead);
+        queryRightToXMLElement(nodeRights->FirstChildElement("write"), &rights.mWrite);
+        queryRightToXMLElement(nodeRights->FirstChildElement("open"), &rights.mOpen);
+        queryRightToXMLElement(nodeRights->FirstChildElement("copy"), &rights.mCopy);
+        queryRightToXMLElement(nodeRights->FirstChildElement("move"), &rights.mMove);
+        queryRightToXMLElement(nodeRights->FirstChildElement("destroy"), &rights.mDestroy);
         return (rights);
+    }
+
+    bool    Instance::isOpenable() const noexcept(false)
+    {
+        jbr::reg::Rights    regRights = rights();
+
+        return (regRights.mRead && regRights.mOpen);
     }
 
     void    Instance::checkPathValidity() const noexcept(false)
