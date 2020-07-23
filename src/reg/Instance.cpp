@@ -109,7 +109,6 @@ namespace jbr::reg
         if (subNode == nullptr)
             throw jbr::reg::exception("Error while extract the sub node, the result is null. The sub node " + std::string(subNodeName) + " does not exist.");
         return (subNode);
-
     }
 
     void    Instance::saveXMLFile(tinyxml2::XMLDocument &xmlDocument) const noexcept(false)
