@@ -130,4 +130,17 @@ TEST_CASE("jbr::reg::Manager::create")
         std::filesystem::remove("rights.reg");
     }
 
+    SUBCASE("Create register in a not existing directory.")
+    {
+        std::string msg;
+
+        try {
+            (void)jbr::reg::Manager::create("./unknow_directory/no_dir.reg");
+        }
+        catch (jbr::reg::exception &e) {
+            msg = e.what();
+        }
+        CHECK(msg == "Error while saving the register content, error code : 4.");
+    }
+
 }
