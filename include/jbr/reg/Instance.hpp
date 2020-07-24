@@ -46,7 +46,7 @@ namespace jbr::reg
         //! @param path Register location.
         //! @throw Exception raise if the register path is invalid.
         //!
-        explicit Instance(const char *path) : mPath(path) { checkPathValidity(); }
+        explicit Instance(const char *path);
         //!
         //! @brief Register instance constructor. A instance must be create with a path.
         //! @param path Register location.

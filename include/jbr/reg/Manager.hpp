@@ -30,14 +30,14 @@ namespace jbr::reg
         //! @throw Raise if impossible to create a register.
         //!
         [[nodiscard]]
-        static jbr::Register create(const std::string &path, const std::optional<jbr::reg::Rights> &rights = std::nullopt) noexcept(false);
+        static jbr::Register create(const char *path, const std::optional<jbr::reg::Rights> &rights = std::nullopt) noexcept(false);
         //!
         //! @brief Open and check the validity of a existing register according a input path.
         //! @param path Register path to open.
         //! @throw Raise if impossible to open a register.
         //!
         [[nodiscard]]
-        static jbr::Register open(const std::string &path) noexcept(false);
+        static jbr::Register open(const char *path) noexcept(false);
         //!
         //! @brief Check if a register exist. Only check if the register file exist on system.
         //! @param path Register path.
@@ -45,13 +45,21 @@ namespace jbr::reg
         //! @warning This function does not check if the register is corrupt or valid. This function only check if the file exist.
         //!
         [[nodiscard]]
-        static bool          exist(const std::string &path) noexcept;
+        static bool          exist(const char *path) noexcept;
         //!
         //! @brief Destroy a existing register. The target register will be removed definitively on the system.
         //! @param path Register path to destroy.
         //! @throw Raise if the register is not destroyable.
         //!
         static void          destroy(jbr::Register &reg) noexcept(false);
+
+    private:
+        //!
+        //! @brief Check if the register path is valid. This function check if the pointer is null and not empty.
+        //! @param path Register path.
+        //! @throw Raise if the path is null or empty string.
+        //!
+        static void         checkPathValidity(const char *path) noexcept(false);
     };
 }
 

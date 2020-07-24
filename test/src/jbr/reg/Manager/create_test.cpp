@@ -23,7 +23,20 @@ TEST_CASE("jbr::reg::Manager::create")
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
-        CHECK(msg == "The register path is invalid. It must not be empty.");
+        CHECK(msg == "The register path is empty. It must not be null or empty.");
+    }
+
+    SUBCASE("Create register with null input path.")
+    {
+        std::string msg;
+
+        try {
+            (void)jbr::reg::Manager::create(nullptr);
+        }
+        catch (jbr::reg::exception &e) {
+            msg = e.what();
+        }
+        CHECK(msg == "The register path is null. It must not be null or empty.");
     }
 
     SUBCASE("Basic register created.")

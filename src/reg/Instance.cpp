@@ -10,6 +10,14 @@
 namespace jbr::reg
 {
 
+    Instance::Instance(const char *path)
+    {
+        if (path == nullptr)
+            throw jbr::reg::exception("The register path is null. It must not be null or empty.");
+        mPath = path;
+        checkPathValidity();
+    }
+
     void    Instance::verify() const noexcept(false)
     {
         tinyxml2::XMLDocument   reg;

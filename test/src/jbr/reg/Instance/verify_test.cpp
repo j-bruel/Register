@@ -55,4 +55,20 @@ TEST_CASE("jbr::reg::Instance::verify")
         CHECK(msg == "Impossible to load a not existing xml file : ./not_existing_verify.reg.");
     }
 
+    SUBCASE("Verify with a null xml document.")
+    {
+        jbr::Register           reg = jbr::reg::Manager::create("./verify_with_null_xml_doc.reg");
+        tinyxml2::XMLDocument   *xmlDocument = nullptr;
+        std::string             msg;
+
+        try {
+            reg->verify(*xmlDocument);
+        }
+        catch (jbr::reg::exception &e) {
+            msg = e.what();
+        }
+        jbr::reg::Manager::destroy(reg);
+        CHECK(msg == "Error while extracting sub node, the parent node is null.");
+    }
+
 }
