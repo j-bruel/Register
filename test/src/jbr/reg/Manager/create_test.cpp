@@ -23,7 +23,7 @@ TEST_CASE("jbr::reg::Manager::create")
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
-        CHECK(msg == "To create a register the path must not be empty.");
+        CHECK(msg == "The register path is invalid. It must not be empty.");
     }
 
     SUBCASE("Basic register created.")

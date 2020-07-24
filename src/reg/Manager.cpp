@@ -13,8 +13,6 @@ namespace jbr::reg
 
     jbr::Register   Manager::create(const std::string &path, const std::optional<jbr::reg::Rights> &rights) noexcept(false)
     {
-        if (path.empty())
-            throw jbr::reg::exception("To create a register the path must not be empty.");
         if (exist(path))
             throw jbr::reg::exception("The register " + path + " already exist. You must remove it before create it or open it.");
 
