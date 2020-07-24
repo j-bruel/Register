@@ -51,11 +51,7 @@ namespace jbr::reg
 
         if (!reg->isDestroyable())
             throw jbr::reg::exception("The register " + regPath + " is not destroyable. Please check the register rights, read and destroy must be allow.");
-
-        std::error_code     ec;
-
-        if (!std::filesystem::remove(regPath, ec))
-            throw jbr::reg::exception("Impossible to destroy this next register : " + regPath + ". Error code : " + std::to_string(ec.value()) + ", why : " + ec.message() + '.');
+        std::filesystem::remove(regPath);
     }
 
 }
