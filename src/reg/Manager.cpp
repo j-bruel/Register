@@ -38,7 +38,7 @@ namespace jbr::reg
 
     bool    Manager::exist(const char *path) noexcept
     {
-        if (path == nullptr || !std::strlen(path))
+        if (path == nullptr || !path[0])
             return (false);
         return (std::filesystem::exists(path));
     }
@@ -56,7 +56,7 @@ namespace jbr::reg
     {
         if (path == nullptr)
             throw jbr::reg::exception("The register path is null. It must not be null or empty.");
-        if (!strlen(path))
+        if (!path[0])
             throw jbr::reg::exception("The register path is empty. It must not be null or empty.");
     }
 
