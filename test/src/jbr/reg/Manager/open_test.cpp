@@ -24,7 +24,7 @@ TEST_CASE("jbr::reg::Manager::open")
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
-        CHECK(msg == "The register path is empty. It must not be null or empty.");
+        CHECK(msg == "The register '' does not exist. You must create it before.");
     }
 
     SUBCASE("Open a register with a null path.")
@@ -37,7 +37,7 @@ TEST_CASE("jbr::reg::Manager::open")
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
-        CHECK(msg == "The register path is null. It must not be null or empty.");
+        CHECK(msg == "The register '' does not exist. You must create it before.");
     }
 
     SUBCASE("Basic register open on current directory.")
