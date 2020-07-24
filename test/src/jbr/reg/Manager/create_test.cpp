@@ -79,7 +79,7 @@ TEST_CASE("jbr::reg::Manager::create")
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
-        CHECK(msg == "The register ./ut_already_1 already exist. You must remove it before create it or open it.");
+        CHECK(msg == "The register './ut_already_1' already exist. You must remove it before create it or open it.");
         msg.clear();
         try {
             (void)jbr::reg::Manager::create("./ut_already_2");
@@ -87,7 +87,7 @@ TEST_CASE("jbr::reg::Manager::create")
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
-        CHECK(msg == "The register ./ut_already_2 already exist. You must remove it before create it or open it.");
+        CHECK(msg == "The register './ut_already_2' already exist. You must remove it before create it or open it.");
         std::filesystem::remove_all("./ut_already_1");
         std::filesystem::remove_all("./ut_already_2");
     }

@@ -24,7 +24,7 @@ TEST_CASE("jbr::reg::Manager::open")
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
-        CHECK(msg == "To open a register the path must not be empty.");
+        CHECK(msg == "The register '' does not exist. You must create it before.");
     }
 
     SUBCASE("Basic register open on current directory.")
@@ -86,12 +86,12 @@ TEST_CASE("jbr::reg::Manager::open")
         std::string msg;
 
         try {
-            (void)jbr::reg::Manager::open("./ut_not_exist");
+            (void)jbr::reg::Manager::open("./ut_not_exist.reg");
         }
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
-        CHECK(msg == "The register ./ut_not_exist does not exist. You must create it before.");
+        CHECK(msg == "The register './ut_not_exist.reg' does not exist. You must create it before.");
     }
 
     SUBCASE("Open a corrupted register with random data into it.")
@@ -410,7 +410,7 @@ TEST_CASE("jbr::reg::Manager::open")
 
     SUBCASE("Open a register without the reading right.")
     {
-        std::ofstream   reg("./ut_open_no_read_right_register");
+        std::ofstream   reg("./ut_open_no_read_right_register.reg");
         std::string     msg;
 
         reg << "<register>\n"
@@ -426,18 +426,18 @@ TEST_CASE("jbr::reg::Manager::open")
         "</register>\n";
         reg.close();
         try {
-            (void)jbr::reg::Manager::open("./ut_open_no_read_right_register");
+            (void)jbr::reg::Manager::open("./ut_open_no_read_right_register.reg");
         }
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
-        CHECK(msg == "The register ./ut_open_no_read_right_register is not openable. Please check the register rights, read and open must be allowed.");
-        std::filesystem::remove("./ut_open_no_read_right_register");
+        CHECK(msg == "The register './ut_open_no_read_right_register.reg' is not openable. Please check the register rights, read and open must be allowed.");
+        std::filesystem::remove("./ut_open_no_read_right_register.reg");
     }
 
     SUBCASE("Open a register without the right to open it.")
     {
-        std::ofstream   reg("./ut_open_no_open_right_register");
+        std::ofstream   reg("./ut_open_no_open_right_register.reg");
         std::string     msg;
 
         reg << "<register>\n"
@@ -454,18 +454,18 @@ TEST_CASE("jbr::reg::Manager::open")
         "</register>\n";
         reg.close();
         try {
-            (void)jbr::reg::Manager::open("./ut_open_no_open_right_register");
+            (void)jbr::reg::Manager::open("./ut_open_no_open_right_register.reg");
         }
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
-        CHECK(msg == "The register ./ut_open_no_open_right_register is not openable. Please check the register rights, read and open must be allowed.");
-        std::filesystem::remove("./ut_open_no_open_right_register");
+        CHECK(msg == "The register './ut_open_no_open_right_register.reg' is not openable. Please check the register rights, read and open must be allowed.");
+        std::filesystem::remove("./ut_open_no_open_right_register.reg");
     }
 
     SUBCASE("Open a register with read, write and open rights correctly set to true.")
     {
-        std::ofstream   reg("./ut_open_full_right_set_register");
+        std::ofstream   reg("./ut_open_full_right_set_register.reg");
         std::string     msg;
 
         reg << "<register>\n"
@@ -484,8 +484,8 @@ TEST_CASE("jbr::reg::Manager::open")
         "    </body>\n"
         "</register>\n";
         reg.close();
-        CHECK_NOTHROW((void)jbr::reg::Manager::open("./ut_open_full_right_set_register"));
-        std::filesystem::remove("./ut_open_full_right_set_register");
+        CHECK_NOTHROW((void)jbr::reg::Manager::open("./ut_open_full_right_set_register.reg"));
+        std::filesystem::remove("./ut_open_full_right_set_register.reg");
     }
 
 }

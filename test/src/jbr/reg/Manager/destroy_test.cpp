@@ -72,7 +72,7 @@ TEST_CASE("jbr::reg::Manager::destroy")
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
-        CHECK(msg == "The register ./destroy_without_destroy_right.reg is not destroyable. Please check the register rights, read and destroy must be allow.");
+        CHECK(msg == "The register './destroy_without_destroy_right.reg' is not destroyable. Please check the register rights, read and destroy must be allow.");
         CHECK(jbr::reg::Manager::exist("./destroy_without_destroy_right.reg"));
         std::filesystem::remove("./destroy_without_destroy_right.reg");
     }
@@ -105,7 +105,7 @@ TEST_CASE("jbr::reg::Manager::destroy")
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
-        CHECK(msg == "The register ./destroy_without_read_right.reg is not destroyable. Please check the register rights, read and destroy must be allow.");
+        CHECK(msg == "The register './destroy_without_read_right.reg' is not destroyable. Please check the register rights, read and destroy must be allow.");
         CHECK(jbr::reg::Manager::exist("./destroy_without_read_right.reg"));
         std::filesystem::remove("./destroy_without_read_right.reg");
     }
