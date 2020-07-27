@@ -75,6 +75,8 @@ namespace jbr::reg
         //! @throw Raise if the register is invalid.
         //!
         void        verify() const noexcept(false);
+
+    private:
         //!
         //! @brief Check if a register is valid. The register is corrupt if the format is broken, missing mandatory field or wild characters.
         //! @param xmlDocument XML documentation to save.
@@ -82,6 +84,8 @@ namespace jbr::reg
         //! @throw Raise if the register is invalid.
         //!
         void        verify(tinyxml2::XMLDocument &xmlDocument) const noexcept(false);
+
+    public:
         //!
         //! @brief Check if a register exist. Only check if the register file exist on system.
         //! @return True if exist, false if not.
@@ -106,6 +110,23 @@ namespace jbr::reg
         //!
         [[nodiscard]]
         jbr::reg::Rights    rights() const noexcept(false);
+
+    private:
+        //!
+        //! @brief Extract register rights according xml document.
+        //! @param xmlDocument XML documentation to save.
+        //! @return Current register rights.
+        //! @throw Raise if impossible to extract the data from the register.
+        //!
+        [[nodiscard]]
+        jbr::reg::Rights    rights(tinyxml2::XMLDocument &xmlDocument) const noexcept(false);
+
+    public:
+        //!
+        //! @brief Apply new rights on the register.
+        //! @param rights New rights to apply.
+        //! @throw Raise if invalid register or if the action is not allow.
+        //!
         void                applyRights(const jbr::reg::Rights &rights) const noexcept(false);
         //!
         //! @brief Check if a register is openable. The register is not openable if the fields read or open from register/header/rights nodes is false.

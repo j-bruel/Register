@@ -43,10 +43,15 @@ namespace jbr::reg
         tinyxml2::XMLDocument   reg;
 
         loadXMLFile(reg);
-        verify(reg);
+        return (rights(reg));
+    }
 
-        tinyxml2::XMLNode   *nodeRights = getSubXMLElement(getSubXMLElement(&reg, jbr::reg::node::name::reg),
-                                                            jbr::reg::node::name::header)->FirstChildElement("rights");
+    jbr::reg::Rights    Instance::rights(tinyxml2::XMLDocument &xmlDocument) const noexcept(false)
+    {
+        verify(xmlDocument);
+
+        tinyxml2::XMLNode   *nodeRights = getSubXMLElement(getSubXMLElement(&xmlDocument, jbr::reg::node::name::reg),
+                                                           jbr::reg::node::name::header)->FirstChildElement("rights");
         jbr::reg::Rights    rights;
 
         if (nodeRights == nullptr)
