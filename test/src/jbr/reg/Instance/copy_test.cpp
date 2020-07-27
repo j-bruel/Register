@@ -142,14 +142,14 @@ TEST_CASE("jbr::reg::Instance::copy")
         std::string         msg;
 
         try {
-            reg->copy("./should_not_work.reg");
+            reg->copy("./should_not_work_without_copy_right.reg");
         }
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
         CHECK(msg == "Impossible to copy the register './copy_without_copy_right.reg' without copy and read right.");
-        CHECK_FALSE(jbr::reg::Manager::exist("./should_not_work.reg"));
-        std::filesystem::remove("./copy_without_copy_right.reg");
+        CHECK_FALSE(jbr::reg::Manager::exist("./should_not_work_without_copy_right.reg"));
+        jbr::reg::Manager::destroy(reg);
     }
 
     SUBCASE("Copy a register without read right.")
@@ -159,7 +159,7 @@ TEST_CASE("jbr::reg::Instance::copy")
         std::string         msg;
 
         try {
-            reg->copy("./should_not_work.reg");
+            reg->copy("./should_not_work_without_read_right.reg");
         }
         catch (jbr::reg::exception &e) {
             msg = e.what();
