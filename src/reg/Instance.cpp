@@ -38,6 +38,37 @@ namespace jbr::reg
         (void)getSubXMLElement(nodeReg, jbr::reg::node::name::body);
     }
 
+    void    Instance::copy(const char *pathTo) const noexcept(false)
+    {
+        tinyxml2::XMLDocument   reg;
+
+        if (pathTo == nullptr || !pathTo[0])
+            throw jbr::reg::exception("To copy a register the new register path must not be empty.");
+        if (jbr::reg::Manager::exist(pathTo))
+            throw jbr::reg::exception("Impossible to copy the register " + mPath + ". Target path already have a register existing : " + pathTo + ".");
+        loadXMLFile(reg);
+        verify(reg);
+        if (!isCopyable(reg))
+            throw jbr::reg::exception("Impossible to copy the register '" + mPath + "' without copy right.");
+        std::filesystem::copy_file(mPath, pathTo);
+    }
+
+    void    Instance::move(const char *pathTo) noexcept(false)
+    {
+        tinyxml2::XMLDocument   reg;
+
+        if (pathTo == nullptr || !pathTo[0])
+            throw jbr::reg::exception("To move a register the new register path must not be empty.");
+        if (jbr::reg::Manager::exist(pathTo))
+            throw jbr::reg::exception("Impossible to move the register " + mPath + ". Target path already have a register existing : " + pathTo + ".");
+        loadXMLFile(reg);
+        verify(reg);
+        if (!isMovable(reg))
+            throw jbr::reg::exception("Impossible to move the register '" + mPath + "' without move right.");
+        std::filesystem::rename(mPath, pathTo);
+        mPath = pathTo;
+    }
+
     jbr::reg::Rights    Instance::rights() const noexcept(false)
     {
         tinyxml2::XMLDocument   reg;
@@ -180,7 +211,7 @@ namespace jbr::reg
         nodeRights->InsertAfterChild(moveElement, destroyElement);
     }
 
-    void    Instance::queryRightToXMLElement(tinyxml2::XMLElement *xmlElement, bool *status) const noexcept(false)
+    void    Instance::queryRightToXMLElement(const tinyxml2::XMLElement *xmlElement, bool *status) const noexcept(false)
     {
         tinyxml2::XMLError      err;
 

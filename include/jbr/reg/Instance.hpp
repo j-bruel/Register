@@ -104,6 +104,26 @@ namespace jbr::reg
 
     public:
         //!
+        //! @brief Copy a existing register to a new one.
+        //! @param pathTo New register path, where the current register will be copyed.
+        //! @throw Raise if impossible to copy the register.
+        //!
+        void            copy(const char *pathTo) const noexcept(false);
+        //!
+        //! @brief Move a existing register. Can be use as a rename register function.
+        //! @param pathTo New register path, where the current register will be moved.
+        //! @throw Raise if impossible to move the register.
+        //!
+        void            move(const char *pathTo) noexcept(false);
+        //!
+        //! @brief Rename a existing register. This is a alias to the 'move' function'.
+        //! @param newPath New register path, where the current register will be moved.
+        //! @throw Raise if impossible to rename the register.
+        //!
+        inline void    rename(const char *newPath) noexcept (false) { move(newPath); }
+
+    public:
+        //!
         //! @brief Extract register rights.
         //! @return Current register rights.
         //! @throw Raise if impossible to extract the data from the register.
@@ -317,7 +337,7 @@ namespace jbr::reg
         //! @param status Boolean to insert.
         //! @throw If the element is set and the query failed.
         //!
-        void    queryRightToXMLElement(tinyxml2::XMLElement *xmlElement, bool *status) const noexcept(false);
+        void    queryRightToXMLElement(const tinyxml2::XMLElement *xmlElement, bool *status) const noexcept(false);
     };
 }
 
