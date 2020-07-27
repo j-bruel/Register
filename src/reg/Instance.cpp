@@ -41,6 +41,7 @@ namespace jbr::reg
     void    Instance::copy(const char *pathTo) const noexcept(false)
     {
         tinyxml2::XMLDocument   reg;
+        std::error_code         err;
 
         if (pathTo == nullptr || !pathTo[0])
             throw jbr::reg::exception("To copy a register the new register path must not be empty.");
@@ -49,8 +50,10 @@ namespace jbr::reg
         loadXMLFile(reg);
         verify(reg);
         if (!isCopyable(reg))
-            throw jbr::reg::exception("Impossible to copy the register '" + mPath + "' without copy right.");
-        std::filesystem::copy_file(mPath, pathTo);
+            throw jbr::reg::exception("Impossible to copy the register '" + mPath + "' without copy and read right.");
+        std::filesystem::copy_file(mPath, pathTo, err);
+        if (err)
+            throw jbr::reg::exception(err.message());
     }
 
     void    Instance::move(const char *pathTo) noexcept(false)
