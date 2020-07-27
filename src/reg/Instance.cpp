@@ -71,9 +71,8 @@ namespace jbr::reg
 
         tinyxml2::XMLNode       *nodeHeader = getSubXMLElement(getSubXMLElement(&reg, jbr::reg::node::name::reg),
                                                                 jbr::reg::node::name::header);
-        tinyxml2::XMLElement    *version = getSubXMLElement(nodeHeader, jbr::reg::node::name::_header::version);
 
-        writeRights(&reg, nodeHeader, version, rights);
+        writeRights(&reg, nodeHeader, getSubXMLElement(nodeHeader, jbr::reg::node::name::_header::version), rights);
         saveXMLFile(reg);
     }
 
