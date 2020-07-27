@@ -128,41 +128,127 @@ namespace jbr::reg
         //! @throw Raise if invalid register or if the action is not allow.
         //!
         void                applyRights(const jbr::reg::Rights &rights) const noexcept(false);
+
+    public:
         //!
         //! @brief Check if a register is openable. The register is not openable if the fields read or open from register/header/rights nodes is false.
         //! @return Openable status.
         //! @throw Raise if impossible to extract the rights data from the register.
         //!
         [[nodiscard]]
-        bool                isOpenable() const noexcept(false);
+        inline bool isOpenable() const noexcept(false) { return (isOpenable(rights())); }
         //!
         //! @brief Check if a register is writable. The register is not writable if the fields write from register/header/rights nodes is false.
         //! @return Writable status.
         //! @throw Raise if impossible to extract the rights data from the register.
         //!
         [[nodiscard]]
-        bool                isWritable() const noexcept(false);
+        inline bool isWritable() const noexcept(false) { return (isWritable(rights())); }
         //!
         //! @brief Check if a register is copyable. The register is not copyable if the fields read or copy from register/header/rights nodes is false.
         //! @return Copyable status.
         //! @throw Raise if impossible to extract the rights data from the register.
         //!
         [[nodiscard]]
-        bool                isCopyable() const noexcept(false);
+        inline bool isCopyable() const noexcept(false) { return (isCopyable(rights())); }
         //!
         //! @brief Check if a register is movable. The register is not movable if the fields write, read or copy from register/header/rights nodes is false.
         //! @return Movable status.
         //! @throw Raise if impossible to extract the rights data from the register.
         //!
         [[nodiscard]]
-        bool                isMovable() const noexcept(false);
+        inline bool isMovable() const noexcept(false) { return (isMovable(rights())); }
         //!
         //! @brief Check if a register is destroyable. The register is not destroyable if the fields read or destroy from register/header/rights nodes is false.
         //! @return Destroyable status.
         //! @throw Raise if impossible to extract the rights data from the register.
         //!
         [[nodiscard]]
-        bool                isDestroyable() const noexcept(false);
+        inline bool isDestroyable() const noexcept(false) { return (isDestroyable(rights())); }
+
+    private:
+        //!
+        //! @brief Check if a register is openable. The register is not openable if the fields read or open from register/header/rights nodes is false.
+        //! @param xmlDocument Register file to use to check rights.
+        //! @return Openable status.
+        //! @throw Raise if impossible to extract the rights data from the register.
+        //!
+        [[nodiscard]]
+        inline bool isOpenable(tinyxml2::XMLDocument &xmlDocument) const noexcept(false) { return (isOpenable(rights(xmlDocument))); }
+        //!
+        //! @brief Check if a register is writable. The register is not writable if the fields write from register/header/rights nodes is false.
+        //! @param xmlDocument Register file to use to check rights.
+        //! @return Writable status.
+        //! @throw Raise if impossible to extract the rights data from the register.
+        //!
+        [[nodiscard]]
+        inline bool isWritable(tinyxml2::XMLDocument &xmlDocument) const noexcept(false) { return (isWritable(rights(xmlDocument))); }
+        //!
+        //! @brief Check if a register is copyable. The register is not copyable if the fields read or copy from register/header/rights nodes is false.
+        //! @param xmlDocument Register file to use to check rights.
+        //! @return Copyable status.
+        //! @throw Raise if impossible to extract the rights data from the register.
+        //!
+        [[nodiscard]]
+        inline bool isCopyable(tinyxml2::XMLDocument &xmlDocument) const noexcept(false) { return (isCopyable(rights(xmlDocument))); }
+        //!
+        //! @brief Check if a register is movable. The register is not movable if the fields write, read or copy from register/header/rights nodes is false.
+        //! @param xmlDocument Register file to use to check rights.
+        //! @return Movable status.
+        //! @throw Raise if impossible to extract the rights data from the register.
+        //!
+        [[nodiscard]]
+        inline bool isMovable(tinyxml2::XMLDocument &xmlDocument) const noexcept(false) { return (isMovable(rights(xmlDocument))); }
+        //!
+        //! @brief Check if a register is destroyable. The register is not destroyable if the fields read or destroy from register/header/rights nodes is false.
+        //! @param xmlDocument Register file to use to check rights.
+        //! @return Destroyable status.
+        //! @throw Raise if impossible to extract the rights data from the register.
+        //!
+        [[nodiscard]]
+        inline bool isDestroyable(tinyxml2::XMLDocument &xmlDocument) const noexcept(false) { return (isDestroyable(rights(xmlDocument))); }
+
+    private:
+        //!
+        //! @brief Check if a register is openable. The register is not openable if the fields read or open from register/header/rights nodes is false.
+        //! @param rights Current register rights to check.
+        //! @return Openable status.
+        //! @throw Raise if impossible to extract the rights data from the register.
+        //!
+        [[nodiscard]]
+        inline bool isOpenable(const jbr::reg::Rights &rights) const noexcept { return (rights.mRead && rights.mOpen); }
+        //!
+        //! @brief Check if a register is writable. The register is not writable if the fields write from register/header/rights nodes is false.
+        //! @param rights Current register rights to check.
+        //! @return Writable status.
+        //! @throw Raise if impossible to extract the rights data from the register.
+        //!
+        [[nodiscard]]
+        inline bool isWritable(const jbr::reg::Rights &rights) const noexcept { return (rights.mWrite); }
+        //!
+        //! @brief Check if a register is copyable. The register is not copyable if the fields read or copy from register/header/rights nodes is false.
+        //! @param rights Current register rights to check.
+        //! @return Copyable status.
+        //! @throw Raise if impossible to extract the rights data from the register.
+        //!
+        [[nodiscard]]
+        inline bool isCopyable(const jbr::reg::Rights &rights) const noexcept { return (rights.mRead && rights.mCopy); }
+        //!
+        //! @brief Check if a register is movable. The register is not movable if the fields write, read or copy from register/header/rights nodes is false.
+        //! @param rights Current register rights to check.
+        //! @return Movable status.
+        //! @throw Raise if impossible to extract the rights data from the register.
+        //!
+        [[nodiscard]]
+        inline bool isMovable(const jbr::reg::Rights &rights) const noexcept { return (rights.mWrite && rights.mRead && rights.mMove); }
+        //!
+        //! @brief Check if a register is destroyable. The register is not destroyable if the fields read or destroy from register/header/rights nodes is false.
+        //! @param rights Current register rights to check.
+        //! @return Destroyable status.
+        //! @throw Raise if impossible to extract the rights data from the register.
+        //!
+        [[nodiscard]]
+        inline bool isDestroyable(const jbr::reg::Rights &rights) const noexcept { return (rights.mRead && rights.mDestroy); }
 
     private:
         //!

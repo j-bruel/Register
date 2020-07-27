@@ -71,7 +71,7 @@ namespace jbr::reg
 
         loadXMLFile(reg);
         verify(reg);
-        if (!isWritable())
+        if (!isWritable(reg))
             throw jbr::reg::exception("The register " + mPath + " is not writable. Please check the register rights, write must be allow.");
 
         tinyxml2::XMLNode       *nodeHeader = getSubXMLElement(getSubXMLElement(&reg, jbr::reg::node::name::reg),
@@ -79,41 +79,6 @@ namespace jbr::reg
 
         writeRights(&reg, nodeHeader, getSubXMLElement(nodeHeader, jbr::reg::node::name::_header::version), rights);
         saveXMLFile(reg);
-    }
-
-    bool    Instance::isOpenable() const noexcept(false)
-    {
-        jbr::reg::Rights    regRights = rights();
-
-        return (regRights.mRead && regRights.mOpen);
-    }
-
-    bool    Instance::isWritable() const noexcept(false)
-    {
-        jbr::reg::Rights    regRights = rights();
-
-        return (regRights.mWrite);
-    }
-
-    bool    Instance::isCopyable() const noexcept(false)
-    {
-        jbr::reg::Rights    regRights = rights();
-
-        return (regRights.mRead && regRights.mCopy);
-    }
-
-    bool    Instance::isMovable() const noexcept(false)
-    {
-        jbr::reg::Rights    regRights = rights();
-
-        return (regRights.mWrite && regRights.mRead && regRights.mMove);
-    }
-
-    bool    Instance::isDestroyable() const noexcept(false)
-    {
-        jbr::reg::Rights    regRights = rights();
-
-        return (regRights.mRead && regRights.mDestroy);
     }
 
     void    Instance::checkPathValidity() const noexcept(false)
