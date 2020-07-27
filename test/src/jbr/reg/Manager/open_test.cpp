@@ -7,9 +7,7 @@
 #include <jbr/reg/Manager.hpp>
 #include <jbr/reg/exception.hpp>
 #include <doctest.h>
-#include <filesystem>
 #include <fstream>
-
 
 TEST_CASE("jbr::reg::Manager::open")
 {

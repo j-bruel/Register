@@ -4,11 +4,9 @@
 //! @date 23/07/20
 //!
 
-#include <jbr/Register.hpp>
 #include <jbr/reg/Manager.hpp>
 #include <jbr/reg/exception.hpp>
 #include <doctest.h>
-#include <filesystem>
 #include <fstream>
 
 TEST_CASE("jbr::reg::Instance::isCopyable")
