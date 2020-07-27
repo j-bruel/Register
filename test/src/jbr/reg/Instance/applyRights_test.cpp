@@ -11,6 +11,7 @@
 
 TEST_CASE("jbr::reg::Instance::applyRights")
 {
+
     SUBCASE("Basic apply rights on existing register.")
     {
         jbr::Register   reg = jbr::reg::Manager::create("./basic_apply_rights.reg");
@@ -33,17 +34,14 @@ TEST_CASE("jbr::reg::Instance::applyRights")
         jbr::Register   reg = jbr::reg::Manager::create("./multiple_time_apply_rights.reg");
 
         CHECK_NOTHROW(reg->applyRights(jbr::reg::Rights(true, true, true, false, true, true)));
+        CHECK_FALSE(reg->rights().mCopy);
         CHECK_NOTHROW(reg->applyRights(jbr::reg::Rights(true, true, true, false, true, false)));
+        CHECK_FALSE(reg->rights().mCopy);
+        CHECK_FALSE(reg->rights().mDestroy);
         CHECK_NOTHROW(reg->applyRights(jbr::reg::Rights(true, true, true, false, false, true)));
-
-        jbr::reg::Rights    rights = reg->rights();
-
-        CHECK(rights.mRead);
-        CHECK(rights.mWrite);
-        CHECK(rights.mOpen);
-        CHECK_FALSE(rights.mCopy);
-        CHECK_FALSE(rights.mMove);
-        CHECK(rights.mDestroy);
+        CHECK_FALSE(reg->rights().mCopy);
+        CHECK_FALSE(reg->rights().mMove);
+        CHECK(reg->rights().mDestroy);
         jbr::reg::Manager::destroy(reg);
     }
 
