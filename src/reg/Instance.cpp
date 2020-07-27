@@ -6,6 +6,7 @@
 
 #include "jbr/reg/Manager.hpp"
 #include "jbr/reg/exception.hpp"
+#include "jbr/reg/node/Name.hpp"
 
 namespace jbr::reg
 {
@@ -28,12 +29,13 @@ namespace jbr::reg
 
     void    Instance::verify(tinyxml2::XMLDocument &xmlDocument) const noexcept(false)
     {
-        tinyxml2::XMLNode       *nodeReg = getSubXMLElement(&xmlDocument, "register");
-        tinyxml2::XMLElement    *version = getSubXMLElement(getSubXMLElement(nodeReg, "header"), "version");
+        tinyxml2::XMLNode       *nodeReg = getSubXMLElement(&xmlDocument, jbr::reg::node::name::reg);
+        tinyxml2::XMLElement    *version = getSubXMLElement(getSubXMLElement(nodeReg, jbr::reg::node::name::header),
+                                                            jbr::reg::node::name::_header::version);
 
         if (version->GetText() == nullptr)
             throw jbr::reg::exception("Register corrupted. Field version from register/header nodes not set or invalid.");
-        (void)getSubXMLElement(nodeReg, "body");
+        (void)getSubXMLElement(nodeReg, jbr::reg::node::name::body);
     }
 
     jbr::reg::Rights    Instance::rights() const noexcept(false)
@@ -43,18 +45,36 @@ namespace jbr::reg
         loadXMLFile(reg);
         verify(reg);
 
-        tinyxml2::XMLNode   *nodeRights = getSubXMLElement(getSubXMLElement(&reg, "register"), "header")->FirstChildElement("rights");
+        tinyxml2::XMLNode   *nodeRights = getSubXMLElement(getSubXMLElement(&reg, jbr::reg::node::name::reg),
+                                                            jbr::reg::node::name::header)->FirstChildElement("rights");
         jbr::reg::Rights    rights;
 
         if (nodeRights == nullptr)
             return (rights);
-        queryRightToXMLElement( nodeRights->FirstChildElement("read"), &rights.mRead);
-        queryRightToXMLElement(nodeRights->FirstChildElement("write"), &rights.mWrite);
-        queryRightToXMLElement(nodeRights->FirstChildElement("open"), &rights.mOpen);
-        queryRightToXMLElement(nodeRights->FirstChildElement("copy"), &rights.mCopy);
-        queryRightToXMLElement(nodeRights->FirstChildElement("move"), &rights.mMove);
-        queryRightToXMLElement(nodeRights->FirstChildElement("destroy"), &rights.mDestroy);
+        queryRightToXMLElement(nodeRights->FirstChildElement(jbr::reg::node::name::_header::_rights::read), &rights.mRead);
+        queryRightToXMLElement(nodeRights->FirstChildElement(jbr::reg::node::name::_header::_rights::write), &rights.mWrite);
+        queryRightToXMLElement(nodeRights->FirstChildElement(jbr::reg::node::name::_header::_rights::open), &rights.mOpen);
+        queryRightToXMLElement(nodeRights->FirstChildElement(jbr::reg::node::name::_header::_rights::copy), &rights.mCopy);
+        queryRightToXMLElement(nodeRights->FirstChildElement(jbr::reg::node::name::_header::_rights::move), &rights.mMove);
+        queryRightToXMLElement(nodeRights->FirstChildElement(jbr::reg::node::name::_header::_rights::destroy), &rights.mDestroy);
         return (rights);
+    }
+
+    void    Instance::applyRights(const jbr::reg::Rights &rights) const noexcept(false)
+    {
+        tinyxml2::XMLDocument   reg;
+
+        loadXMLFile(reg);
+        verify(reg);
+        if (!isWritable())
+            throw jbr::reg::exception("The register " + mPath + " is not writable. Please check the register rights, write must be allow.");
+
+        tinyxml2::XMLNode       *nodeHeader = getSubXMLElement(getSubXMLElement(&reg, jbr::reg::node::name::reg),
+                                                                jbr::reg::node::name::header);
+        tinyxml2::XMLElement    *version = getSubXMLElement(nodeHeader, jbr::reg::node::name::_header::version);
+
+        writeRights(&reg, nodeHeader, version, rights);
+        saveXMLFile(reg);
     }
 
     bool    Instance::isOpenable() const noexcept(false)
@@ -62,6 +82,13 @@ namespace jbr::reg
         jbr::reg::Rights    regRights = rights();
 
         return (regRights.mRead && regRights.mOpen);
+    }
+
+    bool    Instance::isWritable() const noexcept(false)
+    {
+        jbr::reg::Rights    regRights = rights();
+
+        return (regRights.mWrite);
     }
 
     bool    Instance::isCopyable() const noexcept(false)
@@ -141,13 +168,13 @@ namespace jbr::reg
     void    Instance::createHeader(const std::optional<jbr::reg::Rights> &rights) const noexcept(false)
     {
         tinyxml2::XMLDocument   reg;
-        tinyxml2::XMLNode       *nodeReg = newXMLElement(&reg, "register");
-        tinyxml2::XMLNode       *nodeHeader = newXMLElement(&reg, "header");
-        tinyxml2::XMLElement    *version = newXMLElement(&reg, "version");
+        tinyxml2::XMLNode       *nodeReg = newXMLElement(&reg, jbr::reg::node::name::reg);
+        tinyxml2::XMLNode       *nodeHeader = newXMLElement(&reg, jbr::reg::node::name::header);
+        tinyxml2::XMLElement    *version = newXMLElement(&reg, jbr::reg::node::name::_header::version);
 
         reg.InsertFirstChild(nodeReg);
         nodeReg->InsertFirstChild(nodeHeader);
-        nodeReg->InsertAfterChild(nodeHeader, newXMLElement(&reg, "body"));
+        nodeReg->InsertAfterChild(nodeHeader, newXMLElement(&reg, jbr::reg::node::name::body));
         version->SetText("1.0.0");
         nodeHeader->InsertEndChild(version);
         if (rights != std::nullopt)
@@ -162,12 +189,12 @@ namespace jbr::reg
             throw jbr::reg::exception("Pointers must not be null during writing rights process.");
 
         tinyxml2::XMLNode       *nodeRights = newXMLElement(reg, "rights");
-        tinyxml2::XMLElement    *readElement = newXMLElement(reg, "read");
-        tinyxml2::XMLElement    *writeElement = newXMLElement(reg, "write");
-        tinyxml2::XMLElement    *openElement = newXMLElement(reg, "open");
-        tinyxml2::XMLElement    *copyElement = newXMLElement(reg, "copy");
-        tinyxml2::XMLElement    *moveElement = newXMLElement(reg, "move");
-        tinyxml2::XMLElement    *destroyElement = newXMLElement(reg, "destroy");
+        tinyxml2::XMLElement    *readElement = newXMLElement(reg, jbr::reg::node::name::_header::_rights::read);
+        tinyxml2::XMLElement    *writeElement = newXMLElement(reg, jbr::reg::node::name::_header::_rights::write);
+        tinyxml2::XMLElement    *openElement = newXMLElement(reg, jbr::reg::node::name::_header::_rights::open);
+        tinyxml2::XMLElement    *copyElement = newXMLElement(reg, jbr::reg::node::name::_header::_rights::copy);
+        tinyxml2::XMLElement    *moveElement = newXMLElement(reg, jbr::reg::node::name::_header::_rights::move);
+        tinyxml2::XMLElement    *destroyElement = newXMLElement(reg, jbr::reg::node::name::_header::_rights::destroy);
 
         nodeHeader->InsertAfterChild(version, nodeRights);
         readElement->SetText(rights.mRead);
@@ -192,7 +219,8 @@ namespace jbr::reg
         {
             err = xmlElement->QueryBoolText(status);
             if (err != tinyxml2::XMLError::XML_SUCCESS)
-                throw jbr::reg::exception("Register corrupted. Field " + std::string(xmlElement->Name()) + " from register/header/rights nodes is invalid, error code : " + std::to_string(err) + '.');
+                throw jbr::reg::exception("Register corrupted. Field " + std::string(xmlElement->Name()) +
+                                            " from register/header/rights nodes is invalid, error code : " + std::to_string(err) + '.');
         }
     }
 

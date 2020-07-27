@@ -106,6 +106,7 @@ namespace jbr::reg
         //!
         [[nodiscard]]
         jbr::reg::Rights    rights() const noexcept(false);
+        void                applyRights(const jbr::reg::Rights &rights) const noexcept(false);
         //!
         //! @brief Check if a register is openable. The register is not openable if the fields read or open from register/header/rights nodes is false.
         //! @return Openable status.
@@ -113,6 +114,13 @@ namespace jbr::reg
         //!
         [[nodiscard]]
         bool                isOpenable() const noexcept(false);
+        //!
+        //! @brief Check if a register is writable. The register is not writable if the fields write from register/header/rights nodes is false.
+        //! @return Writable status.
+        //! @throw Raise if impossible to extract the rights data from the register.
+        //!
+        [[nodiscard]]
+        bool                isWritable() const noexcept(false);
         //!
         //! @brief Check if a register is copyable. The register is not copyable if the fields read or copy from register/header/rights nodes is false.
         //! @return Copyable status.
