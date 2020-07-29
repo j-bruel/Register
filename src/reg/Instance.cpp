@@ -59,6 +59,7 @@ namespace jbr::reg
     void    Instance::move(const char *pathTo) noexcept(false)
     {
         tinyxml2::XMLDocument   reg;
+        std::error_code         err;
 
         if (pathTo == nullptr || !pathTo[0])
             throw jbr::reg::exception("To move a register the new register path must not be empty.");
@@ -67,8 +68,10 @@ namespace jbr::reg
         loadXMLFile(reg);
         verify(reg);
         if (!isMovable(reg))
-            throw jbr::reg::exception("Impossible to move the register '" + mPath + "' without move right.");
-        std::filesystem::rename(mPath, pathTo);
+            throw jbr::reg::exception("Impossible to move the register '" + mPath + "' without move and read right.");
+        std::filesystem::rename(mPath, pathTo, err);
+        if (err)
+            throw jbr::reg::exception(err.message());
         mPath = pathTo;
     }
 
