@@ -7,6 +7,8 @@
 #ifndef JBR_CREGISTER_REGISTER_VAR_PERM_RIGHTS_HPP
 # define JBR_CREGISTER_REGISTER_VAR_PERM_RIGHTS_HPP
 
+# include <jbr/reg/Permission.hpp>
+
 //!
 //! @namespace jbr::reg::var::perm
 //!
@@ -16,10 +18,8 @@ namespace jbr::reg::var::perm
     //! @struct Rights
     //! @brief All variables rights.
     //!
-    struct Rights final
+    struct Rights final : public jbr::reg::Permission
     {
-        bool    mRead; //!< Reading rights.
-        bool    mWrite; //!< Writing rights.
         bool    mUpdate; //!< Allow to update a variable.
         bool    mRename; //!< Allow to rename a variable.
         bool    mCopy; //!< Allow to copy a variable.
@@ -28,7 +28,7 @@ namespace jbr::reg::var::perm
         //!
         //! @brief Structure initializer. All rights are true by default.
         //!
-        Rights() : mRead(true), mWrite(true), mUpdate(true), mRename(true), mCopy(true), mRemove(true) {}
+        Rights() : jbr::reg::Permission(), mUpdate(true), mRename(true), mCopy(true), mRemove(true) {}
         //!
         //! @brief Structure initializer with custom rights initialization.
         //! @param rd Reading rights.
@@ -38,22 +38,8 @@ namespace jbr::reg::var::perm
         //! @param cp Allow to copy a variable.
         //! @param rm Allow to remove a variable.
         //!
-        Rights(bool rd, bool wr, bool up, bool rn, bool cp, bool rm) :  mRead(rd), mWrite(wr), mUpdate(up),
-                                                                        mRename(rn), mCopy(cp), mRemove(rm) {}
-        //!
-        //! @brief Copy constructor. Trivial declaration, using equal overload operator.
-        //!
-        Rights(const Rights &) = default;
-        //!
-        //! @brief Equal operator overload.
-        //! @param rights Rights to apply to the new register.
-        //! @return New rights data structure according original rights.
-        //!
-        Rights  &operator=(const Rights &rights);
-        //!
-        //! @brief Default destructor.
-        //!
-        ~Rights() = default;
+        explicit Rights(bool rd, bool wr, bool up, bool rn, bool cp, bool rm) : jbr::reg::Permission(rd, wr), mUpdate(up),
+                                                                                mRename(rn), mCopy(cp), mRemove(rm) {}
     };
 }
 
