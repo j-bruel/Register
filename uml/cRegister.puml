@@ -36,15 +36,40 @@ namespace jbr {
         class Instance {
             -mPath : std::string
             __
-            +Instance()
+            +Instance(const char *path)
+            +Instance(std::string &&path)
             +~Instance()
             ..
             +void   verify() const noexcept(false)
-            +void   copy(const std::string &pathTo) const noexcept(false)
-            +void   move(const std::string &pathTo) noexcept(false)
+            -void   verify(tinyxml2::XMLDocument &xmlDocument) const noexcept(false)
+            ..
+            +bool exist() const noexcept
+            ..
+            +const std::string  &localization() const noexcept
+            ..
+            +void   copy(const char *pathTo) const noexcept(false)
+            +void   move(const char *pathTo) noexcept(false)
+            +void   rename(const char *newPath) noexcept(false)
             ..
             +jbr::reg::Rights   rights() const noexcept(false)
+            -jbr::reg::Rights   rights(tinyxml2::XMLDocument &xmlDocument) const noexcept(false)
             +void               applyRights(const jbr::reg::Rights &rights) const noexcept(false)
+            ..
+            +bool isOpenable() const noexcept(false)
+            +bool isWritable() const noexcept(false)
+            +bool isCopyable() const noexcept(false)
+            +bool isMovable() const noexcept(false)
+            +bool isDestroyable() const noexcept(false)
+            -bool isOpenable(tinyxml2::XMLDocument &xmlDocument) const noexcept(false)
+            -bool isWritable(tinyxml2::XMLDocument &xmlDocument) const noexcept(false)
+            -bool isCopyable(tinyxml2::XMLDocument &xmlDocument) const noexcept(false)
+            -bool isMovable(tinyxml2::XMLDocument &xmlDocument) const noexcept(false)
+            -bool isDestroyable(tinyxml2::XMLDocument &xmlDocument) const noexcept(false)
+            -bool isOpenable(const jbr::reg::Rights &rights) const noexcept(false)
+            -bool isWritable(const jbr::reg::Rights &rights) const noexcept(false)
+            -bool isCopyable(const jbr::reg::Rights &rights) const noexcept(false)
+            -bool isMovable(const jbr::reg::Rights &rights) const noexcept(false)
+            -bool isDestroyable(const jbr::reg::Rights &rights) const noexcept(false)
             ..
             +jbr::reg::Variable operator[](const char *variableName) const noexcept(false)
             +jbr::reg::Variable get(const char *variableName) const noexcept(false)
@@ -53,6 +78,18 @@ namespace jbr {
             +void               copy(const char *variableNameFrom, const char *variableNameTo) const noexcept(false)
             +void               rename(const char *variableNameFrom, const char *variableNameTo) const noexcept(false)
             +void               remove(const char *variableName) const noexcept(false)
+            ..
+            -void    checkPathValidity() const noexcept(false)
+            ..
+            -tinyxml2::XMLElement   *newXMLElement(tinyxml2::XMLDocument *xmlDocument, const char *elementName) const noexcept(false)
+            -tinyxml2::XMLElement   *getSubXMLElement(tinyxml2::XMLNode *node, const char *subNodeName) const noexcept(false)
+            ..
+            -void saveXMLFile(tinyxml2::XMLDocument &xmlDocument) const noexcept(false)
+            -void loadXMLFile(tinyxml2::XMLDocument &xmlDocument) const noexcept(false)
+            ..
+            -void createHeader(const std::optional<jbr::reg::Rights> &rights) const noexcept(false)
+            -void writeRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeHeader, tinyxml2::XMLElement *version, const jbr::reg::Rights &rights) const noexcept(false)
+            -void queryRightToXMLElement(const tinyxml2::XMLElement *xmlElement, bool *status) const noexcept(false)
         }
 
         class Variable {
