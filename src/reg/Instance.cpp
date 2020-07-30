@@ -75,7 +75,7 @@ namespace jbr::reg
         mPath = pathTo;
     }
 
-    jbr::reg::Rights    Instance::rights() const noexcept(false)
+    jbr::reg::perm::Rights  Instance::rights() const noexcept(false)
     {
         tinyxml2::XMLDocument   reg;
 
@@ -83,13 +83,13 @@ namespace jbr::reg
         return (rights(reg));
     }
 
-    jbr::reg::Rights    Instance::rights(tinyxml2::XMLDocument &xmlDocument) const noexcept(false)
+    jbr::reg::perm::Rights  Instance::rights(tinyxml2::XMLDocument &xmlDocument) const noexcept(false)
     {
         verify(xmlDocument);
 
         tinyxml2::XMLNode   *nodeRights = getSubXMLElement(getSubXMLElement(&xmlDocument, jbr::reg::node::name::reg),
                                                            jbr::reg::node::name::header)->FirstChildElement("rights");
-        jbr::reg::Rights    rights;
+        jbr::reg::perm::Rights  rights;
 
         if (nodeRights == nullptr)
             return (rights);
@@ -102,7 +102,7 @@ namespace jbr::reg
         return (rights);
     }
 
-    void    Instance::applyRights(const jbr::reg::Rights &rights) const noexcept(false)
+    void    Instance::applyRights(const jbr::reg::perm::Rights &rights) const noexcept(false)
     {
         tinyxml2::XMLDocument   reg;
 
@@ -171,7 +171,7 @@ namespace jbr::reg
             throw jbr::reg::exception("Parsing error while loading the register file, error code : " + std::to_string(err) + '.');
     }
 
-    void    Instance::createHeader(const std::optional<jbr::reg::Rights> &rights) const noexcept(false)
+    void    Instance::createHeader(const std::optional<jbr::reg::perm::Rights> &rights) const noexcept(false)
     {
         tinyxml2::XMLDocument   reg;
         tinyxml2::XMLNode       *nodeReg = newXMLElement(&reg, jbr::reg::node::name::reg);
@@ -189,7 +189,7 @@ namespace jbr::reg
     }
 
     void    Instance::writeRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeHeader,
-                                  tinyxml2::XMLElement *version, const jbr::reg::Rights &rights) const noexcept(false)
+                                  tinyxml2::XMLElement *version, const jbr::reg::perm::Rights &rights) const noexcept(false)
     {
         if (reg == nullptr || nodeHeader == nullptr || version == nullptr)
             throw jbr::reg::exception("Pointers must not be null during writing rights process.");

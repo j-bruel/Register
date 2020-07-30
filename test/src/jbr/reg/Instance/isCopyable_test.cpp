@@ -22,8 +22,8 @@ TEST_CASE("jbr::reg::Instance::isCopyable")
 
     SUBCASE("Not copyable register.")
     {
-        jbr::Register       reg1 = jbr::reg::Manager::create("./valid_not_copyable1.reg", jbr::reg::Rights(true, true, true, false, true, true));
-        jbr::Register       reg2 = jbr::reg::Manager::create("./valid_not_copyable2.reg", jbr::reg::Rights(false, true, true, true, true, true));
+        jbr::Register       reg1 = jbr::reg::Manager::create("./valid_not_copyable1.reg", jbr::reg::perm::Rights(true, true, true, false, true, true));
+        jbr::Register       reg2 = jbr::reg::Manager::create("./valid_not_copyable2.reg", jbr::reg::perm::Rights(false, true, true, true, true, true));
 
         CHECK(!reg1->isCopyable());
         CHECK(!reg2->isCopyable());

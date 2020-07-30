@@ -30,7 +30,7 @@ namespace jbr::reg
         //! @throw Raise if impossible to create a register.
         //!
         [[nodiscard]]
-        static jbr::Register create(const char *path, const std::optional<jbr::reg::Rights> &rights = std::nullopt) noexcept(false);
+        static jbr::Register create(const char *path, const std::optional<jbr::reg::perm::Rights> &rights = std::nullopt) noexcept(false);
         //!
         //! @brief Open and check the validity of a existing register according a input path.
         //! @param path Register path to open.

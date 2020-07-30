@@ -8,10 +8,12 @@
 #include "jbr/reg/exception.hpp"
 #include <filesystem>
 
+#include <jbr/reg/Variable.hpp>
+
 namespace jbr::reg
 {
 
-    jbr::Register   Manager::create(const char *path, const std::optional<jbr::reg::Rights> &rights) noexcept(false)
+    jbr::Register   Manager::create(const char *path, const std::optional<jbr::reg::perm::Rights> &rights) noexcept(false)
     {
         if (exist(path))
             throw jbr::reg::exception("The register '" + std::string(path) + "' already exist. You must remove it before create it or open it.");

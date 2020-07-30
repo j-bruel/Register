@@ -1,3 +1,7 @@
+cmake_minimum_required(VERSION 3.1)
+include_directories("C:\\Program Files (x86)\\cRegister\\include")
+include_directories("C:\\Users\\jonat\\dev\\cRegister\\third_party\\doctest")
+
 ##
 ## Set testing project name.
 ##

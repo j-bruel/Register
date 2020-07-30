@@ -61,7 +61,7 @@ TEST_CASE("jbr::reg::Manager::destroy")
     SUBCASE("Try to destroy a register without destroy rights.")
     {
         jbr::Register   destroy = jbr::reg::Manager::create("./destroy_without_destroy_right.reg",
-                                                            jbr::reg::Rights(true, true, true, true, true, false));
+                                                            jbr::reg::perm::Rights(true, true, true, true, true, false));
         std::string     msg;
 
         try {
@@ -94,7 +94,7 @@ TEST_CASE("jbr::reg::Manager::destroy")
     SUBCASE("Try to destroy a register without read rights.")
     {
         jbr::Register   destroy = jbr::reg::Manager::create("./destroy_without_read_right.reg",
-                                                            jbr::reg::Rights(false, true, true, true, true, true));
+                                                            jbr::reg::perm::Rights(false, true, true, true, true, true));
         std::string     msg;
 
         try {

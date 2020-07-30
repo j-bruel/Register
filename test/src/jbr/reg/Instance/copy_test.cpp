@@ -138,7 +138,7 @@ TEST_CASE("jbr::reg::Instance::copy")
     SUBCASE("Copy a register without copy right.")
     {
         jbr::Register       reg = jbr::reg::Manager::create("./copy_without_copy_right.reg",
-                                                            jbr::reg::Rights(true, true, true, false, true, true));
+                                                            jbr::reg::perm::Rights(true, true, true, false, true, true));
         std::string         msg;
 
         try {
@@ -155,7 +155,7 @@ TEST_CASE("jbr::reg::Instance::copy")
     SUBCASE("Copy a register without read right.")
     {
         jbr::Register       reg = jbr::reg::Manager::create("./copy_without_copy_right.reg",
-                                                            jbr::reg::Rights(false, true, true, true, true, true));
+                                                            jbr::reg::perm::Rights(false, true, true, true, true, true));
         std::string         msg;
 
         try {

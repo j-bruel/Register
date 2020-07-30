@@ -153,7 +153,7 @@ TEST_CASE("jbr::reg::Instance::move")
     SUBCASE("Move a register without move right.")
     {
         jbr::Register       reg = jbr::reg::Manager::create("./move_without_move_right.reg",
-                                                            jbr::reg::Rights(true, true, true, true, false, true));
+                                                            jbr::reg::perm::Rights(true, true, true, true, false, true));
         std::string         msg;
 
         try {
@@ -172,7 +172,7 @@ TEST_CASE("jbr::reg::Instance::move")
     SUBCASE("Move a register without read right.")
     {
         jbr::Register       reg = jbr::reg::Manager::create("./move_without_read_right.reg",
-                                                            jbr::reg::Rights(false, true, true, true, true, true));
+                                                            jbr::reg::perm::Rights(false, true, true, true, true, true));
         std::string         msg;
 
         try {

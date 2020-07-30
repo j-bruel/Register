@@ -8,9 +8,9 @@
 # define JBR_CREGISTER_REGISTER_RIGHTS_HPP
 
 //!
-//! @namespace jbr::reg
+//! @namespace jbr::reg::perm
 //!
-namespace jbr::reg
+namespace jbr::reg::perm
 {
     //!
     //! @struct Rights

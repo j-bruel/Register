@@ -7,7 +7,7 @@
 #ifndef JBR_CREGISTER_REGISTER_INSTANCE_HPP
 # define JBR_CREGISTER_REGISTER_INSTANCE_HPP
 
-# include <jbr/reg/Rights.hpp>
+# include <jbr/reg/perm/Rights.hpp>
 # include <tinyxml2.h>
 # include <filesystem>
 # include <string>
@@ -129,7 +129,7 @@ namespace jbr::reg
         //! @throw Raise if impossible to extract the data from the register.
         //!
         [[nodiscard]]
-        jbr::reg::Rights    rights() const noexcept(false);
+        jbr::reg::perm::Rights  rights() const noexcept(false);
 
     private:
         //!
@@ -139,7 +139,7 @@ namespace jbr::reg
         //! @throw Raise if impossible to extract the data from the register.
         //!
         [[nodiscard]]
-        jbr::reg::Rights    rights(tinyxml2::XMLDocument &xmlDocument) const noexcept(false);
+        jbr::reg::perm::Rights  rights(tinyxml2::XMLDocument &xmlDocument) const noexcept(false);
 
     public:
         //!
@@ -147,7 +147,7 @@ namespace jbr::reg
         //! @param rights New rights to apply.
         //! @throw Raise if invalid register or if the action is not allow.
         //!
-        void                applyRights(const jbr::reg::Rights &rights) const noexcept(false);
+        void                applyRights(const jbr::reg::perm::Rights &rights) const noexcept(false);
 
     public:
         //!
@@ -236,7 +236,7 @@ namespace jbr::reg
         //! @throw Raise if impossible to extract the rights data from the register.
         //!
         [[nodiscard]]
-        inline bool isOpenable(const jbr::reg::Rights &rights) const noexcept { return (rights.mRead && rights.mOpen); }
+        inline bool isOpenable(const jbr::reg::perm::Rights &rights) const noexcept { return (rights.mRead && rights.mOpen); }
         //!
         //! @brief Check if a register is writable. The register is not writable if the fields write from register/header/rights nodes is false.
         //! @param rights Current register rights to check.
@@ -244,7 +244,7 @@ namespace jbr::reg
         //! @throw Raise if impossible to extract the rights data from the register.
         //!
         [[nodiscard]]
-        inline bool isWritable(const jbr::reg::Rights &rights) const noexcept { return (rights.mWrite); }
+        inline bool isWritable(const jbr::reg::perm::Rights &rights) const noexcept { return (rights.mWrite); }
         //!
         //! @brief Check if a register is copyable. The register is not copyable if the fields read or copy from register/header/rights nodes is false.
         //! @param rights Current register rights to check.
@@ -252,7 +252,7 @@ namespace jbr::reg
         //! @throw Raise if impossible to extract the rights data from the register.
         //!
         [[nodiscard]]
-        inline bool isCopyable(const jbr::reg::Rights &rights) const noexcept { return (rights.mRead && rights.mCopy); }
+        inline bool isCopyable(const jbr::reg::perm::Rights &rights) const noexcept { return (rights.mRead && rights.mCopy); }
         //!
         //! @brief Check if a register is movable. The register is not movable if the fields write, read or copy from register/header/rights nodes is false.
         //! @param rights Current register rights to check.
@@ -260,7 +260,7 @@ namespace jbr::reg
         //! @throw Raise if impossible to extract the rights data from the register.
         //!
         [[nodiscard]]
-        inline bool isMovable(const jbr::reg::Rights &rights) const noexcept { return (rights.mWrite && rights.mRead && rights.mMove); }
+        inline bool isMovable(const jbr::reg::perm::Rights &rights) const noexcept { return (rights.mWrite && rights.mRead && rights.mMove); }
         //!
         //! @brief Check if a register is destroyable. The register is not destroyable if the fields read or destroy from register/header/rights nodes is false.
         //! @param rights Current register rights to check.
@@ -268,7 +268,7 @@ namespace jbr::reg
         //! @throw Raise if impossible to extract the rights data from the register.
         //!
         [[nodiscard]]
-        inline bool isDestroyable(const jbr::reg::Rights &rights) const noexcept { return (rights.mRead && rights.mDestroy); }
+        inline bool isDestroyable(const jbr::reg::perm::Rights &rights) const noexcept { return (rights.mRead && rights.mDestroy); }
 
     private:
         //!
@@ -317,7 +317,7 @@ namespace jbr::reg
         //! @param rights Register rights.
         //! @throw Raise a exception if the file saving is impossible.
         //!
-        void    createHeader(const std::optional<jbr::reg::Rights> &rights) const noexcept(false);
+        void    createHeader(const std::optional<jbr::reg::perm::Rights> &rights) const noexcept(false);
 
     private:
         //!
@@ -330,7 +330,7 @@ namespace jbr::reg
         //! @throw Exception raise if parameters are invalid.
         //!
         void    writeRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeHeader,
-                            tinyxml2::XMLElement *version, const jbr::reg::Rights &rights) const noexcept(false);
+                            tinyxml2::XMLElement *version, const jbr::reg::perm::Rights &rights) const noexcept(false);
         //!
         //! @brief Query a boolean into a xml element field.
         //! @param xmlElement XML element to insert the boolean.

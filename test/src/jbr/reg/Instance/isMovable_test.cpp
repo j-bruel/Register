@@ -22,9 +22,9 @@ TEST_CASE("jbr::reg::Instance::isMovable")
 
     SUBCASE("Not movable register.")
     {
-        jbr::Register       reg1 = jbr::reg::Manager::create("./valid_not_movable1.reg", jbr::reg::Rights(true, true, true, true, false, true));
-        jbr::Register       reg2 = jbr::reg::Manager::create("./valid_not_movable2.reg", jbr::reg::Rights(false, true, true, true, true, true));
-        jbr::Register       reg3 = jbr::reg::Manager::create("./valid_not_movable3.reg", jbr::reg::Rights(true, false, true, true, true, true));
+        jbr::Register       reg1 = jbr::reg::Manager::create("./valid_not_movable1.reg", jbr::reg::perm::Rights(true, true, true, true, false, true));
+        jbr::Register       reg2 = jbr::reg::Manager::create("./valid_not_movable2.reg", jbr::reg::perm::Rights(false, true, true, true, true, true));
+        jbr::Register       reg3 = jbr::reg::Manager::create("./valid_not_movable3.reg", jbr::reg::perm::Rights(true, false, true, true, true, true));
 
         CHECK(!reg1->isMovable());
         CHECK(!reg2->isMovable());

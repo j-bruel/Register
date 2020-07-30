@@ -105,7 +105,7 @@ TEST_CASE("jbr::reg::Manager::create")
 
     SUBCASE("Create a register with rights.")
     {
-        (void)jbr::reg::Manager::create("rights.reg", jbr::reg::Rights());
+        (void)jbr::reg::Manager::create("rights.reg", jbr::reg::perm::Rights());
 
         std::ifstream   ifs("rights.reg");
         std::string     content((std::istreambuf_iterator<char>(ifs)), (std::istreambuf_iterator<char>()));

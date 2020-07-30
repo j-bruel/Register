@@ -16,9 +16,9 @@ TEST_CASE("jbr::reg::Instance::applyRights")
     {
         jbr::Register   reg = jbr::reg::Manager::create("./basic_apply_rights.reg");
 
-        CHECK_NOTHROW(reg->applyRights(jbr::reg::Rights(true, true, true, false, false, true)));
+        CHECK_NOTHROW(reg->applyRights(jbr::reg::perm::Rights(true, true, true, false, false, true)));
 
-        jbr::reg::Rights    rights = reg->rights();
+        jbr::reg::perm::Rights  rights = reg->rights();
 
         CHECK(rights.mRead);
         CHECK(rights.mWrite);
@@ -33,12 +33,12 @@ TEST_CASE("jbr::reg::Instance::applyRights")
     {
         jbr::Register   reg = jbr::reg::Manager::create("./multiple_time_apply_rights.reg");
 
-        CHECK_NOTHROW(reg->applyRights(jbr::reg::Rights(true, true, true, false, true, true)));
+        CHECK_NOTHROW(reg->applyRights(jbr::reg::perm::Rights(true, true, true, false, true, true)));
         CHECK_FALSE(reg->rights().mCopy);
-        CHECK_NOTHROW(reg->applyRights(jbr::reg::Rights(true, true, true, false, true, false)));
+        CHECK_NOTHROW(reg->applyRights(jbr::reg::perm::Rights(true, true, true, false, true, false)));
         CHECK_FALSE(reg->rights().mCopy);
         CHECK_FALSE(reg->rights().mDestroy);
-        CHECK_NOTHROW(reg->applyRights(jbr::reg::Rights(true, true, true, false, false, true)));
+        CHECK_NOTHROW(reg->applyRights(jbr::reg::perm::Rights(true, true, true, false, false, true)));
         CHECK_FALSE(reg->rights().mCopy);
         CHECK_FALSE(reg->rights().mMove);
         CHECK(reg->rights().mDestroy);
@@ -48,11 +48,11 @@ TEST_CASE("jbr::reg::Instance::applyRights")
     SUBCASE("Apply rights without write rights.")
     {
         jbr::Register       reg = jbr::reg::Manager::create("./apply_rights_without_write_right.reg",
-                                                            jbr::reg::Rights(true, false, true, true, true, true));
+                                                            jbr::reg::perm::Rights(true, false, true, true, true, true));
         std::string         msg;
 
         try {
-            reg->applyRights(jbr::reg::Rights());
+            reg->applyRights(jbr::reg::perm::Rights());
         }
         catch (jbr::reg::exception &e) {
             msg = e.what();
@@ -70,7 +70,7 @@ TEST_CASE("jbr::reg::Instance::applyRights")
         regInvalid << "spdokpod \n <jdspssjd>><<<>>dofkdf\n";
         regInvalid.close();
         try {
-            reg->applyRights(jbr::reg::Rights());
+            reg->applyRights(jbr::reg::perm::Rights());
         }
         catch (jbr::reg::exception &e) {
             msg = e.what();
@@ -86,7 +86,7 @@ TEST_CASE("jbr::reg::Instance::applyRights")
 
         std::filesystem::remove("./not_existing.reg");
         try {
-            reg->applyRights(jbr::reg::Rights());
+            reg->applyRights(jbr::reg::perm::Rights());
         }
         catch (jbr::reg::exception &e) {
             msg = e.what();
