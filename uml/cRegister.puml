@@ -133,6 +133,10 @@ namespace jbr {
                     +mRemove : bool
                     __
                     +Rights()
+                    +Rights(bool rd, bool wr, bool up, bool rn, bool cp, bool rm)
+                    +Rights(const Rights &)
+                    +Rights  &operator=(const Rights &rights)
+                    +~Rights()
                 }
 
             }

@@ -16,7 +16,7 @@ namespace jbr::reg
     //! @struct Rights
     //! @brief All register rights.
     //!
-    struct Rights
+    struct Rights final
     {
         bool    mRead; //!< Reading rights.
         bool    mWrite; //!< Writing rights.
