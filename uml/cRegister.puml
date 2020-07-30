@@ -23,11 +23,10 @@ namespace jbr {
         }
 
         Manager --o	Instance
-        Instance --o Rights
         Instance --o Variable
 
         class   Manager {
-            +{static} jbr::Register create(const std::string &path, const std::optional<jbr::reg::Rights> &rights = std::nullopt) noexcept(false)
+            +{static} jbr::Register create(const std::string &path, const std::optional<jbr::reg::perm::Rights> &rights = std::nullopt) noexcept(false)
             +{static} jbr::Register open(const std::string &path) noexcept(false)
             +{static} bool          exist(const std::string &path) noexcept
             +{static} void          destroy(jbr::Register &reg) noexcept(false)
@@ -51,9 +50,9 @@ namespace jbr {
             +void   move(const char *pathTo) noexcept(false)
             +void   rename(const char *newPath) noexcept(false)
             ..
-            +jbr::reg::Rights   rights() const noexcept(false)
-            -jbr::reg::Rights   rights(tinyxml2::XMLDocument &xmlDocument) const noexcept(false)
-            +void               applyRights(const jbr::reg::Rights &rights) const noexcept(false)
+            +jbr::reg::perm::Rights   rights() const noexcept(false)
+            -jbr::reg::perm::Rights   rights(tinyxml2::XMLDocument &xmlDocument) const noexcept(false)
+            +void               applyRights(const jbr::reg::perm::Rights &rights) const noexcept(false)
             ..
             +bool isOpenable() const noexcept(false)
             +bool isWritable() const noexcept(false)
@@ -65,11 +64,11 @@ namespace jbr {
             -bool isCopyable(tinyxml2::XMLDocument &xmlDocument) const noexcept(false)
             -bool isMovable(tinyxml2::XMLDocument &xmlDocument) const noexcept(false)
             -bool isDestroyable(tinyxml2::XMLDocument &xmlDocument) const noexcept(false)
-            -bool isOpenable(const jbr::reg::Rights &rights) const noexcept(false)
-            -bool isWritable(const jbr::reg::Rights &rights) const noexcept(false)
-            -bool isCopyable(const jbr::reg::Rights &rights) const noexcept(false)
-            -bool isMovable(const jbr::reg::Rights &rights) const noexcept(false)
-            -bool isDestroyable(const jbr::reg::Rights &rights) const noexcept(false)
+            -bool isOpenable(const jbr::reg::perm::Rights &rights) const noexcept(false)
+            -bool isWritable(const jbr::reg::perm::Rights &rights) const noexcept(false)
+            -bool isCopyable(const jbr::reg::perm::Rights &rights) const noexcept(false)
+            -bool isMovable(const jbr::reg::perm::Rights &rights) const noexcept(false)
+            -bool isDestroyable(const jbr::reg::perm::Rights &rights) const noexcept(false)
             ..
             +jbr::reg::Variable operator[](const char *variableName) const noexcept(false)
             +jbr::reg::Variable get(const char *variableName) const noexcept(false)
@@ -87,35 +86,49 @@ namespace jbr {
             -void saveXMLFile(tinyxml2::XMLDocument &xmlDocument) const noexcept(false)
             -void loadXMLFile(tinyxml2::XMLDocument &xmlDocument) const noexcept(false)
             ..
-            -void createHeader(const std::optional<jbr::reg::Rights> &rights) const noexcept(false)
-            -void writeRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeHeader, tinyxml2::XMLElement *version, const jbr::reg::Rights &rights) const noexcept(false)
+            -void createHeader(const std::optional<jbr::reg::perm::Rights> &rights) const noexcept(false)
+            -void writeRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeHeader, tinyxml2::XMLElement *version, const jbr::reg::perm::Rights &rights) const noexcept(false)
             -void queryRightToXMLElement(const tinyxml2::XMLElement *xmlElement, bool *status) const noexcept(false)
         }
 
         class Variable {
             -mName : std::string
             -mValue : std::string
-            -mRights : jbr::reg::Rights
+            -mRights : jbr::reg::perm::Rights
             __
-            +Variable()
-            +Variable(std::string &&name, std::string &&value, const std::optional<jbr::reg::Rights> &rights = std::nullopt)
+            +Variable(std::string &&name, std::string &&value, const std::optional<jbr::reg::var::perm::Rights> &rights)
+            +Variable(const Variable &)
+            +Variable    &operator=(const Variable &)
             +~Variable()
             ..
-            +void               set(std::string &&name, std::string &&value, const std::optional<jbr::reg::Rights> &rights = std::nullopt) const noexcept(false)
-            +const char         *getName() const noexcept(false)
-            +const char         *getValue() const noexcept(false)
-            +const jbr::Rights  &getRights() const noexcept(false)
+            +const char *read() const noexcept
+            +void       update(std::string &&value) noexcept
+            void        rename(std::string &&name) noexcept(false)
         }
 
-        class Rights {
-            +mRead : bool
-            +mWrite : bool
-            +mOpen : bool
-            +mCopy : bool
-            +mMove : bool
-            +mDestroy : bool
+        class Permission {
+            +mRead : bool    mRead
+            +mWrite : bool    mWrite
             __
-            +Rights()
+            +Permission()
+            +Permission(bool rd, bool wr)
+        }
+
+        namespace perm {
+
+            jbr.reg.Instance --o Rights
+            jbr.reg.Permission <|-- Rights
+
+            class Rights {
+                +mOpen : bool
+                +mCopy : bool
+                +mMove : bool
+                +mDestroy : bool
+                __
+                +Rights()
+                +Rights(bool rd, bool wr, bool op, bool cp, bool mv, bool ds)
+            }
+
         }
 
         namespace var {
@@ -123,10 +136,9 @@ namespace jbr {
             namespace perm {
 
                 jbr.reg.Variable --* jbr.reg.var.perm.Rights
+                jbr.reg.Permission <|-- Rights
 
                 class Rights {
-                    +mRead : bool
-                    +mWrite : bool
                     +mUpdate : bool
                     +mRename : bool
                     +mCopy : bool
@@ -134,9 +146,6 @@ namespace jbr {
                     __
                     +Rights()
                     +Rights(bool rd, bool wr, bool up, bool rn, bool cp, bool rm)
-                    +Rights(const Rights &)
-                    +Rights  &operator=(const Rights &rights)
-                    +~Rights()
                 }
 
             }

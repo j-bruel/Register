@@ -38,8 +38,8 @@ namespace jbr::reg::perm
         //! @param mv Allow to move a register.
         //! @param ds Allow to destroy a register.
         //!
-        Rights(bool rd, bool wr, bool op, bool cp, bool mv, bool ds) :  jbr::reg::Permission(rd, wr), mOpen(op),
-                                                                        mCopy(cp), mMove(mv), mDestroy(ds) {}
+        explicit Rights(bool rd, bool wr, bool op, bool cp, bool mv, bool ds) : jbr::reg::Permission(rd, wr), mOpen(op),
+                                                                                mCopy(cp), mMove(mv), mDestroy(ds) {}
     };
 }
 
