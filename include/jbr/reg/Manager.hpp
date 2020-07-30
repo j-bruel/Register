@@ -52,14 +52,6 @@ namespace jbr::reg
         //! @throw Raise if the register is not destroyable.
         //!
         static void          destroy(jbr::Register &reg) noexcept(false);
-
-    private:
-        //!
-        //! @brief Check if the register path is valid. This function check if the pointer is null and not empty.
-        //! @param path Register path.
-        //! @throw Raise if the path is null or empty string.
-        //!
-        static void         checkPathValidity(const char *path) noexcept(false);
     };
 }
 
