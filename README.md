@@ -1,5 +1,6 @@
 # cRegister
 
+[![C++ Badge](https://img.shields.io/badge/C++-Solutions-blue.svg?style=flat&logo=c%2B%2B)]()
 [![Build Linux](https://travis-ci.org/j-bruel/cRegister.svg?branch=develop)](https://travis-ci.org/j-bruel/cRegister)
 [![Build Windows](https://ci.appveyor.com/api/projects/status/yu3pueottceo7711?svg=true)](https://ci.appveyor.com/project/j-bruel/cregister)
 [![codecov](https://codecov.io/gh/j-bruel/cRegister/branch/develop/graph/badge.svg)](https://codecov.io/gh/j-bruel/cRegister)
