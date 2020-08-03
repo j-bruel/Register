@@ -4,6 +4,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/yu3pueottceo7711?svg=true)](https://ci.appveyor.com/project/j-bruel/cregister)
 [![codecov](https://codecov.io/gh/j-bruel/cRegister/branch/develop/graph/badge.svg)](https://codecov.io/gh/j-bruel/cRegister)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c1027b37f11442529e84810a6fed5aa3)](https://www.codacy.com/app/j-bruel/cRegister?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=j-bruel/cRegister&amp;utm_campaign=Badge_Grade)
+[![Maintainability](https://api.codeclimate.com/v1/badges/68068121260bd1108b68/maintainability)](https://codeclimate.com/github/j-bruel/cRegister/maintainability)
 [![Documentation](https://codedocs.xyz/j-bruel/cRegister.svg)](https://codedocs.xyz/j-bruel/cRegister/)
 [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/j-bruel/cRegister/blob/master/LICENSE)
 
