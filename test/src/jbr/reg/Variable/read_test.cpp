@@ -14,15 +14,21 @@ TEST_CASE("jbr::reg::Variable::read")
     SUBCASE("Read a variable.")
     {
         jbr::reg::Variable  var("key", "value");
+        const char          *value = var.read();
 
-        CHECK_EQ(std::strcmp(var.read(), "value"), 0);
+        if (value == nullptr)
+            FAIL("The register value should not be null.");
+        CHECK_EQ(std::strcmp(value, "value"), 0);
     }
 
     SUBCASE("Read a empty variable.")
     {
         jbr::reg::Variable  var("key");
+        const char          *value = var.read();
 
-        CHECK(std::string(var.read()).empty());
+        if (value == nullptr)
+            FAIL("The register value should not be null.");
+        CHECK_EQ(std::strlen(value), 0);
     }
 
     SUBCASE("Read a variable without key set.")
@@ -56,8 +62,11 @@ TEST_CASE("jbr::reg::Variable::read")
     {
         jbr::reg::Variable  var("key", "value");
         jbr::reg::Variable  var2(var);
+        const char          *value = var2.read();
 
-        CHECK(std::string(var2.read()) == "value");
+        if (value == nullptr)
+            FAIL("The register value should not be null.");
+        CHECK_EQ(std::strcmp(value, "value"), 0);
     }
 
 }
