@@ -57,22 +57,31 @@ namespace jbr::reg
 
     public:
         //!
-        //! @brief Read the variable value. Extract the value of this variable.
-        //! @return Variable value.
+        //! @brief Read the variable key. Extract the key of this variable.
+        //! @return Variable key.
+        //! @throw Raise if the variable does not have to rights.
         //!
         [[nodiscard]]
-        inline const char   *read() const noexcept { return (mValue.c_str()); }
+        const char *key() const noexcept(false);
+        //!
+        //! @brief Read the variable value. Extract the value of this variable.
+        //! @return Variable value.
+        //! @throw Raise if the variable does not have to rights.
+        //!
+        [[nodiscard]]
+        const char   *read() const noexcept(false);
         //!
         //! @brief Update the variable value. Set the variable value to a new data.
         //! @param value New data to set into the variable value.
+        //! @throw Raise if the variable does not have to rights.
         //!
-        inline void         update(std::string &&value) noexcept { mValue = value; }
+        void         update(std::string &&value) noexcept(false);
         //!
         //! @brief Rename the variable name.
         //! @param name New variable name.
-        //! @throw Raise if the new variable name is empty.
+        //! @throw Raise if the new variable name is empty or if the variable does not have to rights.
         //!
-        void                rename(std::string &&name) noexcept(false);
+        void         rename(std::string &&name) noexcept(false);
     };
 }
 

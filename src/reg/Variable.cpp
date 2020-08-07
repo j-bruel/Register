@@ -17,8 +17,31 @@ namespace jbr::reg
             mRights = rights.value();
     }
 
+    const char   *Variable::key() const noexcept(false)
+    {
+        if (!mRights.mRead)
+            throw jbr::reg::exception("Impossible to read a register variable, right must be set to true.");
+        return (mName.c_str());
+    }
+
+    const char   *Variable::read() const noexcept(false)
+    {
+        if (!mRights.mRead)
+            throw jbr::reg::exception("Impossible to read a register variable, right must be set to true.");
+        return (mValue.c_str());
+    }
+
+    void         Variable::update(std::string &&value) noexcept(false)
+    {
+        if (!mRights.mWrite || !mRights.mUpdate)
+            throw jbr::reg::exception("Impossible to update a register variable, the 'write' and 'update' rights must be set to true.");
+        mValue = value;
+    }
+
     void        Variable::rename(std::string &&name) noexcept(false)
     {
+        if (!mRights.mRead || !mRights.mUpdate || !mRights.mRename)
+            throw jbr::reg::exception("Impossible to rename a register variable, the 'read', 'update' and 'rename' rights must be set to true.");
         if (name.empty())
             throw jbr::reg::exception("Impossible to rename a register variable to a empty value.");
         mName = name;
