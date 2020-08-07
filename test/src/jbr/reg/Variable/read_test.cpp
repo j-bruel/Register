@@ -6,6 +6,7 @@
 
 #include <jbr/reg/Variable.hpp>
 #include <jbr/reg/exception.hpp>
+#include <cstring>
 #include <doctest.h>
 
 TEST_CASE("jbr::reg::Variable::read")
@@ -14,21 +15,17 @@ TEST_CASE("jbr::reg::Variable::read")
     SUBCASE("Read a variable.")
     {
         jbr::reg::Variable  var("key", "value");
-        const char          *value = var.read();
+        std::string         value(var.read());
 
-        if (value == nullptr)
-            FAIL("The register value should not be null.");
-        CHECK_EQ(std::strcmp(value, "value"), 0);
+        CHECK(value == "value");
     }
 
     SUBCASE("Read a empty variable.")
     {
         jbr::reg::Variable  var("key");
-        const char          *value = var.read();
+        std::string         value(var.read());
 
-        if (value == nullptr)
-            FAIL("The register value should not be null.");
-        CHECK_EQ(std::strlen(value), 0);
+        CHECK(value.empty());
     }
 
     SUBCASE("Read a variable without key set.")

@@ -6,6 +6,7 @@
 
 #include <jbr/reg/Variable.hpp>
 #include <jbr/reg/exception.hpp>
+#include <cstring>
 #include <doctest.h>
 
 TEST_CASE("jbr::reg::Variable::update")
