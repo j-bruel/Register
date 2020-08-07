@@ -15,7 +15,7 @@ TEST_CASE("jbr::reg::Variable::read")
     {
         jbr::reg::Variable  var("key", "value");
 
-        CHECK(std::string(var.read()) == "value");
+        CHECK_EQ(std::strcmp(var.read(), "value"), 0);
     }
 
     SUBCASE("Read a empty variable.")
