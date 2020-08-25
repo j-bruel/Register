@@ -301,6 +301,21 @@ namespace jbr::reg
         //! @param eraseIfExist Tell if the variable must be replace if the variable already exist.
         //!
         void    set(const jbr::reg::Variable &variable, bool replaceIfExist = true) const noexcept(false);
+        //!
+        //! @brief Extract a register variable.
+        //! @param key Variable key to find and extract from the register.
+        //! @return Register variable.
+        //! @throw Raise if impossible to extract the variable.
+        //!
+        jbr::reg::Variable  get(const char *key) const noexcept(false);
+
+    public:
+        //!
+        //! @brief Check if a variable exist on this current register.
+        //! @param variable Variable to check into this register.
+        //! @return Variable existing status.
+        //!
+        bool    variableExist(const jbr::reg::Variable &variable) const noexcept;
 
     private:
         //!

@@ -8,6 +8,10 @@
 #include "jbr/reg/exception.hpp"
 #include "jbr/reg/node/Name.hpp"
 
+
+// @todo remove
+#include <iostream>
+
 namespace jbr::reg
 {
 
@@ -126,8 +130,42 @@ namespace jbr::reg
         verify(reg);
         if (!isReadable(reg))
             throw jbr::reg::exception("The register " + mPath + " is not readable. Please check the register rights, read must be allow.");
+        if (!replaceIfExist && variableExist(variable)) //@todo Finishing variableExist function.
+            throw jbr::reg::exception("Cannot replace the already existing variable '" + std::string(variable.read()) + "'.");
+        // @todo Finishing this function.
+    }
+
+    jbr::reg::Variable  Instance::get(const char *key) const noexcept(false)
+    {
+        // @todo review function typo.
+        tinyxml2::XMLDocument   reg;
+
+        loadXMLFile(reg);
+        verify(reg);
+        if (!isReadable(reg))
+            throw jbr::reg::exception("The register " + mPath + " is not readable. Please check the register rights, read must be allow.");
+
+        tinyxml2::XMLElement   *body = getSubXMLElement(getSubXMLElement(&reg, jbr::reg::node::name::reg),
+                                                           jbr::reg::node::name::body);
+
+        for (tinyxml2::XMLElement *child = body->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
+            if (std::strcmp(getSubXMLElement(child, "key")->GetText(), key) == 0) // @todo "key")->GetText() is duplicated.
+                return (jbr::reg::Variable(getSubXMLElement(child, "key")->GetText(), getSubXMLElement(child, "value")->GetText())); // @todo Add rights handling (rights are not read).
+                // @todo Wait if one of the ->GetText() return null ?
+        throw jbr::reg::exception("The key '" + std::string(key) + "' doest not exist into the " + mPath + " register.");
+        // @todo This function is not finish. A lot of testing is needing AND I must add error handling ->
+        // @todo What if key is null
+        // @todo What if No child is found.
+        // @todo What if No key is found.
+
+        // @todo Maybe few thing to do is not listed. Unit testing must be done before closing this function.
+    }
+
+    bool    Instance::variableExist(const jbr::reg::Variable &variable) const noexcept
+    {
+        // @todo This function must be done are tested.
         (void)variable;
-        (void)replaceIfExist;
+        return (false);
     }
 
     void    Instance::checkPathValidity() const noexcept(false)
