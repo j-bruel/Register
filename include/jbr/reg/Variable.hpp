@@ -62,14 +62,14 @@ namespace jbr::reg
         //! @throw Raise if the variable does not have to rights.
         //!
         [[nodiscard]]
-        const char *key() const noexcept(false);
+        std::string key() const noexcept(false);
         //!
         //! @brief Read the variable value. Extract the value of this variable.
         //! @return Variable value.
         //! @throw Raise if the variable does not have to rights.
         //!
         [[nodiscard]]
-        const char   *read() const noexcept(false);
+        std::string read() const noexcept(false);
         //!
         //! @brief Update the variable value. Set the variable value to a new data.
         //! @param value New data to set into the variable value.

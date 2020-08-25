@@ -17,18 +17,18 @@ namespace jbr::reg
             mRights = rights.value();
     }
 
-    const char   *Variable::key() const noexcept(false)
+    std::string Variable::key() const noexcept(false)
     {
         if (!mRights.mRead)
             throw jbr::reg::exception("Impossible to read a register variable, right must be set to true.");
-        return (mName.c_str());
+        return (mName);
     }
 
-    const char   *Variable::read() const noexcept(false)
+    std::string Variable::read() const noexcept(false)
     {
         if (!mRights.mRead)
             throw jbr::reg::exception("Impossible to read a register variable, right must be set to true.");
-        return (mValue.c_str());
+        return (mValue);
     }
 
     void         Variable::update(std::string &&value) noexcept(false)
