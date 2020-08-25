@@ -23,7 +23,8 @@ TEST_CASE("jbr::reg::Variable::read")
     SUBCASE("Read a empty variable.")
     {
         jbr::reg::Variable  var("key");
-        std::string         value(var.read());
+        const char          *readValue = var.read();
+        std::string         value(readValue == nullptr ? "" : readValue);
 
         CHECK(value.empty());
     }
