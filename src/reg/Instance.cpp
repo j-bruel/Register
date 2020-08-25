@@ -139,14 +139,7 @@ namespace jbr::reg
     {
         // @todo review function typo.
         tinyxml2::XMLDocument   reg;
-
-        loadXMLFile(reg);
-        verify(reg);
-        if (!isReadable(reg))
-            throw jbr::reg::exception("The register " + mPath + " is not readable. Please check the register rights, read must be allow.");
-
-        tinyxml2::XMLElement   *body = getSubXMLElement(getSubXMLElement(&reg, jbr::reg::node::name::reg),
-                                                           jbr::reg::node::name::body);
+        tinyxml2::XMLElement    *body = getBodyXMLElement(reg);
 
         for (tinyxml2::XMLElement *child = body->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
             if (std::strcmp(getSubXMLElement(child, "key")->GetText(), key) == 0) // @todo "key")->GetText() is duplicated.
@@ -161,10 +154,14 @@ namespace jbr::reg
         // @todo Maybe few thing to do is not listed. Unit testing must be done before closing this function.
     }
 
-    bool    Instance::variableExist(const jbr::reg::Variable &variable) const noexcept
+    bool    Instance::variableExist(const jbr::reg::Variable &variable) const noexcept(false)
     {
-        // @todo This function must be done are tested.
-        (void)variable;
+        tinyxml2::XMLDocument   reg;
+        tinyxml2::XMLElement    *body = getBodyXMLElement(reg);
+
+        for (tinyxml2::XMLElement *variableElement = body->FirstChildElement(); variableElement != nullptr; variableElement = variableElement->NextSiblingElement())
+            if (std::strcmp(getSubXMLElement(variableElement, jbr::reg::node::name::_body::_variable::key)->GetText(), variable.key()) == 0)
+                return (true);
         return (false);
     }
 
@@ -200,6 +197,15 @@ namespace jbr::reg
         if (subNode == nullptr)
             throw jbr::reg::exception("Error while extract the sub node, the result is null. The sub node " + std::string(subNodeName) + " does not exist.");
         return (subNode);
+    }
+
+    tinyxml2::XMLElement    *Instance::getBodyXMLElement(tinyxml2::XMLDocument &xmlDocument) const noexcept(false)
+    {
+        loadXMLFile(xmlDocument);
+        verify(xmlDocument);
+        if (!isReadable(xmlDocument))
+            throw jbr::reg::exception("The register " + mPath + " is not readable. Please check the register rights, read must be allow.");
+        return (getSubXMLElement(getSubXMLElement(&xmlDocument, jbr::reg::node::name::reg), jbr::reg::node::name::body));
     }
 
     void    Instance::saveXMLFile(tinyxml2::XMLDocument &xmlDocument) const noexcept(false)

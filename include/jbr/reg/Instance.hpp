@@ -314,8 +314,10 @@ namespace jbr::reg
         //! @brief Check if a variable exist on this current register.
         //! @param variable Variable to check into this register.
         //! @return Variable existing status.
+        //! @throw Raise if impossible to load the register file.
         //!
-        bool    variableExist(const jbr::reg::Variable &variable) const noexcept;
+        [[nodiscard]]
+        bool    variableExist(const jbr::reg::Variable &variable) const  noexcept(false);
 
     private:
         //!
@@ -343,6 +345,14 @@ namespace jbr::reg
         //!
         [[nodiscard]]
         tinyxml2::XMLElement    *getSubXMLElement(tinyxml2::XMLNode *node, const char *subNodeName) const noexcept(false);
+        //!
+        //! @brief Extract the body xml element from xml document class.
+        //! @param xmlDocument Reference XML documentation (register).
+        //! @return Body xml element.
+        //! @throw Raise a exception if the file loading is impossible.
+        //!
+        [[nodiscard]]
+        tinyxml2::XMLElement    *getBodyXMLElement(tinyxml2::XMLDocument &xmlDocument) const noexcept(false);
 
     private:
         //!

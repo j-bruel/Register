@@ -92,6 +92,38 @@ namespace jbr::reg::node::name
     //! @brief 'register/body' node from a register file.
     //!
     static const char *body = "body";
+
+    //!
+    //! @namespace jbr::reg::node::name::_body
+    //!
+    namespace _body
+    {
+        //!
+        //! @static
+        //! @def variable
+        //! @brief 'register/body/variable' field from a register file.
+        //!
+        static const char *variable = "variable";
+
+        //!
+        //! @namespace jbr::reg::node::name::_body::_variable
+        //!
+        namespace _variable
+        {
+            //!
+            //! @static
+            //! @def key
+            //! @brief 'register/body/variable/key' field from a register file.
+            //!
+            static const char *key = "key";
+            //!
+            //! @static
+            //! @def value
+            //! @brief 'register/body/variable/value' field from a register file.
+            //!
+            static const char *value = "value";
+        }
+    }
 }
 
 #endif //JBR_CREGISTER_REGISTER_NODE_NAME_HPP
