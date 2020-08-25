@@ -15,8 +15,11 @@ TEST_CASE("jbr::reg::Variable::read")
     SUBCASE("Get key of a variable.")
     {
         jbr::reg::Variable  var("key", "value");
+        const char          *key = var.key();
 
-        CHECK(var.key() == "key");
+        if (key == nullptr)
+            FAIL("The register should not be null.");
+        CHECK_EQ(std::strcmp(key, "key"), 0);
     }
 
     SUBCASE("Read a variable without reading right.")
