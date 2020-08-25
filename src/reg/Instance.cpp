@@ -118,6 +118,18 @@ namespace jbr::reg
         saveXMLFile(reg);
     }
 
+    void    Instance::set(const jbr::reg::Variable &variable, bool replaceIfExist) const noexcept(false)
+    {
+        tinyxml2::XMLDocument   reg;
+
+        loadXMLFile(reg);
+        verify(reg);
+        if (!isReadable(reg))
+            throw jbr::reg::exception("The register " + mPath + " is not readable. Please check the register rights, read must be allow.");
+        (void)variable;
+        (void)replaceIfExist;
+    }
+
     void    Instance::checkPathValidity() const noexcept(false)
     {
         if (mPath.empty())

@@ -8,6 +8,7 @@
 # define JBR_CREGISTER_REGISTER_INSTANCE_HPP
 
 # include <jbr/reg/perm/Rights.hpp>
+# include <jbr/reg/Variable.hpp>
 # include <tinyxml2.h>
 # include <filesystem>
 # include <string>
@@ -151,6 +152,13 @@ namespace jbr::reg
 
     public:
         //!
+        //! @brief Check if a register is readable. The register is not readable if the fields read from register/header/rights nodes is false.
+        //! @return Readable status.
+        //! @throw Raise if impossible to extract the rights data from the register.
+        //!
+        [[nodiscard]]
+        inline bool isReadable() const noexcept { return (isReadable(rights())); }
+        //!
         //! @brief Check if a register is openable. The register is not openable if the fields read or open from register/header/rights nodes is false.
         //! @return Openable status.
         //! @throw Raise if impossible to extract the rights data from the register.
@@ -187,6 +195,14 @@ namespace jbr::reg
         inline bool isDestroyable() const noexcept(false) { return (isDestroyable(rights())); }
 
     private:
+        //!
+        //! @brief Check if a register is readable. The register is not readable if the fields read from register/header/rights nodes is false.
+        //! @param xmlDocument Register file to use to check rights.
+        //! @return Readable status.
+        //! @throw Raise if impossible to extract the rights data from the register.
+        //!
+        [[nodiscard]]
+        inline bool isReadable(tinyxml2::XMLDocument &xmlDocument) const noexcept { return (isReadable(rights(xmlDocument))); }
         //!
         //! @brief Check if a register is openable. The register is not openable if the fields read or open from register/header/rights nodes is false.
         //! @param xmlDocument Register file to use to check rights.
@@ -230,6 +246,14 @@ namespace jbr::reg
 
     private:
         //!
+        //! @brief Check if a register is readable. The register is not readable if the fields read from register/header/rights nodes is false.
+        //! @param rights Current register rights to check.
+        //! @return Readable status.
+        //! @throw Raise if impossible to extract the rights data from the register.
+        //!
+        [[nodiscard]]
+        inline bool isReadable(const jbr::reg::perm::Rights &rights) const noexcept { return (rights.mRead); }
+        //!
         //! @brief Check if a register is openable. The register is not openable if the fields read or open from register/header/rights nodes is false.
         //! @param rights Current register rights to check.
         //! @return Openable status.
@@ -269,6 +293,14 @@ namespace jbr::reg
         //!
         [[nodiscard]]
         inline bool isDestroyable(const jbr::reg::perm::Rights &rights) const noexcept { return (rights.mRead && rights.mDestroy); }
+
+    public:
+        //!
+        //! @brief Set a variable into the register.
+        //! @param variable Variable to set.
+        //! @param eraseIfExist Tell if the variable must be replace if the variable already exist.
+        //!
+        void    set(const jbr::reg::Variable &variable, bool replaceIfExist = true) const noexcept(false);
 
     private:
         //!
