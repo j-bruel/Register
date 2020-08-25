@@ -1,7 +1,7 @@
 //!
 //! @file get_test.cpp
 //! @author jbruel
-//! @date 20/05/19
+//! @date 25/08/20
 //!
 
 #include <jbr/reg/Manager.hpp>

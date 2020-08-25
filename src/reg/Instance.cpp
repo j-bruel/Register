@@ -125,14 +125,31 @@ namespace jbr::reg
     void    Instance::set(const jbr::reg::Variable &variable, bool replaceIfExist) const noexcept(false)
     {
         tinyxml2::XMLDocument   reg;
+        tinyxml2::XMLElement    *body = getBodyXMLElement(reg);
 
-        loadXMLFile(reg);
-        verify(reg);
-        if (!isReadable(reg))
-            throw jbr::reg::exception("The register " + mPath + " is not readable. Please check the register rights, read must be allow.");
-        if (!replaceIfExist && variableExist(variable)) //@todo Finishing variableExist function.
-            throw jbr::reg::exception("Cannot replace the already existing variable '" + std::string(variable.read()) + "'.");
-        // @todo Finishing this function.
+        for (tinyxml2::XMLElement *variableElement = body->FirstChildElement(); variableElement != nullptr; variableElement = variableElement->NextSiblingElement())
+            if (std::strcmp(getSubXMLElement(variableElement, jbr::reg::node::name::_body::_variable::key)->GetText(), variable.key()) == 0)
+            {
+                if (!replaceIfExist)
+                    throw jbr::reg::exception("Cannot replace the already existing variable '" + std::string(variable.read()) + "' from " + mPath + " register.");
+                getSubXMLElement(variableElement, jbr::reg::node::name::_body::_variable::key)->SetText(variable.read());
+            }
+
+        tinyxml2::XMLNode       *variableNode = newXMLElement(&reg, jbr::reg::node::name::_body::variable);
+        tinyxml2::XMLNode       *keyNode = newXMLElement(&reg, jbr::reg::node::name::_body::_variable::key);
+        tinyxml2::XMLNode       *valueNode = newXMLElement(&reg, jbr::reg::node::name::_body::_variable::value);
+
+        keyNode->SetValue(variable.key());
+        valueNode->SetValue(variable.read());
+        body->InsertFirstChild(variableNode);
+        variableNode->InsertFirstChild(keyNode);
+        variableNode->InsertAfterChild(keyNode, valueNode);
+        saveXMLFile(reg);
+        // @todo Need to patch this : <variable>
+        //            <K/>
+        //            <V/>
+        //        </variable>
+        // @todo a lot of testing to do.
     }
 
     jbr::reg::Variable  Instance::get(const char *key) const noexcept(false)
