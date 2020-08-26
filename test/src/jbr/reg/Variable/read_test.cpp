@@ -14,15 +14,15 @@ TEST_CASE("jbr::reg::Variable::read")
 
     SUBCASE("Read a variable.")
     {
-        jbr::reg::Variable  var("key", "value");
+        jbr::reg::Variable  var("read", "data");
         std::string         value(var.read());
 
-        CHECK(value == "value");
+        CHECK(value == "data");
     }
 
     SUBCASE("Read a empty variable.")
     {
-        jbr::reg::Variable  var("key");
+        jbr::reg::Variable  var("empty");
         std::string         value(var.read());
 
         CHECK(value.empty());
@@ -43,7 +43,7 @@ TEST_CASE("jbr::reg::Variable::read")
 
     SUBCASE("Read a variable without reading right.")
     {
-        jbr::reg::Variable  var("key", "value", jbr::reg::var::perm::Rights(false, true, true, true, true, true));
+        jbr::reg::Variable  var("key_without_reading_right", "no_data", jbr::reg::var::perm::Rights(false, true, true, true, true, true));
         std::string         msg;
 
         try {
@@ -57,13 +57,13 @@ TEST_CASE("jbr::reg::Variable::read")
 
     SUBCASE("Read a copied variable.")
     {
-        jbr::reg::Variable  var("key", "value");
+        jbr::reg::Variable  var("read_a_copied_var", "copied data");
         jbr::reg::Variable  var2(var);
         const char          *value = var2.read();
 
         if (value == nullptr)
             FAIL("The register value should not be null.");
-        CHECK_EQ(std::strcmp(value, "value"), 0);
+        CHECK_EQ(std::strcmp(value, "copied data"), 0);
     }
 
 }

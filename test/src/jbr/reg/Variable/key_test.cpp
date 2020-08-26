@@ -24,7 +24,7 @@ TEST_CASE("jbr::reg::Variable::read")
 
     SUBCASE("Read a variable without reading right.")
     {
-        jbr::reg::Variable  var("key", "value", jbr::reg::var::perm::Rights(false, true, true, true, true, true));
+        jbr::reg::Variable  var("key_without_right", "some data ...", jbr::reg::var::perm::Rights(false, true, true, true, true, true));
         std::string         msg;
 
         try {
