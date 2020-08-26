@@ -132,24 +132,24 @@ namespace jbr::reg
             {
                 if (!replaceIfExist)
                     throw jbr::reg::exception("Cannot replace the already existing variable '" + std::string(variable.read()) + "' from " + mPath + " register.");
-                getSubXMLElement(variableElement, jbr::reg::node::name::_body::_variable::key)->SetText(variable.read());
+                getSubXMLElement(variableElement, jbr::reg::node::name::_body::_variable::value)->SetText(variable.read());
+                saveXMLFile(reg);
+                return ;
             }
 
-        tinyxml2::XMLNode       *variableNode = newXMLElement(&reg, jbr::reg::node::name::_body::variable);
-        tinyxml2::XMLNode       *keyNode = newXMLElement(&reg, jbr::reg::node::name::_body::_variable::key);
-        tinyxml2::XMLNode       *valueNode = newXMLElement(&reg, jbr::reg::node::name::_body::_variable::value);
+        tinyxml2::XMLElement    *variableNode = newXMLElement(&reg, jbr::reg::node::name::_body::variable);
+        tinyxml2::XMLElement    *keyNode = newXMLElement(&reg, jbr::reg::node::name::_body::_variable::key);
+        tinyxml2::XMLElement    *valueNode = newXMLElement(&reg, jbr::reg::node::name::_body::_variable::value);
 
-        keyNode->SetValue(variable.key());
-        valueNode->SetValue(variable.read());
         body->InsertFirstChild(variableNode);
+        keyNode->SetText(variable.key());
+        valueNode->SetText(variable.read());
         variableNode->InsertFirstChild(keyNode);
         variableNode->InsertAfterChild(keyNode, valueNode);
         saveXMLFile(reg);
-        // @todo Need to patch this : <variable>
-        //            <K/>
-        //            <V/>
-        //        </variable>
-        // @todo a lot of testing to do.
+        // @todo Split function in two.
+        // @todo Add rights handling.
+        // @todo Add unit tests on rights handling.
     }
 
     jbr::reg::Variable  Instance::get(const char *key) const noexcept(false)
