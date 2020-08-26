@@ -389,6 +389,28 @@ namespace jbr::reg
         void    writeRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeHeader,
                             tinyxml2::XMLElement *version, const jbr::reg::perm::Rights &rights) const noexcept(false);
         //!
+        //! @brief Write variable rights information's on register.
+        //! @param reg XML document object.
+        //! @param nodeBody Body node from register.
+        //! @param variableValue Value node from register into variable main node.
+        //! @param rights Register variable rights.
+        //! @warning This function must be call into a process, no check on pointers, object validity are done. File must be saved after call.
+        //! @throw Exception raise if parameters are invalid.
+        //!
+        void    writeRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeBody,
+                                      tinyxml2::XMLElement *variableValue, const jbr::reg::var::perm::Rights &rights) const noexcept(false);
+        //!
+        //! @brief Update variable rights information's on register.
+        //! @param reg XML document object.
+        //! @param nodeBody Body node from register.
+        //! @param variableValue Value node from register into variable main node.
+        //! @param rights Register variable rights.
+        //! @warning This function must be call into a process, no check on pointers, object validity are done. File must be saved after call.
+        //! @throw Exception raise if parameters are invalid.
+        //!
+        void    updateRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeVariable,
+                                       tinyxml2::XMLElement *variableValue, const jbr::reg::var::perm::Rights &rights) const noexcept(false);
+        //!
         //! @brief Query a boolean into a xml element field.
         //! @param xmlElement XML element to insert the boolean.
         //! @param status Boolean to insert.

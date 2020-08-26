@@ -122,6 +122,54 @@ namespace jbr::reg::node::name
             //! @brief 'register/body/variable/value' field from a register file.
             //!
             static const char *value = "value";
+            //!
+            //! @static
+            //! @def value
+            //! @brief 'register/body/variable/rights' field from a register file.
+            //!
+            static const char *rights = "rights";
+            //!
+            //! @namespace jbr::reg::node::name::_body::_variable::_rights
+            //!
+            namespace _rights
+            {
+                //!
+                //! @static
+                //! @def read
+                //! @brief 'register/body/variable/rights/read' field from a register file.
+                //!
+                static const char *read = "read";
+                //!
+                //! @static
+                //! @def write
+                //! @brief 'register/body/variable/rights/write' field from a register file.
+                //!
+                static const char *write = "write";
+                //!
+                //! @static
+                //! @def open
+                //! @brief 'register/body/variable/rights/update' field from a register file.
+                //!
+                static const char *update = "update";
+                //!
+                //! @static
+                //! @def copy
+                //! @brief 'register/body/variable/rights/rename' field from a register file.
+                //!
+                static const char *rename = "rename";
+                //!
+                //! @static
+                //! @def move
+                //! @brief 'register/body/variable/rights/copy' field from a register file.
+                //!
+                static const char *copy = "copy";
+                //!
+                //! @static
+                //! @def destroy
+                //! @brief 'register/body/variable/rights/remove' field from a register file.
+                //!
+                static const char *remove = "remove";
+            }
         }
     }
 }

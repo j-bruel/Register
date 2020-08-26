@@ -5,12 +5,7 @@
 //!
 
 #include "jbr/reg/Manager.hpp"
-#include "jbr/reg/exception.hpp"
 #include "jbr/reg/node/Name.hpp"
-
-
-// @todo remove
-#include <iostream>
 
 namespace jbr::reg
 {
@@ -126,26 +121,30 @@ namespace jbr::reg
     {
         tinyxml2::XMLDocument   reg;
         tinyxml2::XMLElement    *body = getBodyXMLElement(reg);
+        tinyxml2::XMLElement    *valueNode = nullptr;
 
         for (tinyxml2::XMLElement *variableElement = body->FirstChildElement(); variableElement != nullptr; variableElement = variableElement->NextSiblingElement())
             if (std::strcmp(getSubXMLElement(variableElement, jbr::reg::node::name::_body::_variable::key)->GetText(), variable.key()) == 0)
             {
                 if (!replaceIfExist)
                     throw jbr::reg::exception("Cannot replace the already existing variable '" + std::string(variable.read()) + "' from " + mPath + " register.");
-                getSubXMLElement(variableElement, jbr::reg::node::name::_body::_variable::value)->SetText(variable.read());
+                valueNode = getSubXMLElement(variableElement, jbr::reg::node::name::_body::_variable::value);
+                valueNode->SetText(variable.read());
+                updateRights(&reg, variableElement, valueNode, variable.rights());
                 saveXMLFile(reg);
                 return ;
             }
 
         tinyxml2::XMLElement    *variableNode = newXMLElement(&reg, jbr::reg::node::name::_body::variable);
         tinyxml2::XMLElement    *keyNode = newXMLElement(&reg, jbr::reg::node::name::_body::_variable::key);
-        tinyxml2::XMLElement    *valueNode = newXMLElement(&reg, jbr::reg::node::name::_body::_variable::value);
 
+        valueNode = newXMLElement(&reg, jbr::reg::node::name::_body::_variable::value);
         body->InsertFirstChild(variableNode);
         keyNode->SetText(variable.key());
         valueNode->SetText(variable.read());
         variableNode->InsertFirstChild(keyNode);
         variableNode->InsertAfterChild(keyNode, valueNode);
+        writeRights(&reg, variableNode, valueNode, variable.rights());
         saveXMLFile(reg);
         // @todo Split function in two.
         // @todo Add rights handling.
@@ -288,6 +287,57 @@ namespace jbr::reg
         nodeRights->InsertAfterChild(openElement, copyElement);
         nodeRights->InsertAfterChild(copyElement, moveElement);
         nodeRights->InsertAfterChild(moveElement, destroyElement);
+    }
+
+    void    Instance::writeRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeVariable,
+                                  tinyxml2::XMLElement *variableValue, const jbr::reg::var::perm::Rights &rights) const noexcept(false)
+    {
+        if (reg == nullptr || nodeVariable == nullptr || variableValue == nullptr)
+            throw jbr::reg::exception("Pointers must not be null during writing rights process.");
+
+        tinyxml2::XMLNode       *nodeRights = newXMLElement(reg, jbr::reg::node::name::_body::_variable::rights);
+        tinyxml2::XMLElement    *readElement = newXMLElement(reg, jbr::reg::node::name::_body::_variable::_rights::read);
+        tinyxml2::XMLElement    *writeElement = newXMLElement(reg, jbr::reg::node::name::_body::_variable::_rights::write);
+        tinyxml2::XMLElement    *updateElement = newXMLElement(reg, jbr::reg::node::name::_body::_variable::_rights::update);
+        tinyxml2::XMLElement    *renameElement = newXMLElement(reg, jbr::reg::node::name::_body::_variable::_rights::rename);
+        tinyxml2::XMLElement    *copyElement = newXMLElement(reg, jbr::reg::node::name::_body::_variable::_rights::copy);
+        tinyxml2::XMLElement    *removeElement = newXMLElement(reg, jbr::reg::node::name::_body::_variable::_rights::remove);
+
+        nodeVariable->InsertAfterChild(variableValue, nodeRights);
+        readElement->SetText(rights.mRead);
+        writeElement->SetText(rights.mWrite);
+        updateElement->SetText(rights.mUpdate);
+        renameElement->SetText(rights.mRename);
+        copyElement->SetText(rights.mCopy);
+        removeElement->SetText(rights.mRemove);
+        nodeRights->InsertFirstChild(readElement);
+        nodeRights->InsertAfterChild(readElement, writeElement);
+        nodeRights->InsertAfterChild(writeElement, updateElement);
+        nodeRights->InsertAfterChild(updateElement, renameElement);
+        nodeRights->InsertAfterChild(renameElement, copyElement);
+        nodeRights->InsertAfterChild(copyElement, removeElement);
+    }
+
+    void    Instance::updateRights(tinyxml2::XMLDocument *reg, tinyxml2::XMLNode *nodeVariable,
+                                  tinyxml2::XMLElement *variableValue, const jbr::reg::var::perm::Rights &rights) const noexcept(false)
+    {
+        if (reg == nullptr || nodeVariable == nullptr || variableValue == nullptr)
+            throw jbr::reg::exception("Pointers must not be null during writing rights process.");
+
+        tinyxml2::XMLNode       *nodeRights = getSubXMLElement(nodeVariable, jbr::reg::node::name::_body::_variable::rights);
+        tinyxml2::XMLElement    *readElement = getSubXMLElement(nodeRights, jbr::reg::node::name::_body::_variable::_rights::read);
+        tinyxml2::XMLElement    *writeElement = getSubXMLElement(nodeRights, jbr::reg::node::name::_body::_variable::_rights::write);
+        tinyxml2::XMLElement    *updateElement = getSubXMLElement(nodeRights, jbr::reg::node::name::_body::_variable::_rights::update);
+        tinyxml2::XMLElement    *renameElement = getSubXMLElement(nodeRights, jbr::reg::node::name::_body::_variable::_rights::rename);
+        tinyxml2::XMLElement    *copyElement = getSubXMLElement(nodeRights, jbr::reg::node::name::_body::_variable::_rights::copy);
+        tinyxml2::XMLElement    *removeElement = getSubXMLElement(nodeRights, jbr::reg::node::name::_body::_variable::_rights::remove);
+
+        readElement->SetText(rights.mRead);
+        writeElement->SetText(rights.mWrite);
+        updateElement->SetText(rights.mUpdate);
+        renameElement->SetText(rights.mRename);
+        copyElement->SetText(rights.mCopy);
+        removeElement->SetText(rights.mRemove);
     }
 
     void    Instance::queryRightToXMLElement(const tinyxml2::XMLElement *xmlElement, bool *status) const noexcept(false)

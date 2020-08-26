@@ -16,7 +16,7 @@ TEST_CASE("jbr::reg::Instance::get")
     {
         jbr::Register   reg = jbr::reg::Manager::create("./basic_get.reg");
 
-        reg->set(jbr::reg::Variable("basic_get", "value"));
+//        reg->set(jbr::reg::Variable("basic_get", "value"));
 //        CHECK(std::string(reg->get("basic_get").read()) == "value");
         jbr::reg::Manager::destroy(reg);
     }

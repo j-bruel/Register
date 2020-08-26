@@ -82,6 +82,12 @@ namespace jbr::reg
         //! @throw Raise if the new variable name is empty or if the variable does not have to rights.
         //!
         void         rename(std::string &&name) noexcept(false);
+        //!
+        //! @brief Extract variable rights informations.
+        //! @return Variable rights.
+        //!
+        [[nodiscard]]
+        inline jbr::reg::var::perm::Rights  rights() const noexcept { return (mRights); }
     };
 }
 
