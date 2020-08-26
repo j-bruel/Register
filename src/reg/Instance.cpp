@@ -147,7 +147,7 @@ namespace jbr::reg
         writeRights(&reg, variableNode, valueNode, variable.rights());
         saveXMLFile(reg);
         // @todo Split function in two.
-        // @todo Add rights handling.
+        // @todo Add rights handling. Il est important d'ajouter la vérification de rights/read & rights/update.
         // @todo Add unit tests on rights handling.
     }
 
