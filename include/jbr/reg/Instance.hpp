@@ -307,6 +307,7 @@ namespace jbr::reg
         //! @return Register variable.
         //! @throw Raise if impossible to extract the variable.
         //!
+        [[nodiscard]]
         jbr::reg::Variable  get(const char *key) const noexcept(false);
 
     private:
@@ -319,6 +320,7 @@ namespace jbr::reg
         //! @return Status if a variable has been overrided.
         //! @throw If the override is not allow and the variable already exist.
         //!
+        [[nodiscard]]
         bool    overrideVariable(tinyxml2::XMLDocument &xmlDocument, const jbr::reg::Variable &variable,
                                  tinyxml2::XMLElement *body, bool replaceIfExist) const noexcept(false);
 
