@@ -5,10 +5,7 @@
 //!
 
 #include "jbr/reg/Manager.hpp"
-#include "jbr/reg/exception.hpp"
 #include <filesystem>
-
-#include <jbr/reg/Variable.hpp>
 
 namespace jbr::reg
 {

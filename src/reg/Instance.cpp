@@ -121,24 +121,12 @@ namespace jbr::reg
     {
         tinyxml2::XMLDocument   reg;
         tinyxml2::XMLElement    *body = getBodyXMLElement(reg);
-        tinyxml2::XMLElement    *valueNode = nullptr;
-
-        for (tinyxml2::XMLElement *variableElement = body->FirstChildElement(); variableElement != nullptr; variableElement = variableElement->NextSiblingElement())
-            if (std::strcmp(getSubXMLElement(variableElement, jbr::reg::node::name::_body::_variable::key)->GetText(), variable.key()) == 0)
-            {
-                if (!replaceIfExist)
-                    throw jbr::reg::exception("Cannot replace the already existing variable '" + std::string(variable.read()) + "' from " + mPath + " register.");
-                valueNode = getSubXMLElement(variableElement, jbr::reg::node::name::_body::_variable::value);
-                valueNode->SetText(variable.read());
-                updateRights(&reg, variableElement, valueNode, variable.rights());
-                saveXMLFile(reg);
-                return ;
-            }
-
         tinyxml2::XMLElement    *variableNode = newXMLElement(&reg, jbr::reg::node::name::_body::variable);
         tinyxml2::XMLElement    *keyNode = newXMLElement(&reg, jbr::reg::node::name::_body::_variable::key);
+        tinyxml2::XMLElement    *valueNode = newXMLElement(&reg, jbr::reg::node::name::_body::_variable::value);
 
-        valueNode = newXMLElement(&reg, jbr::reg::node::name::_body::_variable::value);
+        if (overrideVariable(reg, variable, body, replaceIfExist))
+            return ;
         body->InsertFirstChild(variableNode);
         keyNode->SetText(variable.key());
         valueNode->SetText(variable.read());
@@ -146,9 +134,27 @@ namespace jbr::reg
         variableNode->InsertAfterChild(keyNode, valueNode);
         writeRights(&reg, variableNode, valueNode, variable.rights());
         saveXMLFile(reg);
-        // @todo Split function in two.
         // @todo Add rights handling. Il est important d'ajouter la vérification de rights/read & rights/update.
         // @todo Add unit tests on rights handling.
+    }
+
+    bool    Instance::overrideVariable(tinyxml2::XMLDocument &xmlDocument, const jbr::reg::Variable &variable,
+                                        tinyxml2::XMLElement *body, bool replaceIfExist) const noexcept(false)
+    {
+        for (tinyxml2::XMLElement *variableElement = body->FirstChildElement(); variableElement != nullptr; variableElement = variableElement->NextSiblingElement())
+            if (std::strcmp(getSubXMLElement(variableElement, jbr::reg::node::name::_body::_variable::key)->GetText(), variable.key()) == 0)
+            {
+                if (!replaceIfExist)
+                    throw jbr::reg::exception("Cannot replace the already existing variable '" + std::string(variable.read()) + "' from " + mPath + " register.");
+
+                tinyxml2::XMLElement    *valueNode = getSubXMLElement(variableElement, jbr::reg::node::name::_body::_variable::value);
+
+                valueNode->SetText(variable.read());
+                updateRights(&xmlDocument, variableElement, valueNode, variable.rights());
+                saveXMLFile(xmlDocument);
+                return (true);
+            }
+        return (false);
     }
 
     jbr::reg::Variable  Instance::get(const char *key) const noexcept(false)
@@ -325,19 +331,13 @@ namespace jbr::reg
             throw jbr::reg::exception("Pointers must not be null during writing rights process.");
 
         tinyxml2::XMLNode       *nodeRights = getSubXMLElement(nodeVariable, jbr::reg::node::name::_body::_variable::rights);
-        tinyxml2::XMLElement    *readElement = getSubXMLElement(nodeRights, jbr::reg::node::name::_body::_variable::_rights::read);
-        tinyxml2::XMLElement    *writeElement = getSubXMLElement(nodeRights, jbr::reg::node::name::_body::_variable::_rights::write);
-        tinyxml2::XMLElement    *updateElement = getSubXMLElement(nodeRights, jbr::reg::node::name::_body::_variable::_rights::update);
-        tinyxml2::XMLElement    *renameElement = getSubXMLElement(nodeRights, jbr::reg::node::name::_body::_variable::_rights::rename);
-        tinyxml2::XMLElement    *copyElement = getSubXMLElement(nodeRights, jbr::reg::node::name::_body::_variable::_rights::copy);
-        tinyxml2::XMLElement    *removeElement = getSubXMLElement(nodeRights, jbr::reg::node::name::_body::_variable::_rights::remove);
 
-        readElement->SetText(rights.mRead);
-        writeElement->SetText(rights.mWrite);
-        updateElement->SetText(rights.mUpdate);
-        renameElement->SetText(rights.mRename);
-        copyElement->SetText(rights.mCopy);
-        removeElement->SetText(rights.mRemove);
+        getSubXMLElement(nodeRights, jbr::reg::node::name::_body::_variable::_rights::read)->SetText(rights.mRead);
+        getSubXMLElement(nodeRights, jbr::reg::node::name::_body::_variable::_rights::write)->SetText(rights.mWrite);
+        getSubXMLElement(nodeRights, jbr::reg::node::name::_body::_variable::_rights::update)->SetText(rights.mUpdate);
+        getSubXMLElement(nodeRights, jbr::reg::node::name::_body::_variable::_rights::rename)->SetText(rights.mRename);
+        getSubXMLElement(nodeRights, jbr::reg::node::name::_body::_variable::_rights::copy)->SetText(rights.mCopy);
+        getSubXMLElement(nodeRights, jbr::reg::node::name::_body::_variable::_rights::remove)->SetText(rights.mRemove);
     }
 
     void    Instance::queryRightToXMLElement(const tinyxml2::XMLElement *xmlElement, bool *status) const noexcept(false)

@@ -309,5 +309,4 @@ TEST_CASE("jbr::reg::Instance::set")
         jbr::reg::Manager::destroy(reg);
     }
 
-
 }

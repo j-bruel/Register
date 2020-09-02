@@ -298,7 +298,7 @@ namespace jbr::reg
         //!
         //! @brief Set a variable into the register.
         //! @param variable Variable to set.
-        //! @param eraseIfExist Tell if the variable must be replace if the variable already exist.
+        //! @param replaceIfExist Tell if the variable must be replace if the variable already exist.
         //!
         void    set(const jbr::reg::Variable &variable, bool replaceIfExist = true) const noexcept(false);
         //!
@@ -308,6 +308,19 @@ namespace jbr::reg
         //! @throw Raise if impossible to extract the variable.
         //!
         jbr::reg::Variable  get(const char *key) const noexcept(false);
+
+    private:
+        //!
+        //! @brief Override variable value if she already exist and if this is allow.
+        //! @param xmlDocument Reference XML documentation (register).
+        //! @param variable Variable to set.
+        //! @param body Internal xml document pointer to the 'body' section.
+        //! @param replaceIfExist Tell if the variable must be replace if the variable already exist.
+        //! @return Status if a variable has been overrided.
+        //! @throw If the override is not allow and the variable already exist.
+        //!
+        bool    overrideVariable(tinyxml2::XMLDocument &xmlDocument, const jbr::reg::Variable &variable,
+                                 tinyxml2::XMLElement *body, bool replaceIfExist) const noexcept(false);
 
     public:
         //!
