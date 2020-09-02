@@ -323,6 +323,13 @@ namespace jbr::reg
         [[nodiscard]]
         bool    overrideVariable(tinyxml2::XMLDocument &xmlDocument, const jbr::reg::Variable &variable,
                                  tinyxml2::XMLElement *body, bool replaceIfExist) const noexcept(false);
+        //!
+        //! @brief Extract all rights from a variable.
+        //! @param nodeRights Rights node from a variable.
+        //! @return All variables rights.
+        //! @throw Raise if impossible to extract rights.
+        //!
+        jbr::reg::var::perm::Rights getVariableRightsFromNode(tinyxml2::XMLNode *nodeRights) const noexcept(false);
 
     public:
         //!

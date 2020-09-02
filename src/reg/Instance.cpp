@@ -155,39 +155,37 @@ namespace jbr::reg
         return (false);
     }
 
+    jbr::reg::var::perm::Rights Instance::getVariableRightsFromNode(tinyxml2::XMLNode *nodeRights) const noexcept(false)
+    {
+        jbr::reg::var::perm::Rights rights;
+
+        if (nodeRights == nullptr)
+            return (rights);
+        queryRightToXMLElement(nodeRights->FirstChildElement(jbr::reg::node::name::_body::_variable::_rights::read), &rights.mRead);
+        queryRightToXMLElement(nodeRights->FirstChildElement(jbr::reg::node::name::_body::_variable::_rights::write), &rights.mWrite);
+        queryRightToXMLElement(nodeRights->FirstChildElement(jbr::reg::node::name::_body::_variable::_rights::update), &rights.mUpdate);
+        queryRightToXMLElement(nodeRights->FirstChildElement(jbr::reg::node::name::_body::_variable::_rights::rename), &rights.mRename);
+        queryRightToXMLElement(nodeRights->FirstChildElement(jbr::reg::node::name::_body::_variable::_rights::copy), &rights.mCopy);
+        queryRightToXMLElement(nodeRights->FirstChildElement(jbr::reg::node::name::_body::_variable::_rights::remove), &rights.mRemove);
+        return (rights);
+    }
+
     jbr::reg::Variable  Instance::get(const char *key) const noexcept(false)
     {
         tinyxml2::XMLDocument   reg;
         tinyxml2::XMLElement    *body = getBodyXMLElement(reg);
 
+        if (key == nullptr || std::strlen(key) == 0)
+            throw jbr::reg::exception("Impossible to extract a null or empty variable.");
         for (tinyxml2::XMLElement *variableElement = body->FirstChildElement(); variableElement != nullptr; variableElement = variableElement->NextSiblingElement())
             if (std::strcmp(getSubXMLElement(variableElement, jbr::reg::node::name::_body::_variable::key)->GetText(), key) == 0)
             {
-                jbr::reg::Variable  variable("reg", "");
-
-                variable.rename(key);
-                variable.update(getSubXMLElement(variableElement, jbr::reg::node::name::_body::_variable::value)->GetText());
-                variable.reaccess(jbr::reg::var::perm::Rights());
-                return (variable);
+                return (jbr::reg::Variable(key,
+                                           getSubXMLElement(variableElement, jbr::reg::node::name::_body::_variable::value)->GetText(),
+                                           jbr::reg::var::perm::Rights(getVariableRightsFromNode(getSubXMLElement(variableElement, jbr::reg::node::name::_body::_variable::rights)))));
             }
-        throw jbr::reg::exception("");
-
-
-        // @todo review function typo.
-/*        tinyxml2::XMLDocument   reg;
-        tinyxml2::XMLElement    *body = getBodyXMLElement(reg);
-
-        for (tinyxml2::XMLElement *child = body->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
-            if (std::strcmp(getSubXMLElement(child, "key")->GetText(), key) == 0) // @todo "key")->GetText() is duplicated.
-                return (jbr::reg::Variable(getSubXMLElement(child, "key")->GetText(), getSubXMLElement(child, "value")->GetText())); // @todo Add rights handling (rights are not read).
-                // @todo Wait if one of the ->GetText() return null ?
-        throw jbr::reg::exception("The key '" + std::string(key) + "' doest not exist into the " + mPath + " register.");*/
-        // @todo This function is not finish. A lot of testing is needing AND I must add error handling ->
-        // @todo What if key is null
-        // @todo What if No child is found.
-        // @todo What if No key is found.
-
-        // @todo Maybe few thing to do is not listed. Unit testing must be done before closing this function.
+        throw jbr::reg::exception("No variable named '" + std::string(key) + "' were found into the register '" + mPath + "'.");
+        // @todo Unit testing + unit test with invalid register (invalid variable section, body must be ok).
     }
 
     bool    Instance::variableExist(const jbr::reg::Variable &variable) const noexcept(false)
