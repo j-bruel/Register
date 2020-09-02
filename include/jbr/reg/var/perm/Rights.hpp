@@ -14,6 +14,7 @@
 //!
 namespace jbr::reg::var::perm
 {
+
     //!
     //! @struct Rights
     //! @brief All variables rights.
@@ -40,7 +41,23 @@ namespace jbr::reg::var::perm
         //!
         explicit Rights(bool rd, bool wr, bool up, bool rn, bool cp, bool rm) : jbr::reg::Permission(rd, wr), mUpdate(up),
                                                                                 mRename(rn), mCopy(cp), mRemove(rm) {}
+        //!
+        //! @brief Equal operator overload.
+        //! @param rights New rights to overload.
+        //! @return New rights structure.
+        //!
+        Rights  &operator=(const jbr::reg::var::perm::Rights &rights) noexcept
+        {
+            mRead = rights.mRead;
+            mWrite = rights.mWrite;
+            mUpdate = rights.mUpdate;
+            mRename = rights.mRename;
+            mCopy = rights.mCopy;
+            mRemove = rights.mRemove;
+            return (*this);
+        }
     };
+
 }
 
 #endif //JBR_CREGISTER_REGISTER_VAR_PERM_RIGHTS_HPP
