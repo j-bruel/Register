@@ -331,10 +331,16 @@ namespace jbr::reg
             throw jbr::reg::exception("Pointers must not be null during writing rights process.");
 
         tinyxml2::XMLNode       *nodeRights = getSubXMLElement(nodeVariable, jbr::reg::node::name::_body::_variable::rights);
+        tinyxml2::XMLElement    *readElement = getSubXMLElement(nodeRights, jbr::reg::node::name::_body::_variable::_rights::read);
+        tinyxml2::XMLElement    *writeElement = getSubXMLElement(nodeRights, jbr::reg::node::name::_body::_variable::_rights::write);
+        tinyxml2::XMLElement    *updateElement = getSubXMLElement(nodeRights, jbr::reg::node::name::_body::_variable::_rights::update);
 
-        getSubXMLElement(nodeRights, jbr::reg::node::name::_body::_variable::_rights::read)->SetText(rights.mRead);
-        getSubXMLElement(nodeRights, jbr::reg::node::name::_body::_variable::_rights::write)->SetText(rights.mWrite);
-        getSubXMLElement(nodeRights, jbr::reg::node::name::_body::_variable::_rights::update)->SetText(rights.mUpdate);
+        if (std::strcmp(readElement->GetText(), "true") != 0 || std::strcmp(writeElement->GetText(), "true") != 0 ||
+            std::strcmp(updateElement->GetText(), "true") != 0)
+            throw jbr::reg::exception("Impossible to update a variable without read, write and update rights.");
+        readElement->SetText(rights.mRead);
+        writeElement->SetText(rights.mWrite);
+        updateElement->SetText(rights.mUpdate);
         getSubXMLElement(nodeRights, jbr::reg::node::name::_body::_variable::_rights::rename)->SetText(rights.mRename);
         getSubXMLElement(nodeRights, jbr::reg::node::name::_body::_variable::_rights::copy)->SetText(rights.mCopy);
         getSubXMLElement(nodeRights, jbr::reg::node::name::_body::_variable::_rights::remove)->SetText(rights.mRemove);

@@ -309,4 +309,66 @@ TEST_CASE("jbr::reg::Instance::set")
         jbr::reg::Manager::destroy(reg);
     }
 
+
+    SUBCASE("Set (replace) without needed rights.")
+    {
+        jbr::Register   reg = jbr::reg::Manager::create("./replace_without_needed_rights.reg");
+        std::string     msg;
+
+        reg->set(jbr::reg::Variable("Basic set", "Basic value", jbr::reg::var::perm::Rights(true, true, false, true, true, true)));
+        try {
+            reg->set(jbr::reg::Variable("Basic set", "New value", jbr::reg::var::perm::Rights(true, true, true, true, true, true)));
+        }
+        catch (jbr::reg::exception &e) {
+            msg = e.what();
+        }
+        CHECK(msg == "Impossible to update a variable without read, write and update rights.");
+        msg.clear();
+        reg->set(jbr::reg::Variable("Multiple set", "Basic values", jbr::reg::var::perm::Rights(true, false, true, true, true, true)));
+        try {
+            reg->set(jbr::reg::Variable("Multiple set", "Basic values", jbr::reg::var::perm::Rights(true, true, true, true, true, true)));
+        }
+        catch (jbr::reg::exception &e) {
+            msg = e.what();
+        }
+        CHECK(msg == "Impossible to update a variable without read, write and update rights.");
+
+        std::ifstream   ifs("replace_without_needed_rights.reg");
+        std::string     content((std::istreambuf_iterator<char>(ifs)), (std::istreambuf_iterator<char>()));
+
+        CHECK(content == "<register>\n"
+                         "    <header>\n"
+                         "        <version>1.0.0</version>\n"
+                         "    </header>\n"
+                         "    <body>\n"
+                         "        <variable>\n"
+                         "            <key>Multiple set</key>\n"
+                         "            <value>Basic values</value>\n"
+                         "            <rights>\n"
+                         "                <read>true</read>\n"
+                         "                <write>false</write>\n"
+                         "                <update>true</update>\n"
+                         "                <rename>true</rename>\n"
+                         "                <copy>true</copy>\n"
+                         "                <remove>true</remove>\n"
+                         "            </rights>\n"
+                         "        </variable>\n"
+                         "        <variable>\n"
+                         "            <key>Basic set</key>\n"
+                         "            <value>Basic value</value>\n"
+                         "            <rights>\n"
+                         "                <read>true</read>\n"
+                         "                <write>true</write>\n"
+                         "                <update>false</update>\n"
+                         "                <rename>true</rename>\n"
+                         "                <copy>true</copy>\n"
+                         "                <remove>true</remove>\n"
+                         "            </rights>\n"
+                         "        </variable>\n"
+                         "    </body>\n"
+                         "</register>\n");
+        ifs.close();
+        jbr::reg::Manager::destroy(reg);
+    }
+
 }
