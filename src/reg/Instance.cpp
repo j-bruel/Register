@@ -134,8 +134,6 @@ namespace jbr::reg
         variableNode->InsertAfterChild(keyNode, valueNode);
         writeRights(&reg, variableNode, valueNode, variable.rights());
         saveXMLFile(reg);
-        // @todo Add rights handling. Il est important d'ajouter la vérification de rights/read & rights/update.
-        // @todo Add unit tests on rights handling.
     }
 
     bool    Instance::overrideVariable(tinyxml2::XMLDocument &xmlDocument, const jbr::reg::Variable &variable,
@@ -159,15 +157,31 @@ namespace jbr::reg
 
     jbr::reg::Variable  Instance::get(const char *key) const noexcept(false)
     {
-        // @todo review function typo.
         tinyxml2::XMLDocument   reg;
+        tinyxml2::XMLElement    *body = getBodyXMLElement(reg);
+
+        for (tinyxml2::XMLElement *variableElement = body->FirstChildElement(); variableElement != nullptr; variableElement = variableElement->NextSiblingElement())
+            if (std::strcmp(getSubXMLElement(variableElement, jbr::reg::node::name::_body::_variable::key)->GetText(), key) == 0)
+            {
+                jbr::reg::Variable  variable("reg", "");
+
+                variable.rename(key);
+                variable.update(getSubXMLElement(variableElement, jbr::reg::node::name::_body::_variable::value)->GetText());
+                variable.reaccess(jbr::reg::var::perm::Rights());
+                return (variable);
+            }
+        throw jbr::reg::exception("");
+
+
+        // @todo review function typo.
+/*        tinyxml2::XMLDocument   reg;
         tinyxml2::XMLElement    *body = getBodyXMLElement(reg);
 
         for (tinyxml2::XMLElement *child = body->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
             if (std::strcmp(getSubXMLElement(child, "key")->GetText(), key) == 0) // @todo "key")->GetText() is duplicated.
                 return (jbr::reg::Variable(getSubXMLElement(child, "key")->GetText(), getSubXMLElement(child, "value")->GetText())); // @todo Add rights handling (rights are not read).
                 // @todo Wait if one of the ->GetText() return null ?
-        throw jbr::reg::exception("The key '" + std::string(key) + "' doest not exist into the " + mPath + " register.");
+        throw jbr::reg::exception("The key '" + std::string(key) + "' doest not exist into the " + mPath + " register.");*/
         // @todo This function is not finish. A lot of testing is needing AND I must add error handling ->
         // @todo What if key is null
         // @todo What if No child is found.

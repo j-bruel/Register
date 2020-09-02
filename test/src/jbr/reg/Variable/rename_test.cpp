@@ -47,7 +47,7 @@ TEST_CASE("jbr::reg::Variable::rename")
             msg = e.what();
         }
         CHECK(std::string(var.read()) == "value");
-        CHECK(msg == "Impossible to rename a register variable, the 'read', 'update' and 'rename' rights must be set to true.");
+        CHECK(msg == "Impossible to rename a register variable, the 'write', 'update' and 'rename' rights must be set to true.");
     }
 
 }
