@@ -339,7 +339,7 @@ namespace jbr::reg
         //! @throw Raise if impossible to load the register file.
         //!
         [[nodiscard]]
-        bool    variableExist(const jbr::reg::Variable &variable) const  noexcept(false);
+        bool    available(const jbr::reg::Variable &variable) const  noexcept(false);
 
     private:
         //!

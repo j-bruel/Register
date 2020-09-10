@@ -1,5 +1,5 @@
 //!
-//! @file variableExist_test.cpp
+//! @file available_test.cpp
 //! @author jbruel
 //! @date 25/08/20
 //!
@@ -10,14 +10,14 @@
 #include <doctest.h>
 #include <fstream>
 
-TEST_CASE("jbr::reg::Instance::variableExist")
+TEST_CASE("jbr::reg::Instance::available")
 {
 
     SUBCASE("Check if a variable exist into a empty register.")
     {
         jbr::Register   reg = jbr::reg::Manager::create("./no_var.reg");
 
-        CHECK_FALSE(reg->variableExist(jbr::reg::Variable("no var exist", std::string())));
+        CHECK_FALSE(reg->available(jbr::reg::Variable("no var exist", std::string())));
         jbr::reg::Manager::destroy(reg);
     }
 
@@ -30,7 +30,7 @@ TEST_CASE("jbr::reg::Instance::variableExist")
         regInvalid << "spdokpod \n <jdspssjd>><<<>>dofkdf\n";
         regInvalid.close();
         try {
-            (void)reg->variableExist(jbr::reg::Variable("no var exist", std::string()));
+            (void)reg->available(jbr::reg::Variable("no var exist", std::string()));
         }
         catch (jbr::reg::exception &e) {
             msg = e.what();
@@ -66,7 +66,7 @@ TEST_CASE("jbr::reg::Instance::variableExist")
 
         jbr::Register   reg = jbr::reg::Manager::open("./not_existing_var.reg");
 
-        CHECK_FALSE(reg->variableExist(jbr::reg::Variable("no var exist", std::string())));
+        CHECK_FALSE(reg->available(jbr::reg::Variable("no var exist", std::string())));
         jbr::reg::Manager::destroy(reg);
     }
 
@@ -93,7 +93,7 @@ TEST_CASE("jbr::reg::Instance::variableExist")
 
         jbr::Register   reg = jbr::reg::Manager::open("./existing_var.reg");
 
-        CHECK(reg->variableExist(jbr::reg::Variable("A variable", std::string())));
+        CHECK(reg->available(jbr::reg::Variable("A variable", std::string())));
         jbr::reg::Manager::destroy(reg);
     }
 
@@ -128,10 +128,10 @@ TEST_CASE("jbr::reg::Instance::variableExist")
 
         jbr::Register   reg = jbr::reg::Manager::open("./multiple_existing_var.reg");
 
-        CHECK(reg->variableExist(jbr::reg::Variable("New variable", std::string())));
-        CHECK_FALSE(reg->variableExist(jbr::reg::Variable("1New variable", std::string())));
-        CHECK_FALSE(reg->variableExist(jbr::reg::Variable("test", std::string())));
-        CHECK(reg->variableExist(jbr::reg::Variable("Testing", std::string())));
+        CHECK(reg->available(jbr::reg::Variable("New variable", std::string())));
+        CHECK_FALSE(reg->available(jbr::reg::Variable("1New variable", std::string())));
+        CHECK_FALSE(reg->available(jbr::reg::Variable("test", std::string())));
+        CHECK(reg->available(jbr::reg::Variable("Testing", std::string())));
         jbr::reg::Manager::destroy(reg);
     }
 

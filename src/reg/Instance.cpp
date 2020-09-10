@@ -189,7 +189,7 @@ namespace jbr::reg
         throw jbr::reg::exception("No variable named '" + std::string(key) + "' were found into the register '" + mPath + "'.");
     }
 
-    bool    Instance::variableExist(const jbr::reg::Variable &variable) const noexcept(false)
+    bool    Instance::available(const jbr::reg::Variable &variable) const noexcept(false)
     {
         tinyxml2::XMLDocument   reg;
         tinyxml2::XMLElement    *body = getBodyXMLElement(reg);
