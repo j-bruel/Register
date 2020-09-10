@@ -187,7 +187,6 @@ namespace jbr::reg
                                            jbr::reg::var::perm::Rights(getVariableRightsFromNode(getSubXMLElement(variableElement, jbr::reg::node::name::_body::_variable::rights)))));
             }
         throw jbr::reg::exception("No variable named '" + std::string(key) + "' were found into the register '" + mPath + "'.");
-        // @todo Unit testing + unit test with invalid register (invalid variable section, body must be ok).
     }
 
     bool    Instance::variableExist(const jbr::reg::Variable &variable) const noexcept(false)
