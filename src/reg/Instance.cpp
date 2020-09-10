@@ -180,8 +180,10 @@ namespace jbr::reg
         for (tinyxml2::XMLElement *variableElement = body->FirstChildElement(); variableElement != nullptr; variableElement = variableElement->NextSiblingElement())
             if (std::strcmp(getSubXMLElement(variableElement, jbr::reg::node::name::_body::_variable::key)->GetText(), key) == 0)
             {
+                const char *textValue = getSubXMLElement(variableElement, jbr::reg::node::name::_body::_variable::value)->GetText();
+
                 return (jbr::reg::Variable(key,
-                                           getSubXMLElement(variableElement, jbr::reg::node::name::_body::_variable::value)->GetText(),
+                                           textValue == nullptr ? "" : textValue,
                                            jbr::reg::var::perm::Rights(getVariableRightsFromNode(getSubXMLElement(variableElement, jbr::reg::node::name::_body::_variable::rights)))));
             }
         throw jbr::reg::exception("No variable named '" + std::string(key) + "' were found into the register '" + mPath + "'.");
