@@ -56,6 +56,18 @@ namespace jbr::reg::var::perm
             mRemove = rights.mRemove;
             return (*this);
         }
+
+        //!
+        //! @brief Equality overload operator.
+        //! @param rights Rights to check.
+        //! @return Status if rights are equals.
+        //!
+        inline bool operator==(const jbr::reg::var::perm::Rights &rights) noexcept { return (mRead == rights.mRead &&
+                                                                                            mWrite == rights.mWrite &&
+                                                                                            mUpdate == rights.mUpdate &&
+                                                                                            mRename == rights.mRename &&
+                                                                                            mCopy == rights.mCopy &&
+                                                                                            mRemove == rights.mRemove); }
     };
 
 }
