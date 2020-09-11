@@ -302,6 +302,22 @@ namespace jbr::reg
         //!
         void    set(const jbr::reg::Variable &variable, bool replaceIfExist = true) const noexcept(false);
         //!
+        //! @brief Check if a variable exist on this current register.
+        //! @param key Variable to check into this register.
+        //! @return Variable existing status.
+        //! @throw Raise if impossible to load the register file.
+        //!
+        [[nodiscard]]
+        bool        available(const char *key) const noexcept(false);
+        //!
+        //! @brief Check if a variable exist on this current register.
+        //! @param variable Variable to check into this register.
+        //! @return Variable existing status.
+        //! @throw Raise if impossible to load the register file.
+        //!
+        [[nodiscard]]
+        inline bool available(const jbr::reg::Variable &variable) const noexcept(false) { return (available(variable.key())); }
+        //!
         //! @brief Extract a register variable.
         //! @param key Variable key to find and extract from the register.
         //! @return Register variable.
@@ -309,6 +325,18 @@ namespace jbr::reg
         //!
         [[nodiscard]]
         jbr::reg::Variable  get(const char *key) const noexcept(false);
+        //!
+        //! @brief Remove a variable from the register.
+        //! @param variable Variable key to find and remove from the register.
+        //! @throw Raise if impossible to find the variable or load the register.
+        //!
+        inline void    remove(const jbr::reg::Variable &variable) const noexcept(false) { remove(variable.key()); }
+        //!
+        //! @brief Remove a variable from the register.
+        //! @param key Variable key to find and remove from the register.
+        //! @throw Raise if impossible to find the variable or load the register.
+        //!
+        void    remove(const char *key) const noexcept(false);
 
     private:
         //!
@@ -330,16 +358,6 @@ namespace jbr::reg
         //! @throw Raise if impossible to extract rights.
         //!
         jbr::reg::var::perm::Rights getVariableRightsFromNode(tinyxml2::XMLNode *nodeRights) const noexcept(false);
-
-    public:
-        //!
-        //! @brief Check if a variable exist on this current register.
-        //! @param variable Variable to check into this register.
-        //! @return Variable existing status.
-        //! @throw Raise if impossible to load the register file.
-        //!
-        [[nodiscard]]
-        bool    available(const jbr::reg::Variable &variable) const  noexcept(false);
 
     private:
         //!

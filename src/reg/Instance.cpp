@@ -170,6 +170,19 @@ namespace jbr::reg
         return (rights);
     }
 
+    bool    Instance::available(const char *key) const  noexcept(false)
+    {
+        tinyxml2::XMLDocument   reg;
+        tinyxml2::XMLElement    *body = getBodyXMLElement(reg);
+
+        if (key == nullptr || std::strlen(key) == 0)
+            return (false);
+        for (tinyxml2::XMLElement *variableElement = body->FirstChildElement(); variableElement != nullptr; variableElement = variableElement->NextSiblingElement())
+            if (std::strcmp(getSubXMLElement(variableElement, jbr::reg::node::name::_body::_variable::key)->GetText(), key) == 0)
+                return (true);
+        return (false);
+    }
+
     jbr::reg::Variable  Instance::get(const char *key) const noexcept(false)
     {
         tinyxml2::XMLDocument   reg;
@@ -189,15 +202,23 @@ namespace jbr::reg
         throw jbr::reg::exception("No variable named '" + std::string(key) + "' were found into the register '" + mPath + "'.");
     }
 
-    bool    Instance::available(const jbr::reg::Variable &variable) const noexcept(false)
+    void    Instance::remove(const char *key) const noexcept(false)
     {
         tinyxml2::XMLDocument   reg;
         tinyxml2::XMLElement    *body = getBodyXMLElement(reg);
 
+        if (key == nullptr || std::strlen(key) == 0)
+            throw jbr::reg::exception("Impossible to remove a null or empty variable.");
         for (tinyxml2::XMLElement *variableElement = body->FirstChildElement(); variableElement != nullptr; variableElement = variableElement->NextSiblingElement())
-            if (std::strcmp(getSubXMLElement(variableElement, jbr::reg::node::name::_body::_variable::key)->GetText(), variable.key()) == 0)
-                return (true);
-        return (false);
+            if (std::strcmp(getSubXMLElement(variableElement, jbr::reg::node::name::_body::_variable::key)->GetText(), key) == 0)
+            {
+                if (!getVariableRightsFromNode(getSubXMLElement(variableElement, jbr::reg::node::name::_body::_variable::rights)).mRemove)
+                    throw jbr::reg::exception("Impossible to remove the variable, no remove rights set.");
+                body->DeleteChild(variableElement);
+                saveXMLFile(reg);
+                return ;
+            }
+        throw jbr::reg::exception("No variable named '" + std::string(key) + "' were found into the register '" + mPath + "'.");
     }
 
     void    Instance::checkPathValidity() const noexcept(false)
