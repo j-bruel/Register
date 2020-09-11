@@ -1,5 +1,5 @@
 ##
-## Cmake minimun version
+## Cmake minimum version
 ##
 cmake_minimum_required(VERSION 3.1)
 
@@ -17,7 +17,7 @@ set(cRegister_VERSION "${cRegister_VERSION_MAJOR}.${cRegister_VERSION_MINOR}.${c
 set(PROJECT_DESCRIPTION "\"Register C++ API. Smart memory, allowing to interact and persist data in an architectural, dynamic and simplified way.\"")
 
 ##
-## Projet Name
+## Project Name
 ##
 project(cRegister VERSION ${cRegister_VERSION} DESCRIPTION ${PROJECT_DESCRIPTION})
 
@@ -29,13 +29,12 @@ set(PROJ_NAME "\"${PROJECT_NAME}\"")
 ##
 ## Set configuration file.
 ##
-configure_file(include/jbr/config.hpp.in
-               ${CMAKE_BINARY_DIR}/include/jbr/config.hpp)
+configure_file(include/jbr/config.hpp.in ${CMAKE_BINARY_DIR}/include/jbr/config.hpp)
 
 ##
-## C++ Stantard compilation
+## C++ standard compilation
 ##
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -69,10 +68,16 @@ set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 ##
+## Include headers directory.
+##
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/third_party/tinyxml2)
+
+##
 ## Cmake build configuration options.
 ##
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
-    message(STATUS "Setting build type to 'Debug' as no build type was specified.")
+    message(STATUS  "Setting build type to 'Debug' as no build type was specified.")
     set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the build type (Debug/Release)" FORCE)
 endif (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 
@@ -86,35 +91,45 @@ if (ENABLE_COVERAGE AND NOT CMAKE_CONFIGURATION_TYPES)
         include(CodeCoverage)
         append_coverage_compiler_flags()
         setup_target_for_coverage(NAME coverage EXECUTABLE ctest DEPENDENCIES coverage)
-else (ENABLE_COVERAGE AND NOT CMAKE_CONFIGURATION_TYPES)
-    if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        ##
-        ## Set Linux compilation flag.
-        ##
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall -Wextra")
-        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
-        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2")
-    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        ##
-        ## Set Windows compilation flag.
-        ##
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /WX")
-        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2")
-        ##
-        ## Export no symbols by default (if the compiler supports it).
-        ## This makes e.g. GCC's "visibility behavior" consistent with MSVC's.
-        ## On Windows/MSVC this is a noop.
-        ##
-        set(CMAKE_C_VISIBILITY_PRESET hidden)
-        set(CMAKE_CXX_VISIBILITY_PRESET hidden)
-    endif(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-endif (ENABLE_COVERAGE AND NOT CMAKE_CONFIGURATION_TYPES)
+endif(ENABLE_COVERAGE AND NOT CMAKE_CONFIGURATION_TYPES)
+
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    set(CMAKE_C_COMPILER        "/usr/bin/clang")
+    set(CMAKE_CXX_COMPILER      "/usr/bin/clang++")
+    set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -std=c++17 -stdlib=libstdc++ -lstdc++fs -c")
+    set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_DEBUG} -std=c++17 -stdlib=libstdc++ -lstdc++fs -c")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -std=c++17 -stdlib=libstdc++ -lstdc++fs -c")
+endif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    ##
+    ## Set Linux compilation flag.
+    ##
+    set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -W -Wall -Wextra")
+    set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_DEBUG} -g")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    ##
+    ## Set Windows compilation flag.
+    ##
+    set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} /W4 /WX")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2")
+    ##
+    ## Export no symbols by default (if the compiler supports it).
+    ## This makes e.g. GCC's "visibility behavior" consistent with MSVC's.
+    ## On Windows/MSVC this is a noop.
+    ##
+    set(CMAKE_C_VISIBILITY_PRESET hidden)
+    set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+endif(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 
 ##
 ## Sources files
 ##
 file(GLOB_RECURSE SOURCE_FILES  ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 file(GLOB_RECURSE INCLUDE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp)
+set(SOURCE_FILES                ${CMAKE_CURRENT_SOURCE_DIR}/third_party/tinyxml2/tinyxml2.cpp
+                                ${SOURCE_FILES})
+set(INCLUDE_FILES               ${CMAKE_CURRENT_SOURCE_DIR}/third_party/tinyxml2/tinyxml2.h)
 
 ##
 ## Generation static library.
@@ -132,14 +147,11 @@ set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${cRegister_VERSION})
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include ${CMAKE_BINARY_DIR}/include)
 
 ##
-## Check os type to copy libraries on windows case.
+## Library linkage with system & stdc++ lib on macos only.
 ##
-if (WIN32 OR MSVC OR MSYS OR MINGW)
-    message(STATUS              "Windows OS detected, copying libraries files.")
-    add_custom_command( TARGET ${PROJECT_NAME}
-            POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> ${CMAKE_BINARY_DIR}/test/${PROJECT_NAME}.dll)
-endif (WIN32 OR MSVC OR MSYS OR MINGW)
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_link_libraries(${PROJECT_NAME} PUBLIC stdc++fs)
+endif(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 
 ##
 ## Build test settings.
@@ -170,6 +182,7 @@ install(TARGETS ${PROJECT_NAME}
 ##
 install(DIRECTORY include/ DESTINATION include PATTERN "config.hpp.in" EXCLUDE) # Install our main header files
 install(FILES ${CMAKE_BINARY_DIR}/include/jbr/config.hpp DESTINATION include/jbr) # Install our configuration file
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/third_party/tinyxml2/tinyxml2.h DESTINATION include/) # Install the tinyxml2 header file.
 
 ##
 ## Install the project's extra files

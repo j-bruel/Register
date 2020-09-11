@@ -1,3 +1,7 @@
+cmake_minimum_required(VERSION 3.1)
+include_directories("C:\\Program Files (x86)\\cRegister\\include")
+include_directories("C:\\Users\\jonat\\dev\\cRegister\\third_party\\doctest")
+
 ##
 ## Set testing project name.
 ##
@@ -35,21 +39,20 @@ target_include_directories(doctest INTERFACE "${CMAKE_SOURCE_DIR}/third_party/do
 ##
 ## Generate executable file.
 ##
-add_executable(${TESTING_PROJECT_NAME} ${TEST_SOURCES_FILES} ${TEST_INCLUDE_FILES})
+add_executable(${TESTING_PROJECT_NAME} ${SOURCE_FILES} ${INCLUDE_FILES} ${TEST_SOURCES_FILES} ${TEST_INCLUDE_FILES})
 
 ##
 ## Link testing library.
 ##
-target_link_libraries(${TESTING_PROJECT_NAME} ${PROJECT_NAME} doctest)
+if (WIN32 OR MSVC OR MSYS OR MINGW)
+    target_link_libraries(${TESTING_PROJECT_NAME} doctest)
+else()
+    target_link_libraries(${TESTING_PROJECT_NAME} doctest stdc++fs)
+endif (WIN32 OR MSVC OR MSYS OR MINGW)
+
+message(${CMAKE_BINARY_DIR}/test/${TESTING_PROJECT_NAME}${OS_DYNAMIQUE_BIN_EXT})
 
 ##
 ## Add test.
 ##
-add_test(all_tests ${TESTING_PROJECT_NAME})
-
-##
-## Copy test file to building directory for auto-testing scripts.
-##
-add_custom_command( TARGET ${TESTING_PROJECT_NAME}
-                    POST_BUILD
-                    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${TESTING_PROJECT_NAME}> ${CMAKE_BINARY_DIR}/test/${TESTING_PROJECT_NAME}${OS_DYNAMIQUE_BIN_EXT})
+add_test(NAME RUN_TESTS COMMAND ${TESTING_PROJECT_NAME})

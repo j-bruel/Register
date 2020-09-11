@@ -75,6 +75,8 @@ find_program( GENHTML_PATH NAMES genhtml genhtml.perl genhtml.bat )
 find_program( GCOVR_PATH gcovr PATHS ${CMAKE_SOURCE_DIR}/scripts/test)
 find_program( SIMPLE_PYTHON_EXECUTABLE python )
 
+set(COVERAGE_EXCLUDES '*/8/*' '*/third_party/doctest/*' '*/third_party/tinyxml2/*' '*/test/src/*' '*/test/include/*')
+
 if(NOT GCOV_PATH)
     message(FATAL_ERROR "gcov not found! Aborting...")
 endif() # NOT GCOV_PATH
@@ -161,7 +163,7 @@ function(SETUP_TARGET_FOR_COVERAGE)
         # Capturing lcov counters and generating report
         COMMAND ${LCOV_PATH} --directory . --capture --output-file ${Coverage_NAME}.info
         # add baseline counters
-        COMMAND ${LCOV_PATH} -a ${Coverage_NAME}.base -a ${Coverage_NAME}.info --output-file ${Coverage_NAME}.total
+        COMMAND ${LCOV_PATH}  -a ${Coverage_NAME}.base -a ${Coverage_NAME}.info --output-file ${Coverage_NAME}.total
         COMMAND ${LCOV_PATH} --remove ${Coverage_NAME}.total ${COVERAGE_EXCLUDES} --output-file ${PROJECT_BINARY_DIR}/${Coverage_NAME}.info.cleaned
         COMMAND ${GENHTML_PATH} -o ${Coverage_NAME} ${PROJECT_BINARY_DIR}/${Coverage_NAME}.info.cleaned
         COMMAND ${CMAKE_COMMAND} -E remove ${Coverage_NAME}.base ${Coverage_NAME}.total ${PROJECT_BINARY_DIR}/${Coverage_NAME}.info.cleaned
@@ -222,7 +224,7 @@ function(SETUP_TARGET_FOR_COVERAGE_COBERTURA)
         ${Coverage_EXECUTABLE}
 
         # Running gcovr
-        COMMAND ${GCOVR_PATH} -x -r ${CMAKE_SOURCE_DIR} ${COBERTURA_EXCLUDES}
+        COMMAND ${GCOVR_PATH} -x -r -a ${CMAKE_SOURCE_DIR} ${COBERTURA_EXCLUDES}
             -o ${Coverage_NAME}.xml
         WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
         DEPENDS ${Coverage_DEPENDENCIES}

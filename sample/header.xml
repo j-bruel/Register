@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<register>
+    <header>
+        <version>1.0</version>
+        <!-- Register path, automatic update on API use. -->
+        <rights>
+            <read>true</read>
+            <!-- For reading. -->
+            <write>true</write>
+            <!-- For writing. -->
+            <open>true</open>
+            <!-- For opening, not mandatory, true by default. -->
+            <copy>true</copy>
+            <!-- For copying, not mandatory, true by default. -->
+            <move>true</move>
+            <!-- For moving, not mandatory, true by default. -->
+            <destroy>true</destroy>
+            <!-- For destroying, not mandatory, true by default. -->
+        </rights>
+        <!-- Rights administration, not mandatory, true will be apply to all variables by default. -->
+    </header>
+    <!-- Header side, all register configuration information's.  -->
+    <body>
+        <variable>
+            <key>my_variable</key>
+            <!-- Variable key. -->
+            <value>my value</value>
+            <!-- Variable value. -->
+            <rights>
+                <read>true</read>
+                <!-- Reading rights. -->
+                <write>true</write>
+                <!-- Writing rights. -->
+                <update>true</update>
+                <!-- For content updating. -->
+                <rename>true</rename>
+                <!-- For renaming. -->
+                <copy>true</copy>
+                <!-- For copying. -->
+                <remove>true</remove>
+                <!-- For removing. -->
+            </rights>
+            <!-- Variable rights, not mandatory, true will be apply to all variables by default. -->
+        </variable>
+        <!-- All register variable description. -->
+        <variable>
+            <key>Another one</key>
+            <value>OK</value>
+        </variable>
+        <variable>
+            <key>Last one</key>
+            <value>Still OK</value>
+        </variable>
+    </body>
+    <!-- Body information's. -->
+</register>
