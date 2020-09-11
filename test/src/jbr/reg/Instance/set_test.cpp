@@ -49,7 +49,7 @@ TEST_CASE("jbr::reg::Instance::set")
     {
         jbr::Register   reg = jbr::reg::Manager::create("./multiple_sets.reg");
 
-        reg->set(jbr::reg::Variable("Basic set", "Basic value"));
+        reg->set(jbr::reg::Variable("A new basic set", "Basic value (yes, again)"));
         reg->set(jbr::reg::Variable("Multiple set", "Basic values"));
         reg->set(jbr::reg::Variable("Some var ...", ""));
         reg->set(jbr::reg::Variable("ut", "Basic value"));
@@ -112,8 +112,8 @@ TEST_CASE("jbr::reg::Instance::set")
                          "            </rights>\n"
                          "        </variable>\n"
                          "        <variable>\n"
-                         "            <key>Basic set</key>\n"
-                         "            <value>Basic value</value>\n"
+                         "            <key>A new basic set</key>\n"
+                         "            <value>Basic value (yes, again)</value>\n"
                          "            <rights>\n"
                          "                <read>true</read>\n"
                          "                <write>true</write>\n"
@@ -133,12 +133,12 @@ TEST_CASE("jbr::reg::Instance::set")
     {
         jbr::Register   reg = jbr::reg::Manager::create("./replace.reg");
 
-        reg->set(jbr::reg::Variable("Basic set", "Basic value"));
-        reg->set(jbr::reg::Variable("Basic set", "New value"));
-        reg->set(jbr::reg::Variable("Multiple set", "Basic values"));
-        reg->set(jbr::reg::Variable("Basic set", "Hey !"));
-        reg->set(jbr::reg::Variable("Some var ...", ""));
-        reg->set(jbr::reg::Variable("Basic set", "Finally ..."));
+        reg->set(jbr::reg::Variable("Set with a replace - Basic set", "Basic value"));
+        reg->set(jbr::reg::Variable("Set with a replace - Basic set", "New value"));
+        reg->set(jbr::reg::Variable("Set with a replace - Multiple set", "Basic values"));
+        reg->set(jbr::reg::Variable("Set with a replace - Basic set", "Hey !"));
+        reg->set(jbr::reg::Variable("Set with a replace - Some var ...", ""));
+        reg->set(jbr::reg::Variable("Set with a replace - Basic set", "Finally ..."));
 
         std::ifstream   ifs("replace.reg");
         std::string     content((std::istreambuf_iterator<char>(ifs)), (std::istreambuf_iterator<char>()));
@@ -149,7 +149,7 @@ TEST_CASE("jbr::reg::Instance::set")
                          "    </header>\n"
                          "    <body>\n"
                          "        <variable>\n"
-                         "            <key>Some var ...</key>\n"
+                         "            <key>Set with a replace - Some var ...</key>\n"
                          "            <value/>\n"
                          "            <rights>\n"
                          "                <read>true</read>\n"
@@ -161,7 +161,7 @@ TEST_CASE("jbr::reg::Instance::set")
                          "            </rights>\n"
                          "        </variable>\n"
                          "        <variable>\n"
-                         "            <key>Multiple set</key>\n"
+                         "            <key>Set with a replace - Multiple set</key>\n"
                          "            <value>Basic values</value>\n"
                          "            <rights>\n"
                          "                <read>true</read>\n"
@@ -173,7 +173,7 @@ TEST_CASE("jbr::reg::Instance::set")
                          "            </rights>\n"
                          "        </variable>\n"
                          "        <variable>\n"
-                         "            <key>Basic set</key>\n"
+                         "            <key>Set with a replace - Basic set</key>\n"
                          "            <value>Finally ...</value>\n"
                          "            <rights>\n"
                          "                <read>true</read>\n"
@@ -195,9 +195,9 @@ TEST_CASE("jbr::reg::Instance::set")
         jbr::Register   reg = jbr::reg::Manager::create("./replace_not_allow.reg");
         std::string     msg;
 
-        reg->set(jbr::reg::Variable("Basic set", "Basic value"));
+        reg->set(jbr::reg::Variable("Set with a replace (no replace rights) - Basic set", "Basic value"));
         try {
-            reg->set(jbr::reg::Variable("Basic set", "New value"), false);
+            reg->set(jbr::reg::Variable("Set with a replace (no replace rights) - Basic set", "New value"), false);
         }
         catch (jbr::reg::exception &e) {
             msg = e.what();
@@ -213,7 +213,7 @@ TEST_CASE("jbr::reg::Instance::set")
                          "    </header>\n"
                          "    <body>\n"
                          "        <variable>\n"
-                         "            <key>Basic set</key>\n"
+                         "            <key>Set with a replace (no replace rights) - Basic set</key>\n"
                          "            <value>Basic value</value>\n"
                          "            <rights>\n"
                          "                <read>true</read>\n"
@@ -252,12 +252,12 @@ TEST_CASE("jbr::reg::Instance::set")
     {
         jbr::Register   reg = jbr::reg::Manager::create("./rights_update.reg");
 
-        reg->set(jbr::reg::Variable("Basic set", "Basic value"));
-        reg->set(jbr::reg::Variable("Basic set", "New value"));
-        reg->set(jbr::reg::Variable("Multiple set", "Basic values", jbr::reg::var::perm::Rights(true, true, true, false, true, true)));
-        reg->set(jbr::reg::Variable("Basic set", "Hey !"));
-        reg->set(jbr::reg::Variable("Some var ...", ""));
-        reg->set(jbr::reg::Variable("Basic set", "Finally ...", jbr::reg::var::perm::Rights(true, false, false, true, false, false)));
+        reg->set(jbr::reg::Variable("Set with rights update - Basic set", "Basic value"));
+        reg->set(jbr::reg::Variable("Set with rights update - Basic set", "New value"));
+        reg->set(jbr::reg::Variable("Set with rights update - Multiple set", "Basic values", jbr::reg::var::perm::Rights(true, true, true, false, true, true)));
+        reg->set(jbr::reg::Variable("Set with rights update - Basic set", "Hey !"));
+        reg->set(jbr::reg::Variable("Set with rights update - Some var ...", ""));
+        reg->set(jbr::reg::Variable("Set with rights update - Basic set", "Finally ...", jbr::reg::var::perm::Rights(true, false, false, true, false, false)));
 
         std::ifstream   ifs("rights_update.reg");
         std::string     content((std::istreambuf_iterator<char>(ifs)), (std::istreambuf_iterator<char>()));
@@ -268,7 +268,7 @@ TEST_CASE("jbr::reg::Instance::set")
                          "    </header>\n"
                          "    <body>\n"
                          "        <variable>\n"
-                         "            <key>Some var ...</key>\n"
+                         "            <key>Set with rights update - Some var ...</key>\n"
                          "            <value/>\n"
                          "            <rights>\n"
                          "                <read>true</read>\n"
@@ -280,7 +280,7 @@ TEST_CASE("jbr::reg::Instance::set")
                          "            </rights>\n"
                          "        </variable>\n"
                          "        <variable>\n"
-                         "            <key>Multiple set</key>\n"
+                         "            <key>Set with rights update - Multiple set</key>\n"
                          "            <value>Basic values</value>\n"
                          "            <rights>\n"
                          "                <read>true</read>\n"
@@ -292,7 +292,7 @@ TEST_CASE("jbr::reg::Instance::set")
                          "            </rights>\n"
                          "        </variable>\n"
                          "        <variable>\n"
-                         "            <key>Basic set</key>\n"
+                         "            <key>Set with rights update - Basic set</key>\n"
                          "            <value>Finally ...</value>\n"
                          "            <rights>\n"
                          "                <read>true</read>\n"
@@ -309,24 +309,23 @@ TEST_CASE("jbr::reg::Instance::set")
         jbr::reg::Manager::destroy(reg);
     }
 
-
     SUBCASE("Set (replace) without needed rights.")
     {
         jbr::Register   reg = jbr::reg::Manager::create("./replace_without_needed_rights.reg");
         std::string     msg;
 
-        reg->set(jbr::reg::Variable("Basic set", "Basic value", jbr::reg::var::perm::Rights(true, true, false, true, true, true)));
+        reg->set(jbr::reg::Variable("Set (replace) without needed rights - Basic set", "Basic value", jbr::reg::var::perm::Rights(true, true, false, true, true, true)));
         try {
-            reg->set(jbr::reg::Variable("Basic set", "New value", jbr::reg::var::perm::Rights(true, true, true, true, true, true)));
+            reg->set(jbr::reg::Variable("Set (replace) without needed rights - Basic set", "New value", jbr::reg::var::perm::Rights(true, true, true, true, true, true)));
         }
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
         CHECK(msg == "Impossible to update a variable without read, write and update rights.");
         msg.clear();
-        reg->set(jbr::reg::Variable("Multiple set", "Basic values", jbr::reg::var::perm::Rights(true, false, true, true, true, true)));
+        reg->set(jbr::reg::Variable("Set (replace) without needed rights - Multiple set", "Basic values", jbr::reg::var::perm::Rights(true, false, true, true, true, true)));
         try {
-            reg->set(jbr::reg::Variable("Multiple set", "Basic values", jbr::reg::var::perm::Rights(true, true, true, true, true, true)));
+            reg->set(jbr::reg::Variable("Set (replace) without needed rights - Multiple set", "Basic values", jbr::reg::var::perm::Rights(true, true, true, true, true, true)));
         }
         catch (jbr::reg::exception &e) {
             msg = e.what();
@@ -342,7 +341,7 @@ TEST_CASE("jbr::reg::Instance::set")
                          "    </header>\n"
                          "    <body>\n"
                          "        <variable>\n"
-                         "            <key>Multiple set</key>\n"
+                         "            <key>Set (replace) without needed rights - Multiple set</key>\n"
                          "            <value>Basic values</value>\n"
                          "            <rights>\n"
                          "                <read>true</read>\n"
@@ -354,7 +353,7 @@ TEST_CASE("jbr::reg::Instance::set")
                          "            </rights>\n"
                          "        </variable>\n"
                          "        <variable>\n"
-                         "            <key>Basic set</key>\n"
+                         "            <key>Set (replace) without needed rights - Basic set</key>\n"
                          "            <value>Basic value</value>\n"
                          "            <rights>\n"
                          "                <read>true</read>\n"
