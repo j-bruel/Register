@@ -135,4 +135,12 @@ TEST_CASE("jbr::reg::Instance::available")
         jbr::reg::Manager::destroy(reg);
     }
 
+    SUBCASE("Null pointer.")
+    {
+        jbr::Register   reg = jbr::reg::Manager::create("./null_ptr.reg");
+
+        CHECK_FALSE(reg->available(nullptr));
+        jbr::reg::Manager::destroy(reg);
+    }
+
 }

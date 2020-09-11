@@ -35,7 +35,7 @@ TEST_CASE("jbr::reg::Instance::get")
                       "    </header>\n"
                       "    <body>\n"
                       "        <variable>\n"
-                      "            <key>Basic set</key>\n"
+                      "            <key>Basic get variable with already existed register</key>\n"
                       "            <value>Basic value</value>\n"
                       "            <rights>\n"
                       "                <read>true</read>\n"
@@ -52,9 +52,9 @@ TEST_CASE("jbr::reg::Instance::get")
 
         jbr::Register   reg = jbr::reg::Manager::open("./basic_get_existed_reg.reg");
 
-        CHECK(std::string(reg->get("Basic set").key()) == "Basic set");
-        CHECK(std::string(reg->get("Basic set").read()) == "Basic value");
-        CHECK((reg->get("Basic set").rights() == jbr::reg::var::perm::Rights(true, true, true, true, true, true)));
+        CHECK(std::string(reg->get("Basic get variable with already existed register").key()) == "Basic get variable with already existed register");
+        CHECK(std::string(reg->get("Basic get variable with already existed register").read()) == "Basic value");
+        CHECK((reg->get("Basic get variable with already existed register").rights() == jbr::reg::var::perm::Rights(true, true, true, true, true, true)));
         jbr::reg::Manager::destroy(reg);
     }
 
@@ -96,22 +96,22 @@ TEST_CASE("jbr::reg::Instance::get")
     {
         jbr::Register   reg = jbr::reg::Manager::create("./multi_set.reg");
 
-        reg->set(jbr::reg::Variable("multi_set", "value"));
-        CHECK(std::string(reg->get("multi_set").key()) == "multi_set");
-        CHECK(std::string(reg->get("multi_set").read()) == "value");
-        CHECK((reg->get("multi_set").rights() == jbr::reg::var::perm::Rights(true, true, true, true, true, true)));
-        reg->set(jbr::reg::Variable("multi_set", "new value"));
-        CHECK(std::string(reg->get("multi_set").key()) == "multi_set");
-        CHECK(std::string(reg->get("multi_set").read()) == "new value");
-        CHECK((reg->get("multi_set").rights() == jbr::reg::var::perm::Rights(true, true, true, true, true, true)));
-        reg->set(jbr::reg::Variable("multi_set", "value", jbr::reg::var::perm::Rights(true, true, true, false, false, true)));
-        CHECK(std::string(reg->get("multi_set").key()) == "multi_set");
-        CHECK(std::string(reg->get("multi_set").read()) == "value");
-        CHECK((reg->get("multi_set").rights() == jbr::reg::var::perm::Rights(true, true, true, false, false, true)));
-        reg->set(jbr::reg::Variable("multi_set", "value"));
-        CHECK(std::string(reg->get("multi_set").key()) == "multi_set");
-        CHECK(std::string(reg->get("multi_set").read()) == "value");
-        CHECK((reg->get("multi_set").rights() == jbr::reg::var::perm::Rights(true, true, true, true, true, true)));
+        reg->set(jbr::reg::Variable("Basic get variable with multi set.", "value"));
+        CHECK(std::string(reg->get("Basic get variable with multi set.").key()) == "Basic get variable with multi set.");
+        CHECK(std::string(reg->get("Basic get variable with multi set.").read()) == "value");
+        CHECK((reg->get("Basic get variable with multi set.").rights() == jbr::reg::var::perm::Rights(true, true, true, true, true, true)));
+        reg->set(jbr::reg::Variable("Basic get variable with multi set.", "new value"));
+        CHECK(std::string(reg->get("Basic get variable with multi set.").read()) == "new value");
+        CHECK(std::string(reg->get("Basic get variable with multi set.").key()) == "Basic get variable with multi set.");
+        CHECK((reg->get("Basic get variable with multi set.").rights() == jbr::reg::var::perm::Rights(true, true, true, true, true, true)));
+        reg->set(jbr::reg::Variable("Basic get variable with multi set.", "value", jbr::reg::var::perm::Rights(true, true, true, false, false, true)));
+        CHECK((reg->get("Basic get variable with multi set.").rights() == jbr::reg::var::perm::Rights(true, true, true, false, false, true)));
+        CHECK(std::string(reg->get("Basic get variable with multi set.").key()) == "Basic get variable with multi set.");
+        CHECK(std::string(reg->get("Basic get variable with multi set.").read()) == "value");
+        reg->set(jbr::reg::Variable("Basic get variable with multi set.", "value"));
+        CHECK(std::string(reg->get("Basic get variable with multi set.").read()) == "value");
+        CHECK((reg->get("Basic get variable with multi set.").rights() == jbr::reg::var::perm::Rights(true, true, true, true, true, true)));
+        CHECK(std::string(reg->get("Basic get variable with multi set.").key()) == "Basic get variable with multi set.");
         jbr::reg::Manager::destroy(reg);
     }
 
@@ -157,7 +157,7 @@ TEST_CASE("jbr::reg::Instance::get")
                    "    </header>\n"
                    "    <body>\n"
                    "        <variable>\n"
-                   "            <keyqsdqsd>Basic set</key>\n"
+                   "            <keyqsdqsd>Invalid key section</key>\n"
                    "            <vaqsdqsdlue>Basic value</value>\n"
                    "            <rights>\nsdqsdsd"
                    "                <read>trueqsdqsd</read>\n"
@@ -175,15 +175,45 @@ TEST_CASE("jbr::reg::Instance::get")
         try {
             jbr::Register   reg = jbr::reg::Manager::open("./invalid_key_section.reg");
 
-            CHECK(std::string(reg->get("Basic set").key()) == "Basic set");
-            CHECK(std::string(reg->get("Basic set").read()) == "Basic value");
-            CHECK((reg->get("Basic set").rights() == jbr::reg::var::perm::Rights(true, true, true, true, true, true)));
+            CHECK(std::string(reg->get("Invalid key section").key()) == "Invalid key section");
+            CHECK(std::string(reg->get("Invalid key section").read()) == "Basic value");
+            CHECK((reg->get("Invalid key section").rights() == jbr::reg::var::perm::Rights(true, true, true, true, true, true)));
         }
         catch (jbr::reg::exception &e) {
             msg = e.what();
         }
         CHECK(msg == "Parsing error while loading the register file, error code : 14.");
         std::filesystem::remove("./invalid_key_section.reg");
+    }
+
+    SUBCASE("Null pointer.")
+    {
+        jbr::Register   reg = jbr::reg::Manager::create("./null_ptr.reg");
+        std::string     msg;
+
+        try {
+            (void)reg->get(nullptr);
+        }
+        catch (jbr::reg::exception &e) {
+            msg = e.what();
+        }
+        CHECK(msg == "Impossible to extract a null or empty variable.");
+        jbr::reg::Manager::destroy(reg);
+    }
+
+    SUBCASE("No existing variable.")
+    {
+        jbr::Register   reg = jbr::reg::Manager::create("./no_exist_var.reg");
+        std::string     msg;
+
+        try {
+            (void)reg->get("no_exist");
+        }
+        catch (jbr::reg::exception &e) {
+            msg = e.what();
+        }
+        CHECK(msg == "No variable named 'no_exist' were found into the register './no_exist_var.reg'.");
+        jbr::reg::Manager::destroy(reg);
     }
 
 }

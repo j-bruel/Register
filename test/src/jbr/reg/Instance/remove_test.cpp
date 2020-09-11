@@ -161,4 +161,19 @@ TEST_CASE("jbr::reg::Instance::move")
         jbr::reg::Manager::destroy(reg);
     }
 
+    SUBCASE("Null pointer.")
+    {
+        jbr::Register   reg = jbr::reg::Manager::create("./null_ptr.reg");
+        std::string     msg;
+
+        try {
+            (void)reg->remove(nullptr);
+        }
+        catch (jbr::reg::exception &e) {
+            msg = e.what();
+        }
+        CHECK(msg == "Impossible to remove a null or empty variable.");
+        jbr::reg::Manager::destroy(reg);
+    }
+
 }
